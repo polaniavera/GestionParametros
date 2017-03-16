@@ -19,16 +19,20 @@ namespace DataModel
         {
             this.CANAL_CAMPO = new HashSet<CANAL_CAMPO>();
             this.CANAL_REGISTRO = new HashSet<CANAL_REGISTRO>();
+            this.ENTIDAD_CANAL = new HashSet<ENTIDAD_CANAL>();
         }
     
         public int IdCanal { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
+        public Nullable<int> IdEstado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANAL_CAMPO> CANAL_CAMPO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CANAL_REGISTRO> CANAL_REGISTRO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ENTIDAD_CANAL> ENTIDAD_CANAL { get; set; }
     }
 }

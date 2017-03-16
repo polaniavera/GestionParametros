@@ -69,12 +69,17 @@
     <Compile Include="IFormatoServices.cs" />
     <Compile Include="INormaSectorServices.cs" />
     <Compile Include="INormaServices.cs" />
+    <Compile Include="IPeriodicidadServices.cs" />
+    <Compile Include="IPlazoServices.cs" />
     <Compile Include="ISectorServicioServices.cs" />
     <Compile Include="ITablaCampoServices.cs" />
     <Compile Include="ITablaServices.cs" />
     <Compile Include="ITablaValorServices.cs" />
     <Compile Include="NormaSectorServices.cs" />
     <Compile Include="NormaServices.cs" />
+    <Compile Include="PeriodicidadServices.cs" />
+    <Compile Include="PerioidicidadEntity.cs" />
+    <Compile Include="PlazoServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SectorServicioServices.cs" />
     <Compile Include="TablaCampoServices.cs" />

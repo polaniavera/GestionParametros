@@ -75,7 +75,6 @@ namespace BusinessServices
                 {
                     Codigo = formatoEntity.Codigo,
                     FORMATO_PLANTILLA = formatoEntity.FORMATO_PLANTILLA,
-                    IdContenido = formatoEntity.IdContenido,
                     IdEstado = formatoEntity.IdEstado,
                     IdFormato = formatoEntity.IdFormato,
                     IdPeriodicidad = formatoEntity.IdPeriodicidad,
@@ -108,7 +107,6 @@ namespace BusinessServices
                     {
                         formato.Codigo = formatoEntity.Codigo;
                         formato.FORMATO_PLANTILLA = formatoEntity.FORMATO_PLANTILLA;
-                        formato.IdContenido = formatoEntity.IdContenido;
                         formato.IdEstado = formatoEntity.IdEstado;
                         formato.IdFormato = formatoEntity.IdFormato;
                         formato.IdPeriodicidad = formatoEntity.IdPeriodicidad;
@@ -150,5 +148,53 @@ namespace BusinessServices
             }
             return success;
         }
+
+
+        /// <summary>
+        /// Fetches all the actives formatos
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<BusinessEntities.FormatoEntity> GetAllFormatosActive()
+        {
+            var formatoServicios = _unitOfWork.FormatoRepositoryCustom.GetMany().ToList();
+            if (formatoServicios.Any())
+            {
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<FORMATO, FormatoEntity>();
+                });
+                var formatos = Mapper.Map<List<FORMATO>, List<FormatoEntity>>(formatoServicios);
+                return formatos;
+            }
+            return null;
+        }
+
+
+        /// <summary>
+        /// Inactivates a formato
+        /// </summary>
+        /// <param name="formatoId"></param>
+        /// <returns></returns>
+        public bool InactivateFormato(int formatoId)
+        {
+            var success = false;
+            if (formatoId > 0)
+            {
+                using (var scope = new TransactionScope())
+                {
+                    var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
+                    if (formato != null)
+                    {
+                        formato.IdEstado = 0;
+                        _unitOfWork.FormatoRepository.Update(formato);
+                        _unitOfWork.Save();
+                        scope.Complete();
+                        success = true;
+                    }
+                }
+            }
+            return success;
+        }
+
     }
 }

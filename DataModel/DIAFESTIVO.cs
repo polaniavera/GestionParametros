@@ -12,14 +12,10 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class ENTIDAD_CANAL
+    public partial class DIAFESTIVO
     {
-        public int IdEntidadCanal { get; set; }
-        public int IdEntidad { get; set; }
-        public int IdCanal { get; set; }
-        public int IdEstado { get; set; }
-    
-        public virtual CANAL CANAL { get; set; }
-        public virtual ENTIDAD ENTIDAD { get; set; }
+        public int IdDiaFestivo { get; set; }
+        public string Descripcion { get; set; }
+        public System.DateTime Fecha { get; set; }
     }
 }

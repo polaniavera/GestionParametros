@@ -12,29 +12,22 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class FORMATO
+    public partial class PERIODICIDAD
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FORMATO()
+        public PERIODICIDAD()
         {
-            this.FORMATO_PLANTILLA = new HashSet<FORMATO_PLANTILLA>();
+            this.FORMATO = new HashSet<FORMATO>();
+            this.PERIODO = new HashSet<PERIODO>();
         }
     
-        public int IdFormato { get; set; }
-        public int IdNorma { get; set; }
-        public string Codigo { get; set; }
-        public string Nombre { get; set; }
-        public int IdTipoFormato { get; set; }
-        public int IdPlazo { get; set; }
         public int IdPeriodicidad { get; set; }
-        public int IdEstado { get; set; }
-        public Nullable<int> DiasPlazo { get; set; }
-        public Nullable<int> IdSeccion { get; set; }
-        public Nullable<bool> InlcuyeFecha { get; set; }
+        public string Codigo { get; set; }
+        public string Descripcion { get; set; }
     
-        public virtual PERIODICIDAD PERIODICIDAD { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FORMATO_PLANTILLA> FORMATO_PLANTILLA { get; set; }
-        public virtual PLAZO PLAZO { get; set; }
+        public virtual ICollection<FORMATO> FORMATO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PERIODO> PERIODO { get; set; }
     }
 }

@@ -23,6 +23,9 @@ namespace DataModel
         public int IdCampo { get; set; }
         public int IdTabla { get; set; }
         public string Codigo { get; set; }
+        public string Descripcion { get; set; }
+        public Nullable<int> IdTipoDato { get; set; }
+        public Nullable<int> Tamaño { get; set; }
     
         public virtual TABLA TABLA { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

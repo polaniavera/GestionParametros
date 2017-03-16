@@ -174,5 +174,18 @@ namespace BusinessServices
             }
             return success;
         }
+
+        public IEnumerable<NormaEntity> setDescripcionList(IEnumerable<NormaEntity> normas)
+        {
+            foreach (NormaEntity norma in normas)
+            {
+                var valor = GetEntidadById(norma.IdEntidadEmite);
+                if (valor!=null)
+                    norma.DescripcionEntidadEmite = valor.Nombre;
+
+            }
+
+            return normas;
+        }
     }
 }

@@ -24,7 +24,8 @@ namespace DataModel
     
         public int IdFormatoPlantilla { get; set; }
         public int IdFormato { get; set; }
-        public string NombrePlantilla { get; set; }
+        public string Nombre { get; set; }
+        public Nullable<int> IdEstado { get; set; }
     
         public virtual FORMATO FORMATO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

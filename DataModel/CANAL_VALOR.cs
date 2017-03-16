@@ -15,9 +15,13 @@ namespace DataModel
     public partial class CANAL_VALOR
     {
         public int IdCanalValor { get; set; }
-        public int IdCanalRegistro { get; set; }
         public int IdCampo { get; set; }
-        public string Valor { get; set; }
+        public int IdCanalRegistro { get; set; }
+        public string ValorAlfanumerico { get; set; }
+        public Nullable<int> ValorEntero { get; set; }
+        public Nullable<decimal> ValorDinero { get; set; }
+        public Nullable<decimal> ValorTasa { get; set; }
+        public Nullable<System.DateTime> ValorFecha { get; set; }
     
         public virtual CANAL_CAMPO CANAL_CAMPO { get; set; }
         public virtual CANAL_REGISTRO CANAL_REGISTRO { get; set; }

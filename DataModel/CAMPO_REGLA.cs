@@ -14,7 +14,7 @@ namespace DataModel
     
     public partial class CAMPO_REGLA
     {
-        public int IdFormatoCampo { get; set; }
+        public int IdCampoRegla { get; set; }
         public int IdRegla { get; set; }
         public int IdPlantillaCampo { get; set; }
         public int IdEstado { get; set; }

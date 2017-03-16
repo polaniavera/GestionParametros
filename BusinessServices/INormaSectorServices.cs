@@ -12,11 +12,12 @@ namespace BusinessServices
     /// </summary>
     public interface INormaSectorServices
     {
-        NormaSectorEntity GetNormaSectorById(int normaId);
+        IEnumerable<NormaSectorEntity> GetNormaSectorById(int normaId);
         IEnumerable<NormaSectorEntity> GetAllNormaSectores();
-        int CreateNormaSector(int idSectorServicio, int idNorma);
+        bool CreateNormaSector(int idSectorServicio, int idNorma);
         bool UpdateNormaSector(int normaSectorId, NormaSectorEntity normaSectorEntity);
         bool DeleteNormaSector(int normaSectorId);
         bool InactivateNormaSector(int normaSectorId);
+        NormaEntity EditNormaSector(NormaEntity normaEntity, IEnumerable <NormaSectorEntity> normaSectorById);
     }
 }

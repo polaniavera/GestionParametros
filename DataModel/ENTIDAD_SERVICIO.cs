@@ -16,10 +16,10 @@ namespace DataModel
     {
         public int IdEntidadServicio { get; set; }
         public int IdEntidad { get; set; }
-        public int IdServicioSubTipo { get; set; }
+        public int IdServicio { get; set; }
         public int IdEstado { get; set; }
     
         public virtual ENTIDAD ENTIDAD { get; set; }
-        public virtual SERVICIO_SUBTIPO SERVICIO_SUBTIPO { get; set; }
+        public virtual SERVICIO SERVICIO { get; set; }
     }
 }

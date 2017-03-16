@@ -27,8 +27,9 @@ namespace DataModel.GenericRepository
         #endregion
 
         #region Public member methods...
+
         /// <summary>
-        /// generic method to get many record on the idEstado is Activate.
+        /// Method to get TipoNorma record on vertical tables from join resources.
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
@@ -44,24 +45,97 @@ namespace DataModel.GenericRepository
                 join cc in Context.TABLA_CAMPO on c.IdTabla equals cc.IdTabla
                 join cv in Context.TABLA_VALOR on cc.IdCampo equals cv.IdCampo
                 where c.Codigo == "TIPONORMA"
-                select new {cv.IdTablaValor, cv.Valor}).ToList();
+                select new {cv.IdTablaValor, cv.ValorAlfanumerico}).ToList();
 
             for (int i=0; i< results.Count; i++)
             {
                 if (i%2==0)
-                    arrCodigo.Add(results[i].Valor);
+                    arrCodigo.Add(results[i].ValorAlfanumerico);
                 else
                 {
                     tablaValor = new TABLA_VALOR();
-                    arrValor.Add(results[i].Valor);
+                    arrValor.Add(results[i].ValorAlfanumerico);
                     tablaValor.IdTablaValor = results[i].IdTablaValor;
-                    tablaValor.Valor = results[i].Valor;
+                    tablaValor.ValorAlfanumerico = results[i].ValorAlfanumerico;
                     tablaValorList.Add(tablaValor);
                 }    
             }
 
             return tablaValorList;
         }
+
+        /// <summary>
+        /// Method to get TipoFormato record on vertical tables from join resources.
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<TABLA_VALOR> GetTipoFormato()
+        {
+            List<String> arrCodigo = new List<String>();
+            List<String> arrValor = new List<String>();
+            List<TABLA_VALOR> tablaValorList = new List<TABLA_VALOR>();
+            TABLA_VALOR tablaValor = new TABLA_VALOR();
+
+            var results =
+                (from c in Context.TABLA
+                 join cc in Context.TABLA_CAMPO on c.IdTabla equals cc.IdTabla
+                 join cv in Context.TABLA_VALOR on cc.IdCampo equals cv.IdCampo
+                 where c.Codigo == "TIPOFORMATO"
+                 select new { cv.IdTablaValor, cv.ValorAlfanumerico }).ToList();
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                if (i % 2 == 0)
+                    arrCodigo.Add(results[i].ValorAlfanumerico);
+                else
+                {
+                    tablaValor = new TABLA_VALOR();
+                    arrValor.Add(results[i].ValorAlfanumerico);
+                    tablaValor.IdTablaValor = results[i].IdTablaValor;
+                    tablaValor.ValorAlfanumerico = results[i].ValorAlfanumerico;
+                    tablaValorList.Add(tablaValor);
+                }
+            }
+
+            return tablaValorList;
+        }
+
+        /// <summary>
+        /// Method to get parametros record on vertical tables from parametro string.
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public virtual IEnumerable<TABLA_VALOR> GetParametros(string parametro)
+        {
+            List<String> arrCodigo = new List<String>();
+            List<String> arrValor = new List<String>();
+            List<TABLA_VALOR> tablaValorList = new List<TABLA_VALOR>();
+            TABLA_VALOR tablaValor = new TABLA_VALOR();
+
+            var results =
+                (from c in Context.TABLA
+                 join cc in Context.TABLA_CAMPO on c.IdTabla equals cc.IdTabla
+                 join cv in Context.TABLA_VALOR on cc.IdCampo equals cv.IdCampo
+                 where c.Codigo == parametro
+                 select new { cv.IdTablaValor, cv.ValorAlfanumerico }).ToList();
+
+            for (int i = 0; i < results.Count; i++)
+            {
+                if (i % 2 == 0)
+                    arrCodigo.Add(results[i].ValorAlfanumerico);
+                else
+                {
+                    tablaValor = new TABLA_VALOR();
+                    arrValor.Add(results[i].ValorAlfanumerico);
+                    tablaValor.IdTablaValor = results[i].IdTablaValor;
+                    tablaValor.ValorAlfanumerico = results[i].ValorAlfanumerico;
+                    tablaValorList.Add(tablaValor);
+                }
+            }
+
+            return tablaValorList;
+        }
+
         #endregion
     }
 }

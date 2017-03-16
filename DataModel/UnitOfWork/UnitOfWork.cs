@@ -26,8 +26,12 @@ namespace DataModel.UnitOfWork
         private GenericRepository<SECTOR_SERVICIO> _sectorServicioRepository;
         private GenericRepository<NORMA> _normaRepository;
         private GenericRepository<NORMA_SECTOR> _normaSectorRepository;
+        private GenericRepository<PERIODICIDAD> _periodicidadRepository;
+        private GenericRepository<PLAZO> _plazoRepository;
         private NormaRepositoryCustom _normaRepositoryCustom;
+        private NormaSectorRepositoryCustom _normaSectorRepositoryCustom;
         private TablaRepositoryCustom _tablaRepositoryCustom;
+        private FormatoRepositoryCustom _formatoRepositoryCustom;
         #endregion
 
         public UnitOfWork()
@@ -155,6 +159,19 @@ namespace DataModel.UnitOfWork
         }
 
         /// <summary>
+        /// Get/Set Property for normaSector repository custom.
+        /// </summary>
+        public NormaSectorRepositoryCustom NormaSectorRepositoryCustom
+        {
+            get
+            {
+                if (this._normaSectorRepositoryCustom == null)
+                    this._normaSectorRepositoryCustom = new NormaSectorRepositoryCustom(_context);
+                return _normaSectorRepositoryCustom;
+            }
+        }
+
+        /// <summary>
         /// Get/Set Property for normaSector repository.
         /// </summary>
         public GenericRepository<NORMA_SECTOR> NormaSectorRepository
@@ -164,6 +181,45 @@ namespace DataModel.UnitOfWork
                 if (this._normaSectorRepository == null)
                     this._normaSectorRepository = new GenericRepository<NORMA_SECTOR>(_context);
                 return _normaSectorRepository;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for periodicidad repository.
+        /// </summary>
+        public GenericRepository<PERIODICIDAD> PeriodicidadRepository
+        {
+            get
+            {
+                if (this._periodicidadRepository == null)
+                    this._periodicidadRepository = new GenericRepository<PERIODICIDAD>(_context);
+                return _periodicidadRepository;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for plazo repository.
+        /// </summary>
+        public GenericRepository<PLAZO> PlazoRepository
+        {
+            get
+            {
+                if (this._plazoRepository == null)
+                    this._plazoRepository = new GenericRepository<PLAZO>(_context);
+                return _plazoRepository;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for formato repository custom.
+        /// </summary>
+        public FormatoRepositoryCustom FormatoRepositoryCustom
+        {
+            get
+            {
+                if (this._formatoRepositoryCustom == null)
+                    this._formatoRepositoryCustom = new FormatoRepositoryCustom(_context);
+                return _formatoRepositoryCustom;
             }
         }
 

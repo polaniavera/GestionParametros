@@ -17,7 +17,9 @@ namespace DataModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SERVICIO()
         {
-            this.SERVICIO_SUBTIPO = new HashSet<SERVICIO_SUBTIPO>();
+            this.FORMATO_SERVICIO = new HashSet<FORMATO_SERVICIO>();
+            this.ENTIDAD_SERVICIO = new HashSet<ENTIDAD_SERVICIO>();
+            this.SERVICIO1 = new HashSet<SERVICIO>();
         }
     
         public int IdServicio { get; set; }
@@ -26,9 +28,15 @@ namespace DataModel
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public int IdEstado { get; set; }
+        public Nullable<int> IdServicioPadre { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FORMATO_SERVICIO> FORMATO_SERVICIO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ENTIDAD_SERVICIO> ENTIDAD_SERVICIO { get; set; }
         public virtual SECTOR_SERVICIO SECTOR_SERVICIO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<SERVICIO_SUBTIPO> SERVICIO_SUBTIPO { get; set; }
+        public virtual ICollection<SERVICIO> SERVICIO1 { get; set; }
+        public virtual SERVICIO SERVICIO2 { get; set; }
     }
 }

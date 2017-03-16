@@ -17,7 +17,6 @@ namespace BusinessEntities
         public string Nombre { get; set; }
         public int IdTipoFormato { get; set; }
         public int IdPeriodicidad { get; set; }
-        public int IdContenido { get; set; }
         public int IdPlazo { get; set; }
         public int IdEstado { get; set; }
 

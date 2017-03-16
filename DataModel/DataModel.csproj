@@ -88,6 +88,9 @@
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DependencyResolver.cs" />
+    <Compile Include="DIAFESTIVO.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ENTIDAD.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
@@ -109,26 +112,27 @@
     <Compile Include="FORMATO_SERVICIO.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="GenericRepository\FormatoRepositoryCustom.cs" />
     <Compile Include="GenericRepository\GenericRepository.cs" />
+    <Compile Include="GenericRepository\NormaSectorRepositoryCustom.cs" />
     <Compile Include="GenericRepository\TablaRepositoryCustom.cs" />
     <Compile Include="GenericRepository\NormaRepositoryCustom.cs" />
-    <Compile Include="Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="NORMA.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="NORMA_SECTOR.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="PERIODICIDAD.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PERIODO.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="PLANTILLA_CAMPO.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PLAZO.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -139,9 +143,6 @@
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SERVICIO.cs">
-      <DependentUpon>WebApiDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="SERVICIO_SUBTIPO.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TABLA.cs">
@@ -158,6 +159,11 @@
     </Compile>
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
+    <Compile Include="WebApiDataModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebApiDataModel.Context.tt</DependentUpon>
+    </Compile>
     <Compile Include="WebApiDataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -190,15 +196,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model.Context.tt">
+    <Content Include="WebApiDataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.Context.cs</LastGenOutput>
       <DependentUpon>WebApiDataModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Model.cs</LastGenOutput>
-      <DependentUpon>WebApiDataModel.edmx</DependentUpon>
+      <LastGenOutput>WebApiDataModel.Context.cs</LastGenOutput>
     </Content>
     <Content Include="WebApiDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

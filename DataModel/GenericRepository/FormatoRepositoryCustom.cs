@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace DataModel.GenericRepository
 {
-    public class NormaRepositoryCustom
+    public class FormatoRepositoryCustom
     {
         #region Private member variables...
         internal WebApiDbEntities Context;
-        internal DbSet<NORMA> DbSet;
+        internal DbSet<FORMATO> DbSet;
         #endregion
 
         #region Public Constructor...
@@ -16,10 +16,10 @@ namespace DataModel.GenericRepository
         /// Public Constructor,initializes privately declared local variables.
         /// </summary>
         /// <param name="context"></param>
-        public NormaRepositoryCustom(WebApiDbEntities context)
+        public FormatoRepositoryCustom(WebApiDbEntities context)
         {
             this.Context = context;
-            this.DbSet = context.Set<NORMA>();
+            this.DbSet = context.Set<FORMATO>();
         }
         #endregion
 
@@ -29,10 +29,10 @@ namespace DataModel.GenericRepository
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
-        public virtual IEnumerable<NORMA> GetMany()
+        public virtual IEnumerable<FORMATO> GetMany()
         {
-            var normasAct = Context.NORMA.Where(c=>c.IdEstado==1);
-            return normasAct;
+            var formatosAct = Context.FORMATO.Where(c => c.IdEstado == 1);
+            return formatosAct;
         }
 
 

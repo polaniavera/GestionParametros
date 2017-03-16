@@ -77,7 +77,7 @@ namespace BusinessServices
                 {
                     tablaValor = new TablaValorListEntity();
                     tablaValor.IdTablaValor = item.IdTablaValor;
-                    tablaValor.Valor = item.Valor;
+                    tablaValor.Valor = item.ValorAlfanumerico;
                     tablaValorList.Add(tablaValor);
                 }
 
@@ -85,6 +85,55 @@ namespace BusinessServices
             }
             return null;
         }
+
+        /// <summary>
+        /// Fetches Tipo Formato list
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<BusinessEntities.TablaValorListEntity> GetTipoFormato()
+        {
+            TablaValorListEntity tablaValor = new TablaValorListEntity();
+            List<TablaValorListEntity> tablaValorList = new List<TablaValorListEntity>();
+            var tabla = _unitOfWork.TablaRepositoryCustom.GetTipoFormato().ToList();
+            if (tabla != null)
+            {
+                foreach (TABLA_VALOR item in tabla)
+                {
+                    tablaValor = new TablaValorListEntity();
+                    tablaValor.IdTablaValor = item.IdTablaValor;
+                    tablaValor.Valor = item.ValorAlfanumerico;
+                    tablaValorList.Add(tablaValor);
+                }
+
+                return tablaValorList;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Fetches Sección list
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<BusinessEntities.TablaValorListEntity> GetParametrosVert(string _parametro)
+        {
+            TablaValorListEntity tablaValor = new TablaValorListEntity();
+            List<TablaValorListEntity> tablaValorList = new List<TablaValorListEntity>();
+            var tabla = _unitOfWork.TablaRepositoryCustom.GetParametros(_parametro).ToList();
+            if (tabla != null)
+            {
+                foreach (TABLA_VALOR item in tabla)
+                {
+                    tablaValor = new TablaValorListEntity();
+                    tablaValor.IdTablaValor = item.IdTablaValor;
+                    tablaValor.Valor = item.ValorAlfanumerico;
+                    tablaValorList.Add(tablaValor);
+                }
+
+                return tablaValorList;
+            }
+            return null;
+        }
+
 
         /// <summary>
         /// Creates a Tabla

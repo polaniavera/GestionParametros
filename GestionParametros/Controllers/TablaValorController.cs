@@ -17,9 +17,9 @@ namespace GestionParametros.Controllers
         /// <summary>
         /// Public constructor to initialize tablaValor service instance
         /// </summary>
-        public TablaValorController()
+        public TablaValorController(ITablaValorServices tablaValorServices)
         {
-            _tablaValorServices = new TablaValorServices();
+            _tablaValorServices = tablaValorServices;
         }
 
         #endregion

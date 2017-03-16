@@ -14,13 +14,15 @@ namespace BusinessServices
     public class TablaValorServices: ITablaValorServices
     {
         private readonly UnitOfWork _unitOfWork;
+        private readonly IEntidadServices _entidadServices;
 
         /// <summary>
         /// Public constructor.
         /// </summary>
-        public TablaValorServices()
+        public TablaValorServices(UnitOfWork unitOfWork, IEntidadServices entidadServices)
         {
-            _unitOfWork = new UnitOfWork();
+            _unitOfWork = unitOfWork;
+            _entidadServices = entidadServices;
         }
 
         /// <summary>
@@ -139,5 +141,35 @@ namespace BusinessServices
             }
             return success;
         }
+
+        public NormaEntity setDescripcion(NormaEntity norma)
+        {
+            var valor = GetTablaValorById(norma.IdTipoNorma);
+            if (valor != null)
+                norma.DescripcionTipoNorma = valor.ValorAlfanumerico;
+
+            var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
+            if (entidad != null)
+                norma.DescripcionEntidadEmite = entidad.Nombre;
+
+            return norma;
+        }
+
+        public IEnumerable<NormaEntity> setDescripcionList(IEnumerable<NormaEntity> normas)
+        {
+            foreach (NormaEntity norma in normas)
+            {
+                var valor = GetTablaValorById(norma.IdTipoNorma);
+                if(valor!=null)
+                    norma.DescripcionTipoNorma = valor.ValorAlfanumerico;
+
+                var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
+                if (entidad != null)
+                    norma.DescripcionEntidadEmite = entidad.Nombre;
+            }
+
+            return normas;
+        }
+
     }
 }

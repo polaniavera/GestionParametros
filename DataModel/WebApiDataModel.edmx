@@ -11,8 +11,9 @@
           </Key>
           <Property Name="IdCanal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="Nombre" Type="nchar" MaxLength="30" />
+          <Property Name="Nombre" Type="nchar" MaxLength="30" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IdEstado" Type="int" />
         </EntityType>
         <EntityType Name="CANAL_CAMPO">
           <Key>
@@ -20,7 +21,11 @@
           </Key>
           <Property Name="IdCampo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdCanal" Type="int" Nullable="false" />
-          <Property Name="Codigo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Campo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="255" />
+          <Property Name="IdTipoDato" Type="int" />
+          <Property Name="Tamaño" Type="int" />
+          <Property Name="Editable" Type="bit" />
         </EntityType>
         <EntityType Name="CANAL_REGISTRO">
           <Key>
@@ -34,9 +39,13 @@
             <PropertyRef Name="IdCanalValor" />
           </Key>
           <Property Name="IdCanalValor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdCanalRegistro" Type="int" Nullable="false" />
           <Property Name="IdCampo" Type="int" Nullable="false" />
-          <Property Name="Valor" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IdCanalRegistro" Type="int" Nullable="false" />
+          <Property Name="ValorAlfanumerico" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValorEntero" Type="int" />
+          <Property Name="ValorDinero" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="ValorTasa" Type="numeric" Precision="18" Scale="9" />
+          <Property Name="ValorFecha" Type="datetime" />
         </EntityType>
         <EntityType Name="ENTIDAD_CANAL">
           <Key>
@@ -65,13 +74,16 @@
             <PropertyRef Name="IdFormato" />
           </Key>
           <Property Name="IdFormato" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdNorma" Type="int" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="IdTipoFormato" Type="int" Nullable="false" />
-          <Property Name="IdPeriodicidad" Type="int" Nullable="false" />
-          <Property Name="IdContenido" Type="int" Nullable="false" />
           <Property Name="IdPlazo" Type="int" Nullable="false" />
+          <Property Name="IdPeriodicidad" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="DiasPlazo" Type="int" />
+          <Property Name="IdSeccion" Type="int" />
+          <Property Name="InlcuyeFecha" Type="bit" />
         </EntityType>
         <EntityType Name="FORMATO_ACUERDO">
           <Key>
@@ -88,16 +100,16 @@
           </Key>
           <Property Name="IdFormatoPlantilla" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdFormato" Type="int" Nullable="false" />
-          <Property Name="NombrePlantilla" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="IdEstado" Type="int" />
         </EntityType>
         <EntityType Name="FORMATO_SERVICIO">
           <Key>
             <PropertyRef Name="IdFormatoServicio" />
           </Key>
           <Property Name="IdFormatoServicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdServicioSubTipo" Type="int" Nullable="false" />
+          <Property Name="IdServicio" Type="int" Nullable="false" />
           <Property Name="IdFormatoPlantilla" Type="int" Nullable="false" />
-          <Property Name="IdUsuario" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="NORMA">
@@ -131,7 +143,7 @@
           </Key>
           <Property Name="IdPlantillaCampo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdFormatoPlantilla" Type="int" Nullable="false" />
-          <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="15" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="IdTipoDato" Type="int" Nullable="false" />
           <Property Name="Tamaño" Type="int" Nullable="false" />
@@ -139,12 +151,20 @@
         </EntityType>
         <EntityType Name="CAMPO_REGLA">
           <Key>
-            <PropertyRef Name="IdFormatoCampo" />
+            <PropertyRef Name="IdCampoRegla" />
           </Key>
-          <Property Name="IdFormatoCampo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdCampoRegla" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdRegla" Type="int" Nullable="false" />
           <Property Name="IdPlantillaCampo" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DIAFESTIVO">
+          <Key>
+            <PropertyRef Name="IdDiaFestivo" />
+          </Key>
+          <Property Name="IdDiaFestivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Fecha" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ENTIDAD">
           <Key>
@@ -176,8 +196,39 @@
           </Key>
           <Property Name="IdEntidadServicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdEntidad" Type="int" Nullable="false" />
-          <Property Name="IdServicioSubTipo" Type="int" Nullable="false" />
+          <Property Name="IdServicio" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERIODICIDAD">
+          <Key>
+            <PropertyRef Name="IdPeriodicidad" />
+          </Key>
+          <Property Name="IdPeriodicidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PERIODO">
+          <Key>
+            <PropertyRef Name="IdPeriodo" />
+          </Key>
+          <Property Name="IdPeriodo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdPeriodicidad" Type="int" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="MesInicio" Type="int" Nullable="false" />
+          <Property Name="MesFin" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PLAZO">
+          <Key>
+            <PropertyRef Name="IdPlazo" />
+          </Key>
+          <Property Name="IdPlazo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="CalcularFecha" Type="bit" Nullable="false" />
+          <Property Name="PeriodoVencido" Type="bit" Nullable="false" />
+          <Property Name="UltimoDia" Type="bit" Nullable="false" />
+          <Property Name="TipoDia" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="REGLA">
           <Key>
@@ -216,16 +267,7 @@
           <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="SERVICIO_SUBTIPO">
-          <Key>
-            <PropertyRef Name="IdServicioSubTipo" />
-          </Key>
-          <Property Name="IdServicioSubTipo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdServicio" Type="int" Nullable="false" />
-          <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
-          <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="IdServicioPadre" Type="int" />
         </EntityType>
         <EntityType Name="TABLA">
           <Key>
@@ -243,6 +285,9 @@
           <Property Name="IdCampo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdTabla" Type="int" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="255" />
+          <Property Name="IdTipoDato" Type="int" />
+          <Property Name="Tamaño" Type="int" />
         </EntityType>
         <EntityType Name="TABLA_REGISTRO">
           <Key>
@@ -258,7 +303,12 @@
           <Property Name="IdTablaValor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdTablaRegistro" Type="int" Nullable="false" />
           <Property Name="IdCampo" Type="int" Nullable="false" />
-          <Property Name="Valor" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValorAlfanumerico" Type="varchar" MaxLength="100" />
+          <Property Name="ValorEntero" Type="int" />
+          <Property Name="ValorFecha" Type="datetime" />
+          <Property Name="ValorBoleano" Type="bit" />
+          <Property Name="ValorDinero" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="ValorTasa" Type="numeric" Precision="18" Scale="9" />
         </EntityType>
         <Association Name="FK_CAMPO_REGLA_PLANTILLA_CAMPO">
           <End Role="PLANTILLA_CAMPO" Type="Self.PLANTILLA_CAMPO" Multiplicity="1" />
@@ -332,6 +382,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ENTIDAD_CANAL_CANAL">
+          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
+          <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CANAL">
+              <PropertyRef Name="IdCanal" />
+            </Principal>
+            <Dependent Role="ENTIDAD_CANAL">
+              <PropertyRef Name="IdCanal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ENTIDAD_CANAL_ENTIDAD">
           <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
           <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
@@ -356,19 +418,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO">
-          <End Role="SERVICIO_SUBTIPO" Type="Self.SERVICIO_SUBTIPO" Multiplicity="1" />
+        <Association Name="FK_ENTIDAD_SERVICIO_SERVICIO">
+          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="1" />
           <End Role="ENTIDAD_SERVICIO" Type="Self.ENTIDAD_SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SERVICIO_SUBTIPO">
-              <PropertyRef Name="IdServicioSubTipo" />
+            <Principal Role="SERVICIO">
+              <PropertyRef Name="IdServicio" />
             </Principal>
             <Dependent Role="ENTIDAD_SERVICIO">
-              <PropertyRef Name="IdServicioSubTipo" />
+              <PropertyRef Name="IdServicio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA">
+        <Association Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
           <End Role="FORMATO_PLANTILLA" Type="Self.FORMATO_PLANTILLA" Multiplicity="1" />
           <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -377,6 +439,18 @@
             </Principal>
             <Dependent Role="FORMATO_ACUERDO">
               <PropertyRef Name="IdFormatoPlantilla" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMATO_PERIODICIDAD">
+          <End Role="PERIODICIDAD" Type="Self.PERIODICIDAD" Multiplicity="1" />
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODICIDAD">
+              <PropertyRef Name="IdPeriodicidad" />
+            </Principal>
+            <Dependent Role="FORMATO">
+              <PropertyRef Name="IdPeriodicidad" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -392,6 +466,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FORMATO_PLAZO">
+          <End Role="PLAZO" Type="Self.PLAZO" Multiplicity="1" />
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLAZO">
+              <PropertyRef Name="IdPlazo" />
+            </Principal>
+            <Dependent Role="FORMATO">
+              <PropertyRef Name="IdPlazo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FORMATO_SERVICIO_FORMATO_PLANTILLA">
           <End Role="FORMATO_PLANTILLA" Type="Self.FORMATO_PLANTILLA" Multiplicity="1" />
           <End Role="FORMATO_SERVICIO" Type="Self.FORMATO_SERVICIO" Multiplicity="*" />
@@ -401,6 +487,18 @@
             </Principal>
             <Dependent Role="FORMATO_SERVICIO">
               <PropertyRef Name="IdFormatoPlantilla" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMATO_SERVICIO_SERVICIO">
+          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="1" />
+          <End Role="FORMATO_SERVICIO" Type="Self.FORMATO_SERVICIO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SERVICIO">
+              <PropertyRef Name="IdServicio" />
+            </Principal>
+            <Dependent Role="FORMATO_SERVICIO">
+              <PropertyRef Name="IdServicio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -428,6 +526,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PERIODO_PERIODICIDAD">
+          <End Role="PERIODICIDAD" Type="Self.PERIODICIDAD" Multiplicity="1" />
+          <End Role="PERIODO" Type="Self.PERIODO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODICIDAD">
+              <PropertyRef Name="IdPeriodicidad" />
+            </Principal>
+            <Dependent Role="PERIODO">
+              <PropertyRef Name="IdPeriodicidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PLANTILLA_ACUERDO_ACUERDO">
           <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="1" />
           <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
@@ -452,18 +562,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO">
-          <End Role="SERVICIO_SUBTIPO" Type="Self.SERVICIO_SUBTIPO" Multiplicity="1" />
-          <End Role="FORMATO_SERVICIO" Type="Self.FORMATO_SERVICIO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="SERVICIO_SUBTIPO">
-              <PropertyRef Name="IdServicioSubTipo" />
-            </Principal>
-            <Dependent Role="FORMATO_SERVICIO">
-              <PropertyRef Name="IdServicioSubTipo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_SERVICIO_SECTOR_SERVICIO">
           <End Role="SECTOR_SERVICIO" Type="Self.SECTOR_SERVICIO" Multiplicity="1" />
           <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="*" />
@@ -476,15 +574,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SERVICIO_SUBTIPO_SERVICIO">
-          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="1" />
-          <End Role="SERVICIO_SUBTIPO" Type="Self.SERVICIO_SUBTIPO" Multiplicity="*" />
+        <Association Name="FK_SERVICIO_SERVICIO">
+          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="0..1" />
+          <End Role="SERVICIO1" Type="Self.SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SERVICIO">
               <PropertyRef Name="IdServicio" />
             </Principal>
-            <Dependent Role="SERVICIO_SUBTIPO">
-              <PropertyRef Name="IdServicio" />
+            <Dependent Role="SERVICIO1">
+              <PropertyRef Name="IdServicioPadre" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -551,12 +649,15 @@
           <EntitySet Name="NORMA_SECTOR" EntityType="Self.NORMA_SECTOR" Schema="GN" store:Type="Tables" />
           <EntitySet Name="PLANTILLA_CAMPO" EntityType="Self.PLANTILLA_CAMPO" Schema="GN" store:Type="Tables" />
           <EntitySet Name="CAMPO_REGLA" EntityType="Self.CAMPO_REGLA" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="DIAFESTIVO" EntityType="Self.DIAFESTIVO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="ENTIDAD" EntityType="Self.ENTIDAD" Schema="GP" store:Type="Tables" />
           <EntitySet Name="ENTIDAD_SERVICIO" EntityType="Self.ENTIDAD_SERVICIO" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="PERIODICIDAD" EntityType="Self.PERIODICIDAD" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="PERIODO" EntityType="Self.PERIODO" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="PLAZO" EntityType="Self.PLAZO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="REGLA" EntityType="Self.REGLA" Schema="GP" store:Type="Tables" />
           <EntitySet Name="SECTOR_SERVICIO" EntityType="Self.SECTOR_SERVICIO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="SERVICIO" EntityType="Self.SERVICIO" Schema="GP" store:Type="Tables" />
-          <EntitySet Name="SERVICIO_SUBTIPO" EntityType="Self.SERVICIO_SUBTIPO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA" EntityType="Self.TABLA" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_CAMPO" EntityType="Self.TABLA_CAMPO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_REGISTRO" EntityType="Self.TABLA_REGISTRO" Schema="GP" store:Type="Tables" />
@@ -585,6 +686,10 @@
             <End Role="CANAL_REGISTRO" EntitySet="CANAL_REGISTRO" />
             <End Role="CANAL_VALOR" EntitySet="CANAL_VALOR" />
           </AssociationSet>
+          <AssociationSet Name="FK_ENTIDAD_CANAL_CANAL" Association="Self.FK_ENTIDAD_CANAL_CANAL">
+            <End Role="CANAL" EntitySet="CANAL" />
+            <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
+          </AssociationSet>
           <AssociationSet Name="FK_ENTIDAD_CANAL_ENTIDAD" Association="Self.FK_ENTIDAD_CANAL_ENTIDAD">
             <End Role="ENTIDAD" EntitySet="ENTIDAD" />
             <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
@@ -593,20 +698,32 @@
             <End Role="ENTIDAD" EntitySet="ENTIDAD" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO" Association="Self.FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO">
-            <End Role="SERVICIO_SUBTIPO" EntitySet="SERVICIO_SUBTIPO" />
+          <AssociationSet Name="FK_ENTIDAD_SERVICIO_SERVICIO" Association="Self.FK_ENTIDAD_SERVICIO_SERVICIO">
+            <End Role="SERVICIO" EntitySet="SERVICIO" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA">
+          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_PERIODICIDAD" Association="Self.FK_FORMATO_PERIODICIDAD">
+            <End Role="PERIODICIDAD" EntitySet="PERIODICIDAD" />
+            <End Role="FORMATO" EntitySet="FORMATO" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMATO_PLANTILLA_FORMATO" Association="Self.FK_FORMATO_PLANTILLA_FORMATO">
             <End Role="FORMATO" EntitySet="FORMATO" />
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
           </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_PLAZO" Association="Self.FK_FORMATO_PLAZO">
+            <End Role="PLAZO" EntitySet="PLAZO" />
+            <End Role="FORMATO" EntitySet="FORMATO" />
+          </AssociationSet>
           <AssociationSet Name="FK_FORMATO_SERVICIO_FORMATO_PLANTILLA" Association="Self.FK_FORMATO_SERVICIO_FORMATO_PLANTILLA">
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
+            <End Role="FORMATO_SERVICIO" EntitySet="FORMATO_SERVICIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_SERVICIO_SERVICIO" Association="Self.FK_FORMATO_SERVICIO_SERVICIO">
+            <End Role="SERVICIO" EntitySet="SERVICIO" />
             <End Role="FORMATO_SERVICIO" EntitySet="FORMATO_SERVICIO" />
           </AssociationSet>
           <AssociationSet Name="FK_NORMA_SECTOR_NORMA" Association="Self.FK_NORMA_SECTOR_NORMA">
@@ -617,6 +734,10 @@
             <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
             <End Role="NORMA_SECTOR" EntitySet="NORMA_SECTOR" />
           </AssociationSet>
+          <AssociationSet Name="FK_PERIODO_PERIODICIDAD" Association="Self.FK_PERIODO_PERIODICIDAD">
+            <End Role="PERIODICIDAD" EntitySet="PERIODICIDAD" />
+            <End Role="PERIODO" EntitySet="PERIODO" />
+          </AssociationSet>
           <AssociationSet Name="FK_PLANTILLA_ACUERDO_ACUERDO" Association="Self.FK_PLANTILLA_ACUERDO_ACUERDO">
             <End Role="ACUERDO" EntitySet="ACUERDO" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
@@ -625,17 +746,13 @@
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
             <End Role="PLANTILLA_CAMPO" EntitySet="PLANTILLA_CAMPO" />
           </AssociationSet>
-          <AssociationSet Name="FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO" Association="Self.FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO">
-            <End Role="SERVICIO_SUBTIPO" EntitySet="SERVICIO_SUBTIPO" />
-            <End Role="FORMATO_SERVICIO" EntitySet="FORMATO_SERVICIO" />
-          </AssociationSet>
           <AssociationSet Name="FK_SERVICIO_SECTOR_SERVICIO" Association="Self.FK_SERVICIO_SECTOR_SERVICIO">
             <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
             <End Role="SERVICIO" EntitySet="SERVICIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_SERVICIO_SUBTIPO_SERVICIO" Association="Self.FK_SERVICIO_SUBTIPO_SERVICIO">
+          <AssociationSet Name="FK_SERVICIO_SERVICIO" Association="Self.FK_SERVICIO_SERVICIO">
             <End Role="SERVICIO" EntitySet="SERVICIO" />
-            <End Role="SERVICIO_SUBTIPO" EntitySet="SERVICIO_SUBTIPO" />
+            <End Role="SERVICIO1" EntitySet="SERVICIO" />
           </AssociationSet>
           <AssociationSet Name="FK_TABLA_CAMPO_TABLA" Association="Self.FK_TABLA_CAMPO_TABLA">
             <End Role="TABLA" EntitySet="TABLA" />
@@ -665,10 +782,12 @@
           </Key>
           <Property Name="IdCanal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Codigo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="true" Unicode="true" />
+          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdEstado" Type="Int32" />
           <NavigationProperty Name="CANAL_CAMPO" Relationship="Self.FK_CANAL_CAMPO_CANAL" FromRole="CANAL" ToRole="CANAL_CAMPO" />
           <NavigationProperty Name="CANAL_REGISTRO" Relationship="Self.FK_CANAL_REGISTRO_CANAL" FromRole="CANAL" ToRole="CANAL_REGISTRO" />
+          <NavigationProperty Name="ENTIDAD_CANAL" Relationship="Self.FK_ENTIDAD_CANAL_CANAL" FromRole="CANAL" ToRole="ENTIDAD_CANAL" />
         </EntityType>
         <EntityType Name="CANAL_CAMPO">
           <Key>
@@ -676,7 +795,11 @@
           </Key>
           <Property Name="IdCampo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdCanal" Type="Int32" Nullable="false" />
-          <Property Name="Codigo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Campo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoDato" Type="Int32" />
+          <Property Name="Tamaño" Type="Int32" />
+          <Property Name="Editable" Type="Boolean" />
           <NavigationProperty Name="CANAL" Relationship="Self.FK_CANAL_CAMPO_CANAL" FromRole="CANAL_CAMPO" ToRole="CANAL" />
           <NavigationProperty Name="CANAL_VALOR" Relationship="Self.FK_CANAL_VALOR_CANAL_CAMPO" FromRole="CANAL_CAMPO" ToRole="CANAL_VALOR" />
         </EntityType>
@@ -694,9 +817,13 @@
             <PropertyRef Name="IdCanalValor" />
           </Key>
           <Property Name="IdCanalValor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdCanalRegistro" Type="Int32" Nullable="false" />
           <Property Name="IdCampo" Type="Int32" Nullable="false" />
-          <Property Name="Valor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdCanalRegistro" Type="Int32" Nullable="false" />
+          <Property Name="ValorAlfanumerico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValorEntero" Type="Int32" />
+          <Property Name="ValorDinero" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ValorTasa" Type="Decimal" Precision="18" Scale="9" />
+          <Property Name="ValorFecha" Type="DateTime" Precision="3" />
           <NavigationProperty Name="CANAL_CAMPO" Relationship="Self.FK_CANAL_VALOR_CANAL_CAMPO" FromRole="CANAL_VALOR" ToRole="CANAL_CAMPO" />
           <NavigationProperty Name="CANAL_REGISTRO" Relationship="Self.FK_CANAL_VALOR_CANAL_REGISTRO" FromRole="CANAL_VALOR" ToRole="CANAL_REGISTRO" />
         </EntityType>
@@ -708,6 +835,7 @@
           <Property Name="IdEntidad" Type="Int32" Nullable="false" />
           <Property Name="IdCanal" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CANAL" Relationship="Self.FK_ENTIDAD_CANAL_CANAL" FromRole="ENTIDAD_CANAL" ToRole="CANAL" />
           <NavigationProperty Name="ENTIDAD" Relationship="Self.FK_ENTIDAD_CANAL_ENTIDAD" FromRole="ENTIDAD_CANAL" ToRole="ENTIDAD" />
         </EntityType>
         <EntityType Name="ACUERDO">
@@ -729,14 +857,19 @@
             <PropertyRef Name="IdFormato" />
           </Key>
           <Property Name="IdFormato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdNorma" Type="Int32" Nullable="false" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdTipoFormato" Type="Int32" Nullable="false" />
-          <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" />
-          <Property Name="IdContenido" Type="Int32" Nullable="false" />
           <Property Name="IdPlazo" Type="Int32" Nullable="false" />
+          <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="DiasPlazo" Type="Int32" />
+          <Property Name="IdSeccion" Type="Int32" />
+          <Property Name="InlcuyeFecha" Type="Boolean" />
+          <NavigationProperty Name="PERIODICIDAD" Relationship="Self.FK_FORMATO_PERIODICIDAD" FromRole="FORMATO" ToRole="PERIODICIDAD" />
           <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_PLANTILLA_FORMATO" FromRole="FORMATO" ToRole="FORMATO_PLANTILLA" />
+          <NavigationProperty Name="PLAZO" Relationship="Self.FK_FORMATO_PLAZO" FromRole="FORMATO" ToRole="PLAZO" />
         </EntityType>
         <EntityType Name="FORMATO_ACUERDO">
           <Key>
@@ -747,7 +880,7 @@
           <Property Name="IdFormatoPlantilla" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ACUERDO" Relationship="Self.FK_PLANTILLA_ACUERDO_ACUERDO" FromRole="FORMATO_ACUERDO" ToRole="ACUERDO" />
-          <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA" FromRole="FORMATO_ACUERDO" ToRole="FORMATO_PLANTILLA" />
+          <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" FromRole="FORMATO_ACUERDO" ToRole="FORMATO_PLANTILLA" />
         </EntityType>
         <EntityType Name="FORMATO_PLANTILLA">
           <Key>
@@ -755,9 +888,10 @@
           </Key>
           <Property Name="IdFormatoPlantilla" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdFormato" Type="Int32" Nullable="false" />
-          <Property Name="NombrePlantilla" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdEstado" Type="Int32" />
           <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_PLANTILLA_FORMATO" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO" />
-          <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_ACUERDO" />
+          <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_ACUERDO" />
           <NavigationProperty Name="FORMATO_SERVICIO" Relationship="Self.FK_FORMATO_SERVICIO_FORMATO_PLANTILLA" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_SERVICIO" />
           <NavigationProperty Name="PLANTILLA_CAMPO" Relationship="Self.FK_PLANTILLA_CAMPO_FORMATO_PLANTILLA" FromRole="FORMATO_PLANTILLA" ToRole="PLANTILLA_CAMPO" />
         </EntityType>
@@ -766,12 +900,11 @@
             <PropertyRef Name="IdFormatoServicio" />
           </Key>
           <Property Name="IdFormatoServicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdServicioSubTipo" Type="Int32" Nullable="false" />
+          <Property Name="IdServicio" Type="Int32" Nullable="false" />
           <Property Name="IdFormatoPlantilla" Type="Int32" Nullable="false" />
-          <Property Name="IdUsuario" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_SERVICIO_FORMATO_PLANTILLA" FromRole="FORMATO_SERVICIO" ToRole="FORMATO_PLANTILLA" />
-          <NavigationProperty Name="SERVICIO_SUBTIPO" Relationship="Self.FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO" FromRole="FORMATO_SERVICIO" ToRole="SERVICIO_SUBTIPO" />
+          <NavigationProperty Name="SERVICIO" Relationship="Self.FK_FORMATO_SERVICIO_SERVICIO" FromRole="FORMATO_SERVICIO" ToRole="SERVICIO" />
         </EntityType>
         <EntityType Name="NORMA">
           <Key>
@@ -807,7 +940,7 @@
           </Key>
           <Property Name="IdPlantillaCampo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdFormatoPlantilla" Type="Int32" Nullable="false" />
-          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdTipoDato" Type="Int32" Nullable="false" />
           <Property Name="Tamaño" Type="Int32" Nullable="false" />
@@ -817,14 +950,22 @@
         </EntityType>
         <EntityType Name="CAMPO_REGLA">
           <Key>
-            <PropertyRef Name="IdFormatoCampo" />
+            <PropertyRef Name="IdCampoRegla" />
           </Key>
-          <Property Name="IdFormatoCampo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdCampoRegla" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdRegla" Type="Int32" Nullable="false" />
           <Property Name="IdPlantillaCampo" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PLANTILLA_CAMPO" Relationship="Self.FK_CAMPO_REGLA_PLANTILLA_CAMPO" FromRole="CAMPO_REGLA" ToRole="PLANTILLA_CAMPO" />
           <NavigationProperty Name="REGLA" Relationship="Self.FK_CAMPO_REGLA_REGLA" FromRole="CAMPO_REGLA" ToRole="REGLA" />
+        </EntityType>
+        <EntityType Name="DIAFESTIVO">
+          <Key>
+            <PropertyRef Name="IdDiaFestivo" />
+          </Key>
+          <Property Name="IdDiaFestivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="ENTIDAD">
           <Key>
@@ -858,10 +999,45 @@
           </Key>
           <Property Name="IdEntidadServicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdEntidad" Type="Int32" Nullable="false" />
-          <Property Name="IdServicioSubTipo" Type="Int32" Nullable="false" />
+          <Property Name="IdServicio" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ENTIDAD" Relationship="Self.FK_ENTIDAD_SERVICIO_ENTIDAD" FromRole="ENTIDAD_SERVICIO" ToRole="ENTIDAD" />
-          <NavigationProperty Name="SERVICIO_SUBTIPO" Relationship="Self.FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO" FromRole="ENTIDAD_SERVICIO" ToRole="SERVICIO_SUBTIPO" />
+          <NavigationProperty Name="SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_SERVICIO" FromRole="ENTIDAD_SERVICIO" ToRole="SERVICIO" />
+        </EntityType>
+        <EntityType Name="PERIODICIDAD">
+          <Key>
+            <PropertyRef Name="IdPeriodicidad" />
+          </Key>
+          <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_PERIODICIDAD" FromRole="PERIODICIDAD" ToRole="FORMATO" />
+          <NavigationProperty Name="PERIODO" Relationship="Self.FK_PERIODO_PERIODICIDAD" FromRole="PERIODICIDAD" ToRole="PERIODO" />
+        </EntityType>
+        <EntityType Name="PERIODO">
+          <Key>
+            <PropertyRef Name="IdPeriodo" />
+          </Key>
+          <Property Name="IdPeriodo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MesInicio" Type="Int32" Nullable="false" />
+          <Property Name="MesFin" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PERIODICIDAD" Relationship="Self.FK_PERIODO_PERIODICIDAD" FromRole="PERIODO" ToRole="PERIODICIDAD" />
+        </EntityType>
+        <EntityType Name="PLAZO">
+          <Key>
+            <PropertyRef Name="IdPlazo" />
+          </Key>
+          <Property Name="IdPlazo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CalcularFecha" Type="Boolean" Nullable="false" />
+          <Property Name="PeriodoVencido" Type="Boolean" Nullable="false" />
+          <Property Name="UltimoDia" Type="Boolean" Nullable="false" />
+          <Property Name="TipoDia" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_PLAZO" FromRole="PLAZO" ToRole="FORMATO" />
         </EntityType>
         <EntityType Name="REGLA">
           <Key>
@@ -903,21 +1079,12 @@
           <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="IdServicioPadre" Type="Int32" />
+          <NavigationProperty Name="FORMATO_SERVICIO" Relationship="Self.FK_FORMATO_SERVICIO_SERVICIO" FromRole="SERVICIO" ToRole="FORMATO_SERVICIO" />
+          <NavigationProperty Name="ENTIDAD_SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_SERVICIO" FromRole="SERVICIO" ToRole="ENTIDAD_SERVICIO" />
           <NavigationProperty Name="SECTOR_SERVICIO" Relationship="Self.FK_SERVICIO_SECTOR_SERVICIO" FromRole="SERVICIO" ToRole="SECTOR_SERVICIO" />
-          <NavigationProperty Name="SERVICIO_SUBTIPO" Relationship="Self.FK_SERVICIO_SUBTIPO_SERVICIO" FromRole="SERVICIO" ToRole="SERVICIO_SUBTIPO" />
-        </EntityType>
-        <EntityType Name="SERVICIO_SUBTIPO">
-          <Key>
-            <PropertyRef Name="IdServicioSubTipo" />
-          </Key>
-          <Property Name="IdServicioSubTipo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdServicio" Type="Int32" Nullable="false" />
-          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdEstado" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="FORMATO_SERVICIO" Relationship="Self.FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO" FromRole="SERVICIO_SUBTIPO" ToRole="FORMATO_SERVICIO" />
-          <NavigationProperty Name="ENTIDAD_SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO" FromRole="SERVICIO_SUBTIPO" ToRole="ENTIDAD_SERVICIO" />
-          <NavigationProperty Name="SERVICIO" Relationship="Self.FK_SERVICIO_SUBTIPO_SERVICIO" FromRole="SERVICIO_SUBTIPO" ToRole="SERVICIO" />
+          <NavigationProperty Name="SERVICIO1" Relationship="Self.FK_SERVICIO_SERVICIO" FromRole="SERVICIO" ToRole="SERVICIO1" />
+          <NavigationProperty Name="SERVICIO2" Relationship="Self.FK_SERVICIO_SERVICIO" FromRole="SERVICIO1" ToRole="SERVICIO" />
         </EntityType>
         <EntityType Name="TABLA">
           <Key>
@@ -937,6 +1104,9 @@
           <Property Name="IdCampo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdTabla" Type="Int32" Nullable="false" />
           <Property Name="Codigo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoDato" Type="Int32" />
+          <Property Name="Tamaño" Type="Int32" />
           <NavigationProperty Name="TABLA" Relationship="Self.FK_TABLA_CAMPO_TABLA" FromRole="TABLA_CAMPO" ToRole="TABLA" />
           <NavigationProperty Name="TABLA_VALOR" Relationship="Self.FK_TABLA_VALOR_TABLA_CAMPO" FromRole="TABLA_CAMPO" ToRole="TABLA_VALOR" />
         </EntityType>
@@ -956,7 +1126,12 @@
           <Property Name="IdTablaValor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdTablaRegistro" Type="Int32" Nullable="false" />
           <Property Name="IdCampo" Type="Int32" Nullable="false" />
-          <Property Name="Valor" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValorAlfanumerico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ValorEntero" Type="Int32" />
+          <Property Name="ValorFecha" Type="DateTime" Precision="3" />
+          <Property Name="ValorBoleano" Type="Boolean" />
+          <Property Name="ValorDinero" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ValorTasa" Type="Decimal" Precision="18" Scale="9" />
           <NavigationProperty Name="TABLA_CAMPO" Relationship="Self.FK_TABLA_VALOR_TABLA_CAMPO" FromRole="TABLA_VALOR" ToRole="TABLA_CAMPO" />
           <NavigationProperty Name="TABLA_REGISTRO" Relationship="Self.FK_TABLA_VALOR_TABLA_REGISTRO" FromRole="TABLA_VALOR" ToRole="TABLA_REGISTRO" />
         </EntityType>
@@ -980,6 +1155,18 @@
               <PropertyRef Name="IdCanal" />
             </Principal>
             <Dependent Role="CANAL_REGISTRO">
+              <PropertyRef Name="IdCanal" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENTIDAD_CANAL_CANAL">
+          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
+          <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CANAL">
+              <PropertyRef Name="IdCanal" />
+            </Principal>
+            <Dependent Role="ENTIDAD_CANAL">
               <PropertyRef Name="IdCanal" />
             </Dependent>
           </ReferentialConstraint>
@@ -1032,6 +1219,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_FORMATO_PERIODICIDAD">
+          <End Role="PERIODICIDAD" Type="Self.PERIODICIDAD" Multiplicity="1" />
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODICIDAD">
+              <PropertyRef Name="IdPeriodicidad" />
+            </Principal>
+            <Dependent Role="FORMATO">
+              <PropertyRef Name="IdPeriodicidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FORMATO_PLANTILLA_FORMATO">
           <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="1" />
           <End Role="FORMATO_PLANTILLA" Type="Self.FORMATO_PLANTILLA" Multiplicity="*" />
@@ -1044,7 +1243,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA">
+        <Association Name="FK_FORMATO_PLAZO">
+          <End Role="PLAZO" Type="Self.PLAZO" Multiplicity="1" />
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PLAZO">
+              <PropertyRef Name="IdPlazo" />
+            </Principal>
+            <Dependent Role="FORMATO">
+              <PropertyRef Name="IdPlazo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
           <End Role="FORMATO_PLANTILLA" Type="Self.FORMATO_PLANTILLA" Multiplicity="1" />
           <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1080,15 +1291,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO">
-          <End Role="SERVICIO_SUBTIPO" Type="Self.SERVICIO_SUBTIPO" Multiplicity="1" />
+        <Association Name="FK_FORMATO_SERVICIO_SERVICIO">
+          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="1" />
           <End Role="FORMATO_SERVICIO" Type="Self.FORMATO_SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SERVICIO_SUBTIPO">
-              <PropertyRef Name="IdServicioSubTipo" />
+            <Principal Role="SERVICIO">
+              <PropertyRef Name="IdServicio" />
             </Principal>
             <Dependent Role="FORMATO_SERVICIO">
-              <PropertyRef Name="IdServicioSubTipo" />
+              <PropertyRef Name="IdServicio" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1152,15 +1363,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO">
-          <End Role="SERVICIO_SUBTIPO" Type="Self.SERVICIO_SUBTIPO" Multiplicity="1" />
+        <Association Name="FK_ENTIDAD_SERVICIO_SERVICIO">
+          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="1" />
           <End Role="ENTIDAD_SERVICIO" Type="Self.ENTIDAD_SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SERVICIO_SUBTIPO">
-              <PropertyRef Name="IdServicioSubTipo" />
+            <Principal Role="SERVICIO">
+              <PropertyRef Name="IdServicio" />
             </Principal>
             <Dependent Role="ENTIDAD_SERVICIO">
-              <PropertyRef Name="IdServicioSubTipo" />
+              <PropertyRef Name="IdServicio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PERIODO_PERIODICIDAD">
+          <End Role="PERIODICIDAD" Type="Self.PERIODICIDAD" Multiplicity="1" />
+          <End Role="PERIODO" Type="Self.PERIODO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PERIODICIDAD">
+              <PropertyRef Name="IdPeriodicidad" />
+            </Principal>
+            <Dependent Role="PERIODO">
+              <PropertyRef Name="IdPeriodicidad" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1176,15 +1399,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_SERVICIO_SUBTIPO_SERVICIO">
-          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="1" />
-          <End Role="SERVICIO_SUBTIPO" Type="Self.SERVICIO_SUBTIPO" Multiplicity="*" />
+        <Association Name="FK_SERVICIO_SERVICIO">
+          <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="0..1" />
+          <End Role="SERVICIO1" Type="Self.SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="SERVICIO">
               <PropertyRef Name="IdServicio" />
             </Principal>
-            <Dependent Role="SERVICIO_SUBTIPO">
-              <PropertyRef Name="IdServicio" />
+            <Dependent Role="SERVICIO1">
+              <PropertyRef Name="IdServicioPadre" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1251,12 +1474,15 @@
           <EntitySet Name="NORMA_SECTOR" EntityType="Self.NORMA_SECTOR" />
           <EntitySet Name="PLANTILLA_CAMPO" EntityType="Self.PLANTILLA_CAMPO" />
           <EntitySet Name="CAMPO_REGLA" EntityType="Self.CAMPO_REGLA" />
+          <EntitySet Name="DIAFESTIVO" EntityType="Self.DIAFESTIVO" />
           <EntitySet Name="ENTIDAD" EntityType="Self.ENTIDAD" />
           <EntitySet Name="ENTIDAD_SERVICIO" EntityType="Self.ENTIDAD_SERVICIO" />
+          <EntitySet Name="PERIODICIDAD" EntityType="Self.PERIODICIDAD" />
+          <EntitySet Name="PERIODO" EntityType="Self.PERIODO" />
+          <EntitySet Name="PLAZO" EntityType="Self.PLAZO" />
           <EntitySet Name="REGLA" EntityType="Self.REGLA" />
           <EntitySet Name="SECTOR_SERVICIO" EntityType="Self.SECTOR_SERVICIO" />
           <EntitySet Name="SERVICIO" EntityType="Self.SERVICIO" />
-          <EntitySet Name="SERVICIO_SUBTIPO" EntityType="Self.SERVICIO_SUBTIPO" />
           <EntitySet Name="TABLA" EntityType="Self.TABLA" />
           <EntitySet Name="TABLA_CAMPO" EntityType="Self.TABLA_CAMPO" />
           <EntitySet Name="TABLA_REGISTRO" EntityType="Self.TABLA_REGISTRO" />
@@ -1268,6 +1494,10 @@
           <AssociationSet Name="FK_CANAL_REGISTRO_CANAL" Association="Self.FK_CANAL_REGISTRO_CANAL">
             <End Role="CANAL" EntitySet="CANAL" />
             <End Role="CANAL_REGISTRO" EntitySet="CANAL_REGISTRO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENTIDAD_CANAL_CANAL" Association="Self.FK_ENTIDAD_CANAL_CANAL">
+            <End Role="CANAL" EntitySet="CANAL" />
+            <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
           </AssociationSet>
           <AssociationSet Name="FK_CANAL_VALOR_CANAL_CAMPO" Association="Self.FK_CANAL_VALOR_CANAL_CAMPO">
             <End Role="CANAL_CAMPO" EntitySet="CANAL_CAMPO" />
@@ -1285,11 +1515,19 @@
             <End Role="ACUERDO" EntitySet="ACUERDO" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
           </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_PERIODICIDAD" Association="Self.FK_FORMATO_PERIODICIDAD">
+            <End Role="PERIODICIDAD" EntitySet="PERIODICIDAD" />
+            <End Role="FORMATO" EntitySet="FORMATO" />
+          </AssociationSet>
           <AssociationSet Name="FK_FORMATO_PLANTILLA_FORMATO" Association="Self.FK_FORMATO_PLANTILLA_FORMATO">
             <End Role="FORMATO" EntitySet="FORMATO" />
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
           </AssociationSet>
-          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA">
+          <AssociationSet Name="FK_FORMATO_PLAZO" Association="Self.FK_FORMATO_PLAZO">
+            <End Role="PLAZO" EntitySet="PLAZO" />
+            <End Role="FORMATO" EntitySet="FORMATO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
           </AssociationSet>
@@ -1301,8 +1539,8 @@
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
             <End Role="PLANTILLA_CAMPO" EntitySet="PLANTILLA_CAMPO" />
           </AssociationSet>
-          <AssociationSet Name="FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO" Association="Self.FK_PLANTILLA_SERVICIO_SERVICIO_SUBTIPO">
-            <End Role="SERVICIO_SUBTIPO" EntitySet="SERVICIO_SUBTIPO" />
+          <AssociationSet Name="FK_FORMATO_SERVICIO_SERVICIO" Association="Self.FK_FORMATO_SERVICIO_SERVICIO">
+            <End Role="SERVICIO" EntitySet="SERVICIO" />
             <End Role="FORMATO_SERVICIO" EntitySet="FORMATO_SERVICIO" />
           </AssociationSet>
           <AssociationSet Name="FK_NORMA_SECTOR_NORMA" Association="Self.FK_NORMA_SECTOR_NORMA">
@@ -1325,17 +1563,21 @@
             <End Role="ENTIDAD" EntitySet="ENTIDAD" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO" Association="Self.FK_ENTIDAD_SERVICIO_SERVICIO_SUBTIPO">
-            <End Role="SERVICIO_SUBTIPO" EntitySet="SERVICIO_SUBTIPO" />
+          <AssociationSet Name="FK_ENTIDAD_SERVICIO_SERVICIO" Association="Self.FK_ENTIDAD_SERVICIO_SERVICIO">
+            <End Role="SERVICIO" EntitySet="SERVICIO" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PERIODO_PERIODICIDAD" Association="Self.FK_PERIODO_PERIODICIDAD">
+            <End Role="PERIODICIDAD" EntitySet="PERIODICIDAD" />
+            <End Role="PERIODO" EntitySet="PERIODO" />
           </AssociationSet>
           <AssociationSet Name="FK_SERVICIO_SECTOR_SERVICIO" Association="Self.FK_SERVICIO_SECTOR_SERVICIO">
             <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
             <End Role="SERVICIO" EntitySet="SERVICIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_SERVICIO_SUBTIPO_SERVICIO" Association="Self.FK_SERVICIO_SUBTIPO_SERVICIO">
+          <AssociationSet Name="FK_SERVICIO_SERVICIO" Association="Self.FK_SERVICIO_SERVICIO">
             <End Role="SERVICIO" EntitySet="SERVICIO" />
-            <End Role="SERVICIO_SUBTIPO" EntitySet="SERVICIO_SUBTIPO" />
+            <End Role="SERVICIO1" EntitySet="SERVICIO" />
           </AssociationSet>
           <AssociationSet Name="FK_TABLA_CAMPO_TABLA" Association="Self.FK_TABLA_CAMPO_TABLA">
             <End Role="TABLA" EntitySet="TABLA" />
@@ -1367,6 +1609,7 @@
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1375,7 +1618,11 @@
               <MappingFragment StoreEntitySet="CANAL_CAMPO">
                 <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
                 <ScalarProperty Name="IdCanal" ColumnName="IdCanal" />
-                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Campo" ColumnName="Campo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTipoDato" ColumnName="IdTipoDato" />
+                <ScalarProperty Name="Tamaño" ColumnName="Tamaño" />
+                <ScalarProperty Name="Editable" ColumnName="Editable" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1391,9 +1638,13 @@
             <EntityTypeMapping TypeName="WebApiDbModel.CANAL_VALOR">
               <MappingFragment StoreEntitySet="CANAL_VALOR">
                 <ScalarProperty Name="IdCanalValor" ColumnName="IdCanalValor" />
-                <ScalarProperty Name="IdCanalRegistro" ColumnName="IdCanalRegistro" />
                 <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
-                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="IdCanalRegistro" ColumnName="IdCanalRegistro" />
+                <ScalarProperty Name="ValorAlfanumerico" ColumnName="ValorAlfanumerico" />
+                <ScalarProperty Name="ValorEntero" ColumnName="ValorEntero" />
+                <ScalarProperty Name="ValorDinero" ColumnName="ValorDinero" />
+                <ScalarProperty Name="ValorTasa" ColumnName="ValorTasa" />
+                <ScalarProperty Name="ValorFecha" ColumnName="ValorFecha" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1425,13 +1676,16 @@
             <EntityTypeMapping TypeName="WebApiDbModel.FORMATO">
               <MappingFragment StoreEntitySet="FORMATO">
                 <ScalarProperty Name="IdFormato" ColumnName="IdFormato" />
+                <ScalarProperty Name="IdNorma" ColumnName="IdNorma" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="IdTipoFormato" ColumnName="IdTipoFormato" />
-                <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
-                <ScalarProperty Name="IdContenido" ColumnName="IdContenido" />
                 <ScalarProperty Name="IdPlazo" ColumnName="IdPlazo" />
+                <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="DiasPlazo" ColumnName="DiasPlazo" />
+                <ScalarProperty Name="IdSeccion" ColumnName="IdSeccion" />
+                <ScalarProperty Name="InlcuyeFecha" ColumnName="InlcuyeFecha" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1450,7 +1704,8 @@
               <MappingFragment StoreEntitySet="FORMATO_PLANTILLA">
                 <ScalarProperty Name="IdFormatoPlantilla" ColumnName="IdFormatoPlantilla" />
                 <ScalarProperty Name="IdFormato" ColumnName="IdFormato" />
-                <ScalarProperty Name="NombrePlantilla" ColumnName="NombrePlantilla" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1458,9 +1713,8 @@
             <EntityTypeMapping TypeName="WebApiDbModel.FORMATO_SERVICIO">
               <MappingFragment StoreEntitySet="FORMATO_SERVICIO">
                 <ScalarProperty Name="IdFormatoServicio" ColumnName="IdFormatoServicio" />
-                <ScalarProperty Name="IdServicioSubTipo" ColumnName="IdServicioSubTipo" />
+                <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
                 <ScalarProperty Name="IdFormatoPlantilla" ColumnName="IdFormatoPlantilla" />
-                <ScalarProperty Name="IdUsuario" ColumnName="IdUsuario" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1497,7 +1751,7 @@
               <MappingFragment StoreEntitySet="PLANTILLA_CAMPO">
                 <ScalarProperty Name="IdPlantillaCampo" ColumnName="IdPlantillaCampo" />
                 <ScalarProperty Name="IdFormatoPlantilla" ColumnName="IdFormatoPlantilla" />
-                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="IdTipoDato" ColumnName="IdTipoDato" />
                 <ScalarProperty Name="Tamaño" ColumnName="Tamaño" />
@@ -1508,10 +1762,19 @@
           <EntitySetMapping Name="CAMPO_REGLA">
             <EntityTypeMapping TypeName="WebApiDbModel.CAMPO_REGLA">
               <MappingFragment StoreEntitySet="CAMPO_REGLA">
-                <ScalarProperty Name="IdFormatoCampo" ColumnName="IdFormatoCampo" />
+                <ScalarProperty Name="IdCampoRegla" ColumnName="IdCampoRegla" />
                 <ScalarProperty Name="IdRegla" ColumnName="IdRegla" />
                 <ScalarProperty Name="IdPlantillaCampo" ColumnName="IdPlantillaCampo" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DIAFESTIVO">
+            <EntityTypeMapping TypeName="WebApiDbModel.DIAFESTIVO">
+              <MappingFragment StoreEntitySet="DIAFESTIVO">
+                <ScalarProperty Name="IdDiaFestivo" ColumnName="IdDiaFestivo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1545,8 +1808,42 @@
               <MappingFragment StoreEntitySet="ENTIDAD_SERVICIO">
                 <ScalarProperty Name="IdEntidadServicio" ColumnName="IdEntidadServicio" />
                 <ScalarProperty Name="IdEntidad" ColumnName="IdEntidad" />
-                <ScalarProperty Name="IdServicioSubTipo" ColumnName="IdServicioSubTipo" />
+                <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERIODICIDAD">
+            <EntityTypeMapping TypeName="WebApiDbModel.PERIODICIDAD">
+              <MappingFragment StoreEntitySet="PERIODICIDAD">
+                <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PERIODO">
+            <EntityTypeMapping TypeName="WebApiDbModel.PERIODO">
+              <MappingFragment StoreEntitySet="PERIODO">
+                <ScalarProperty Name="IdPeriodo" ColumnName="IdPeriodo" />
+                <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="MesInicio" ColumnName="MesInicio" />
+                <ScalarProperty Name="MesFin" ColumnName="MesFin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PLAZO">
+            <EntityTypeMapping TypeName="WebApiDbModel.PLAZO">
+              <MappingFragment StoreEntitySet="PLAZO">
+                <ScalarProperty Name="IdPlazo" ColumnName="IdPlazo" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="CalcularFecha" ColumnName="CalcularFecha" />
+                <ScalarProperty Name="PeriodoVencido" ColumnName="PeriodoVencido" />
+                <ScalarProperty Name="UltimoDia" ColumnName="UltimoDia" />
+                <ScalarProperty Name="TipoDia" ColumnName="TipoDia" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1588,17 +1885,7 @@
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SERVICIO_SUBTIPO">
-            <EntityTypeMapping TypeName="WebApiDbModel.SERVICIO_SUBTIPO">
-              <MappingFragment StoreEntitySet="SERVICIO_SUBTIPO">
-                <ScalarProperty Name="IdServicioSubTipo" ColumnName="IdServicioSubTipo" />
-                <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
-                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="IdServicioPadre" ColumnName="IdServicioPadre" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1618,6 +1905,9 @@
                 <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
                 <ScalarProperty Name="IdTabla" ColumnName="IdTabla" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdTipoDato" ColumnName="IdTipoDato" />
+                <ScalarProperty Name="Tamaño" ColumnName="Tamaño" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1635,7 +1925,12 @@
                 <ScalarProperty Name="IdTablaValor" ColumnName="IdTablaValor" />
                 <ScalarProperty Name="IdTablaRegistro" ColumnName="IdTablaRegistro" />
                 <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
-                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="ValorAlfanumerico" ColumnName="ValorAlfanumerico" />
+                <ScalarProperty Name="ValorEntero" ColumnName="ValorEntero" />
+                <ScalarProperty Name="ValorFecha" ColumnName="ValorFecha" />
+                <ScalarProperty Name="ValorBoleano" ColumnName="ValorBoleano" />
+                <ScalarProperty Name="ValorDinero" ColumnName="ValorDinero" />
+                <ScalarProperty Name="ValorTasa" ColumnName="ValorTasa" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

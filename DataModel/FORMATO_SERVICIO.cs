@@ -15,12 +15,11 @@ namespace DataModel
     public partial class FORMATO_SERVICIO
     {
         public int IdFormatoServicio { get; set; }
-        public int IdServicioSubTipo { get; set; }
+        public int IdServicio { get; set; }
         public int IdFormatoPlantilla { get; set; }
-        public int IdUsuario { get; set; }
         public int IdEstado { get; set; }
     
         public virtual FORMATO_PLANTILLA FORMATO_PLANTILLA { get; set; }
-        public virtual SERVICIO_SUBTIPO SERVICIO_SUBTIPO { get; set; }
+        public virtual SERVICIO SERVICIO { get; set; }
     }
 }

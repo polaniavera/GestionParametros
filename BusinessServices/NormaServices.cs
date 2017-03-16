@@ -39,6 +39,12 @@ namespace BusinessServices
                     cfg.CreateMap<NORMA, NormaEntity>();
                 });
                 var normaModel = Mapper.Map<NORMA, NormaEntity>(normaServicio);
+
+                if (normaModel.IdEstado == 1)
+                    normaModel.DescripcionEstado = "Activo";
+                else
+                    normaModel.DescripcionEstado = "Inactivo";
+
                 return normaModel;
             }
             return null;
@@ -58,6 +64,15 @@ namespace BusinessServices
                     cfg.CreateMap<NORMA, NormaEntity>();
                 });
                 var normasModel = Mapper.Map<List<NORMA>, List<NormaEntity>>(normaServicios);
+
+                foreach (NormaEntity norma in normasModel)
+                {
+                    if (norma.IdEstado == 1)
+                        norma.DescripcionEstado = "Activo";
+                    else
+                        norma.DescripcionEstado = "Inactivo";
+                }
+                
                 return normasModel;
             }
             return null;

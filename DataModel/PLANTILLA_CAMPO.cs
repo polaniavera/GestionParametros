@@ -22,7 +22,7 @@ namespace DataModel
     
         public int IdPlantillaCampo { get; set; }
         public int IdFormatoPlantilla { get; set; }
-        public string Codigo { get; set; }
+        public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public int IdTipoDato { get; set; }
         public int Tamaño { get; set; }

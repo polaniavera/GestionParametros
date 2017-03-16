@@ -14,6 +14,9 @@ namespace BusinessServices
             registerComponent.RegisterType<INormaSectorServices, NormaSectorServices>();
             registerComponent.RegisterType<IEntidadServices, EntidadServices>();
             registerComponent.RegisterType<ITablaServices, TablaServices>();
+            registerComponent.RegisterType<ITablaValorServices, TablaValorServices>();
+            registerComponent.RegisterType<IPeriodicidadServices, PeriodicidadServices>();
+            registerComponent.RegisterType<IPlazoServices, PlazoServices>();
         }
     }
 }

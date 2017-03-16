@@ -13,5 +13,6 @@ namespace BusinessServices
         int CreateEntidad(EntidadEntity entidadEntity);
         bool UpdateEntidad(int entidadId, EntidadEntity entidadEntity);
         bool DeleteEntidad(int entidadId);
+        IEnumerable<NormaEntity> setDescripcionList(IEnumerable<NormaEntity> normas);
     }
 }

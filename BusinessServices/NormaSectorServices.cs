@@ -32,16 +32,16 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaSectorId"></param>
         /// <returns></returns>
-        public BusinessEntities.NormaSectorEntity GetNormaSectorById(int normaSectorId)
+        public IEnumerable<BusinessEntities.NormaSectorEntity> GetNormaSectorById(int normaSectorId)
         {
-            var normaSector = _unitOfWork.NormaSectorRepository.GetByID(normaSectorId);
+            var normaSector = _unitOfWork.NormaSectorRepositoryCustom.GetManyByIdNorma(normaSectorId).ToList();
             if (normaSector != null)
             {
                 Mapper.Initialize(cfg =>
                 {
                     cfg.CreateMap<NORMA_SECTOR, NormaSectorEntity>();
                 });
-                var normaSectorModel = Mapper.Map<NORMA_SECTOR, NormaSectorEntity>(normaSector);
+                var normaSectorModel = Mapper.Map<List<NORMA_SECTOR>, List<NormaSectorEntity>>(normaSector);
                 return normaSectorModel;
             }
             return null;
@@ -71,24 +71,27 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaSectorEntity"></param>
         /// <returns></returns>
-        public int CreateNormaSector(int idSectorServicio, int idNorma)
+        public bool CreateNormaSector(int idSectorServicio, int idNorma)
         {
+            var success = false;
+
             using (var scope = new TransactionScope())
             {
                 var normaSector = new NORMA_SECTOR
                 {
                     IdEstado = 1,
                     IdNorma = idNorma,
-                    //IdNormaSector = normaSectorEntity.IdNormaSector,
                     IdSectorServicio = idSectorServicio
                 };
                 _unitOfWork.NormaSectorRepository.Insert(normaSector);
                 _unitOfWork.Save();
                 scope.Complete();
-                return normaSector.IdNormaSector;
+                success = true;
+                //return normaSector.IdNormaSector;
             }
+            return success;
         }
-
+        
         /// <summary>
         /// Updates a normaSector
         /// </summary>
@@ -109,8 +112,8 @@ namespace BusinessServices
                         normaSector.IdNorma = normaSectorEntity.IdNorma;
                         normaSector.IdNormaSector = normaSectorEntity.IdNormaSector;
                         normaSector.IdSectorServicio = normaSectorEntity.IdSectorServicio;
-                        //normaSector.NORMA = normaSectorEntity.NORMA;
-                        //normaSector.SECTOR_SERVICIO = normaSectorEntity.SECTOR_SERVICIO;
+                        normaSector.NORMA = normaSectorEntity.NORMA;
+                        normaSector.SECTOR_SERVICIO = normaSectorEntity.SECTOR_SERVICIO;
 
                         _unitOfWork.NormaSectorRepository.Update(normaSector);
                         _unitOfWork.Save();
@@ -173,5 +176,99 @@ namespace BusinessServices
             }
             return success;
         }
+
+
+
+        /// <summary>
+        /// Inactivates a normaSector
+        /// </summary>
+        /// <param name="normaSectorId"></param>
+        /// <returns></returns>
+        public bool ActivateNormaSector(int normaSectorId)
+        {
+            var success = false;
+            if (normaSectorId > 0)
+            {
+                using (var scope = new TransactionScope())
+                {
+                    var normaSector = _unitOfWork.NormaSectorRepository.GetByID(normaSectorId);
+                    if (normaSector != null)
+                    {
+                        normaSector.IdEstado = 1;
+                        _unitOfWork.NormaSectorRepository.Update(normaSector);
+                        _unitOfWork.Save();
+                        scope.Complete();
+                        success = true;
+                    }
+                }
+            }
+            return success;
+        }
+        /// <summary>
+        /// Fetches all the normaSector asociated with IdNorma
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<BusinessEntities.NormaSectorEntity> GetNormaSectorByIdNorma(int idNorma)
+        {
+            var normaSectores = _unitOfWork.NormaSectorRepositoryCustom.GetManyByIdNorma(idNorma).ToList();
+            if (normaSectores.Any())
+            {
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<NORMA_SECTOR, NormaSectorEntity>();
+                });
+                var normaSectoresModel = Mapper.Map<List<NORMA_SECTOR>, List<NormaSectorEntity>>(normaSectores);
+                return normaSectoresModel;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Edit all the normaSector asociated with IdNorma
+        /// </summary>
+        /// <returns></returns>
+       
+        public NormaEntity EditNormaSector(NormaEntity normaEntity, IEnumerable<NormaSectorEntity> normaSectorById)
+        {
+            int match = 0;
+            //var normaSectorById = GetNormaSectorById(normaEntity.IdNorma);
+
+            if (normaSectorById != null)
+            {
+                foreach (DataModel.NORMA_SECTOR sectorNuevo in normaEntity.NORMA_SECTOR)
+                {
+                    foreach (NormaSectorEntity sectorExistente in normaSectorById)
+                    {
+                        if (sectorNuevo.IdSectorServicio.Equals(sectorExistente.IdSectorServicio))
+                            ActivateNormaSector(sectorExistente.IdNormaSector);
+                        match++;
+                    }
+
+                    if (match == 0)
+                        //ATLA***********************cuando existe en 1 o 0 no se crea, se actualiza
+                        CreateNormaSector(sectorNuevo.IdSectorServicio, normaEntity.IdNorma);
+                    else
+                        match = 0;
+                }
+                
+                foreach (NormaSectorEntity sectorExistente in normaSectorById)
+                {
+                    foreach (DataModel.NORMA_SECTOR sectorNuevo in normaEntity.NORMA_SECTOR)
+                    {
+                        if (sectorNuevo.IdSectorServicio.Equals(sectorExistente.IdSectorServicio))
+                            match++;
+                    }
+                    if (match == 0)
+                        InactivateNormaSector(sectorExistente.IdNormaSector);
+                    else
+                        match = 0;
+                }
+            }
+                       
+            normaEntity.NORMA_SECTOR = null;
+
+            return normaEntity;
+        }
+
     }
 }

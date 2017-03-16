@@ -18,6 +18,9 @@ namespace GestionParametros.Controllers
         private readonly ISectorServicioServices _sectorServicioServices;
         private readonly IEntidadServices _entidadServices;
         private readonly ITablaServices _tablaServices;
+        private readonly ITablaValorServices _tablaValorServices;
+
+        public static string TIPONORMA = "TIPONORMA";
 
         #region Public Constructor
 
@@ -29,13 +32,15 @@ namespace GestionParametros.Controllers
             INormaSectorServices normaSectorServices, 
             ISectorServicioServices sectorServicioServices,
             IEntidadServices entidadServices,
-            ITablaServices tablaServices)
+            ITablaServices tablaServices,
+            ITablaValorServices tablaValorServices)
         {
             _normaServices = normaServices;
             _normaSectorServices = normaSectorServices;
             _sectorServicioServices = sectorServicioServices;
             _entidadServices = entidadServices;
             _tablaServices = tablaServices;
+            _tablaValorServices = tablaValorServices;
         }
 
         #endregion
@@ -47,6 +52,9 @@ namespace GestionParametros.Controllers
             var normas = _normaServices.GetAllNormas();
             if (normas != null)
             {
+                normas = _tablaValorServices.setDescripcionList(normas);
+                //normas = _entidadServices.setDescripcionList(normas);
+
                 var normaEntities = normas as List<NormaEntity> ?? normas.ToList();
                 if (normaEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, normaEntities);
@@ -78,6 +86,8 @@ namespace GestionParametros.Controllers
             var norma = _normaServices.GetNormaById(id);
             if (norma != null)
             {
+                norma = _tablaValorServices.setDescripcion(norma);
+
                 return Request.CreateResponse(HttpStatusCode.OK, norma);
             }
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
@@ -122,14 +132,18 @@ namespace GestionParametros.Controllers
 
         // POST api/norma/createnorma
         [Route("createnorma")]
-        public int createNorma([FromBody] NormaEntity normaEntity, [FromUri] int[] normaSectorArray)
+        public bool createNorma([FromBody] NormaEntity normaEntity, [FromUri] int[] normaSectorArray)
         {
             var idNorma = _normaServices.CreateNorma(normaEntity);
+            bool sector = false;
+
             foreach (int idSectorServicio in normaSectorArray)
             {
-                _normaSectorServices.CreateNormaSector(idSectorServicio, idNorma);
+                sector=_normaSectorServices.CreateNormaSector(idSectorServicio, idNorma);
+                if (!sector)
+                    return false;
             }
-            return 1;
+            return true;
         }
 
         // GET api/norma/nueva
@@ -143,7 +157,7 @@ namespace GestionParametros.Controllers
             //Lista Entidades
             var entidadList = _entidadServices.GetAllEntidades();
             //Lista Tipo Norma
-            var tipoNormaList = _tablaServices.GetTipoNorma();
+            var tipoNormaList = _tablaServices.GetParametrosVert(TIPONORMA);
 
             if (normas != null && sectorList != null && entidadList != null && tipoNormaList != null)
             {
@@ -153,12 +167,22 @@ namespace GestionParametros.Controllers
                 
                 object[] jsonArray = {normas, sectorList, entidadList, tipoNormaList};
 
-                //if (normaEntities.Any())
-                //{
-                    return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
-                //}
+                return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
+
             }
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
+        }
+
+        // POST api/norma/editar/save
+        [Route("editar/save")]
+        public bool editarNorma([FromBody] NormaEntity normaEntity)
+        {
+            //var normaFlag = _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
+
+            var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
+            normaEntity = _normaSectorServices.EditNormaSector(normaEntity, normaSectorById);
+           
+            return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity); ;
         }
     }
 }
