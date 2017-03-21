@@ -122,11 +122,13 @@
           <Property Name="FechaNorma" Type="datetime" Nullable="false" />
           <Property Name="IdTipoNorma" Type="int" Nullable="false" />
           <Property Name="IdEntidadEmite" Type="int" Nullable="false" />
-          <Property Name="UrlLink" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="NombreArchivo" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="IdNormaPadre" Type="int" Nullable="false" />
           <Property Name="FechaInicio" Type="datetime" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="IdUrlLink" Type="int" />
+          <Property Name="IdSeccion" Type="int" />
         </EntityType>
         <EntityType Name="NORMA_SECTOR">
           <Key>
@@ -916,11 +918,13 @@
           <Property Name="FechaNorma" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IdTipoNorma" Type="Int32" Nullable="false" />
           <Property Name="IdEntidadEmite" Type="Int32" Nullable="false" />
-          <Property Name="UrlLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreArchivo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdNormaPadre" Type="Int32" Nullable="false" />
           <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="IdUrlLink" Type="Int32" />
+          <Property Name="IdSeccion" Type="Int32" />
           <NavigationProperty Name="NORMA_SECTOR" Relationship="Self.FK_NORMA_SECTOR_NORMA" FromRole="NORMA" ToRole="NORMA_SECTOR" />
         </EntityType>
         <EntityType Name="NORMA_SECTOR">
@@ -1728,11 +1732,13 @@
                 <ScalarProperty Name="FechaNorma" ColumnName="FechaNorma" />
                 <ScalarProperty Name="IdTipoNorma" ColumnName="IdTipoNorma" />
                 <ScalarProperty Name="IdEntidadEmite" ColumnName="IdEntidadEmite" />
-                <ScalarProperty Name="UrlLink" ColumnName="UrlLink" />
+                <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="IdNormaPadre" ColumnName="IdNormaPadre" />
                 <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="IdUrlLink" ColumnName="IdUrlLink" />
+                <ScalarProperty Name="IdSeccion" ColumnName="IdSeccion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

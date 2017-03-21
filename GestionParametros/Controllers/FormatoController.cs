@@ -169,24 +169,13 @@ namespace GestionParametros.Controllers
             //Lista Sección
             var seccionList = _tablaServices.GetParametrosVert(SECCION);
 
-
-
-
-
-            //Lista Sectores
-            var sectorList = _sectorServicioServices.GetAllSectorServicios();
-            //Lista Entidades
-            var entidadList = _entidadServices.GetAllEntidades();
-            //Lista Tipo Norma
-            var tipoNormaList = _tablaServices.GetTipoNorma();
-
-            if (normas != null && sectorList != null && entidadList != null && tipoNormaList != null)
+            if (normas != null && tipoFormato != null && tipoPeriodicidad != null && tipoPlazo != null && seccionList != null)
             {
                 //var normaEntities = normas as List<NormaPadreEntity> ?? normas.ToList();               
                 //var sectorServicioEntities = sectorList as List<SectorServicioEntity> ?? sectorList.ToList();
                 //var entidadEntities = entidadList as List<EntidadEntity> ?? entidadList.ToList();
 
-                object[] jsonArray = { normas, sectorList, entidadList, tipoNormaList };
+                object[] jsonArray = { normas, tipoFormato, tipoPeriodicidad, tipoPlazo, seccionList };
 
                 return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
 
@@ -206,95 +195,6 @@ namespace GestionParametros.Controllers
         //    return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity); ;
         //}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //    private readonly IFormatoServices _formatoServices;
-
-        //    #region Public Constructor
-
-        //    /// <summary>
-        //    /// Public constructor to initialize Formato service instance
-        //    /// </summary>
-        //    public FormatoController(IFormatoServices formatoServices)
-        //    {
-        //        _formatoServices = formatoServices;
-        //    }
-
-        //    #endregion
-
-        //    // GET api/formato
-        //    public HttpResponseMessage Get()
-        //    {
-        //        var formatos = _formatoServices.GetAllFormatos();
-        //        if (formatos != null)
-        //        {
-        //            var formatoEntities = formatos as List<FormatoEntity> ?? formatos.ToList();
-        //            if (formatoEntities.Any())
-        //                return Request.CreateResponse(HttpStatusCode.OK, formatoEntities);
-        //        }
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Formatos not found");
-        //    }
-
-        //    // GET api/formato/5
-        //    public HttpResponseMessage Get(int id)
-        //    {
-        //        var formato = _formatoServices.GetFormatoById(id);
-        //        if (formato != null)
-        //            return Request.CreateResponse(HttpStatusCode.OK, formato);
-        //        return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No formato found for this id");
-        //    }
-
-        //    // POST api/formato
-        //    public int Post([FromBody] FormatoEntity formatoEntity)
-        //    {
-        //        return _formatoServices.CreateFormato(formatoEntity);
-        //    }
-
-        //    // PUT api/formato/5
-        //    public bool Put(int id, [FromBody]FormatoEntity formatoEntity)
-        //    {
-        //        if (id > 0)
-        //        {
-        //            return _formatoServices.UpdateFormato(id, formatoEntity);
-        //        }
-        //        return false;
-        //    }
-
-        //    // DELETE api/formato/5
-        //    public bool Delete(int id)
-        //    {
-        //        if (id > 0)
-        //            return _formatoServices.DeleteFormato(id);
-        //        return false;
-        //    }
-        //}
+        
     }
 }

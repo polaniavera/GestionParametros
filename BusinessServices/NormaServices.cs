@@ -119,8 +119,10 @@ namespace BusinessServices
                     IdTipoNorma = normaEntity.IdTipoNorma,
                     NombreNorma = normaEntity.NombreNorma,
                     NORMA_SECTOR = normaEntity.NORMA_SECTOR,
-                    UrlLink = normaEntity.UrlLink
-                };
+                    IdUrlLink = normaEntity.IdUrlLink,
+                    NombreArchivo = normaEntity.NombreArchivo,
+                    IdSeccion = normaEntity.IdSeccion
+            };
                 _unitOfWork.NormaRepository.Insert(normaServicio);
                 _unitOfWork.Save();
                 scope.Complete();
@@ -155,7 +157,9 @@ namespace BusinessServices
                         normaServicio.IdTipoNorma = normaEntity.IdTipoNorma;
                         normaServicio.NombreNorma = normaEntity.NombreNorma;
                         normaServicio.NORMA_SECTOR = normaEntity.NORMA_SECTOR;
-                        normaServicio.UrlLink = normaEntity.UrlLink;
+                        normaServicio.IdUrlLink = normaEntity.IdUrlLink;
+                        normaServicio.NombreArchivo = normaEntity.NombreArchivo;
+                        normaServicio.IdSeccion = normaEntity.IdSeccion;
 
                         _unitOfWork.NormaRepository.Update(normaServicio);
                         _unitOfWork.Save();

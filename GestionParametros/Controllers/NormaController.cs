@@ -84,11 +84,15 @@ namespace GestionParametros.Controllers
         public HttpResponseMessage get(int id)
         {
             var norma = _normaServices.GetNormaById(id);
+            var normaSector = _normaSectorServices.GetNormaSectorById(norma.IdNorma);
+
             if (norma != null)
             {
                 norma = _tablaValorServices.setDescripcion(norma);
 
-                return Request.CreateResponse(HttpStatusCode.OK, norma);
+                object[] jsonArray = { norma, normaSector };
+
+                return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
             }
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
         }
@@ -101,15 +105,15 @@ namespace GestionParametros.Controllers
         }
 
         // PUT api/norma/update/5
-        [Route("update/{id:int}")]
-        public bool update(int id, [FromBody]NormaEntity normaEntity)
-        {
-            if (id > 0)
-            {
-                return _normaServices.UpdateNorma(id, normaEntity);
-            }
-            return false;
-        }
+        //[Route("update/{id:int}")]
+        //public bool update(int id, [FromBody]NormaEntity normaEntity)
+        //{
+        //    if (id > 0)
+        //    {
+        //        return _normaServices.UpdateNorma(id, normaEntity);
+        //    }
+        //    return false;
+        //}
 
         // DELETE api/norma/delete/5
         public bool delete(int id)
@@ -184,5 +188,23 @@ namespace GestionParametros.Controllers
            
             return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity); ;
         }
+
+
+        // POST  api/norma/update
+        [Route("update")]
+        public bool updateNorma([FromBody] NormaEntity normaEntity)
+        {
+            var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
+
+            foreach (NormaSectorEntity sector in normaSectorById)
+            {
+                var deleteSector = _normaSectorServices.DeleteNormaSector(sector.IdNormaSector);
+                if (!deleteSector)
+                    return false;
+            }
+
+            return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
+        }
+
     }
 }

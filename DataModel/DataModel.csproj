@@ -117,6 +117,16 @@
     <Compile Include="GenericRepository\NormaSectorRepositoryCustom.cs" />
     <Compile Include="GenericRepository\TablaRepositoryCustom.cs" />
     <Compile Include="GenericRepository\NormaRepositoryCustom.cs" />
+    <Compile Include="Model.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="NORMA.cs">
       <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
@@ -159,11 +169,6 @@
     </Compile>
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />
-    <Compile Include="WebApiDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>WebApiDataModel.Context.tt</DependentUpon>
-    </Compile>
     <Compile Include="WebApiDataModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -196,10 +201,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WebApiDataModel.Context.tt">
+    <Content Include="Model.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.Context.cs</LastGenOutput>
       <DependentUpon>WebApiDataModel.edmx</DependentUpon>
-      <LastGenOutput>WebApiDataModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Model.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Model.cs</LastGenOutput>
+      <DependentUpon>WebApiDataModel.edmx</DependentUpon>
     </Content>
     <Content Include="WebApiDataModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

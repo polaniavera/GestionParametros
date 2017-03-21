@@ -24,7 +24,7 @@ namespace DataModel
         public Nullable<decimal> ValorDinero { get; set; }
         public Nullable<decimal> ValorTasa { get; set; }
     
-        public TABLA_CAMPO TABLA_CAMPO { get; set; }
-        public TABLA_REGISTRO TABLA_REGISTRO { get; set; }
+        public virtual TABLA_CAMPO TABLA_CAMPO { get; set; }
+        public virtual TABLA_REGISTRO TABLA_REGISTRO { get; set; }
     }
 }

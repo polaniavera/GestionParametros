@@ -1,12 +1,14 @@
 ﻿using DataModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessEntities
 {
-    public class NormaEntity
+    public partial class NormaEntity
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public NormaEntity()
         {
             this.NORMA_SECTOR = new HashSet<NORMA_SECTOR>();
@@ -20,14 +22,15 @@ namespace BusinessEntities
         public string DescripcionTipoNorma { get; set; }
         public int IdEntidadEmite { get; set; }
         public string DescripcionEntidadEmite { get; set; }
-        public string UrlLink { get; set; }
+        public string NombreArchivo { get; set; }
         public string Descripcion { get; set; }
         public int IdNormaPadre { get; set; }
         public System.DateTime FechaInicio { get; set; }
         public int IdEstado { get; set; }
         public string DescripcionEstado { get; set; }
+        public Nullable<int> IdUrlLink { get; set; }
+        public Nullable<int> IdSeccion { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<NORMA_SECTOR> NORMA_SECTOR { get; set; }
     }
 }
