@@ -65,8 +65,10 @@
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="EntidadServices.cs" />
     <Compile Include="FormatoServices.cs" />
+    <Compile Include="FormatoServicioServices.cs" />
     <Compile Include="IEntidadServices.cs" />
     <Compile Include="IFormatoServices.cs" />
+    <Compile Include="IFormatoServicioServices.cs" />
     <Compile Include="INormaSectorServices.cs" />
     <Compile Include="INormaServices.cs" />
     <Compile Include="IPeriodicidadServices.cs" />

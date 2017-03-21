@@ -15,5 +15,6 @@ namespace BusinessServices
         bool DeleteFormato(int formatoId);
         IEnumerable<FormatoEntity> GetAllFormatosActive();
         bool InactivateFormato(int formatoId);
+        bool ExistNormaFormato(int normaId);
     }
 }

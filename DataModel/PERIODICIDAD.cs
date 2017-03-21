@@ -26,8 +26,8 @@ namespace DataModel
         public string Descripcion { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<FORMATO> FORMATO { get; set; }
+        public virtual ICollection<FORMATO> FORMATO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<PERIODO> PERIODO { get; set; }
+        public virtual ICollection<PERIODO> PERIODO { get; set; }
     }
 }

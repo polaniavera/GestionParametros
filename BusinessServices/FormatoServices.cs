@@ -196,5 +196,21 @@ namespace BusinessServices
             return success;
         }
 
+        /// <summary>
+        /// Retrieve if exist a norma in formato entity by IdNorma
+        /// </summary>
+        /// <param name="normaId"></param>
+        /// <returns></returns>
+        public bool ExistNormaFormato(int normaId)
+        {
+            bool exist = false;
+            exist = _unitOfWork.FormatoRepositoryCustom.ExistNorma(normaId);
+
+            if(exist)
+                return true;
+            else
+                return false;
+        }
+
     }
 }

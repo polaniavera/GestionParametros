@@ -19,7 +19,7 @@ namespace DataModel
         public int IdSectorServicio { get; set; }
         public int IdEstado { get; set; }
     
-        public NORMA NORMA { get; set; }
-        public SECTOR_SERVICIO SECTOR_SERVICIO { get; set; }
+        public virtual NORMA NORMA { get; set; }
+        public virtual SECTOR_SERVICIO SECTOR_SERVICIO { get; set; }
     }
 }

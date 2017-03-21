@@ -19,6 +19,8 @@ namespace GestionParametros.Controllers
         private readonly IEntidadServices _entidadServices;
         private readonly ITablaServices _tablaServices;
         private readonly ITablaValorServices _tablaValorServices;
+        private readonly IFormatoServices _formatoServices;
+        private readonly IFormatoServicioServices _formatoServicioServices;
 
         public static string TIPONORMA = "TIPONORMA";
 
@@ -33,7 +35,9 @@ namespace GestionParametros.Controllers
             ISectorServicioServices sectorServicioServices,
             IEntidadServices entidadServices,
             ITablaServices tablaServices,
-            ITablaValorServices tablaValorServices)
+            ITablaValorServices tablaValorServices,
+            IFormatoServices formatoServices,
+            IFormatoServicioServices formatoServicioServices)
         {
             _normaServices = normaServices;
             _normaSectorServices = normaSectorServices;
@@ -41,6 +45,8 @@ namespace GestionParametros.Controllers
             _entidadServices = entidadServices;
             _tablaServices = tablaServices;
             _tablaValorServices = tablaValorServices;
+            _formatoServices = formatoServices;
+            _formatoServicioServices = formatoServicioServices;
         }
 
         #endregion
@@ -119,7 +125,13 @@ namespace GestionParametros.Controllers
         public bool delete(int id)
         {
             if (id > 0)
-                return _normaServices.DeleteNorma(id);
+            { 
+                //si existe relacion de la Norma en la tabla formato no la borra
+                if (_formatoServices.ExistNormaFormato(id))
+                    return false;
+                else
+                    return _normaServices.DeleteNorma(id);
+            }              
             return false;
         }
 
@@ -194,11 +206,18 @@ namespace GestionParametros.Controllers
         [Route("update")]
         public bool updateNorma([FromBody] NormaEntity normaEntity)
         {
+            bool deleteSector = false;
+            bool existSector = false;
+            //Busca las normas sectores relacionadas con la norma
             var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
 
             foreach (NormaSectorEntity sector in normaSectorById)
             {
-                var deleteSector = _normaSectorServices.DeleteNormaSector(sector.IdNormaSector);
+                //si existe relacion del sector en la tabla formato_servicio no la borra
+                existSector = _formatoServicioServices.ExistSectorFormato(sector.IdNormaSector);
+                if (!existSector)
+                    deleteSector = _normaSectorServices.DeleteNormaSector(sector.IdNormaSector);
+                               
                 if (!deleteSector)
                     return false;
             }

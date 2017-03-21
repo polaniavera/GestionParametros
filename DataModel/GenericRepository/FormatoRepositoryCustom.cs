@@ -24,8 +24,9 @@ namespace DataModel.GenericRepository
         #endregion
 
         #region Public member methods...
+
         /// <summary>
-        /// generic method to get many record on the idEstado is Activate.
+        /// method to get many record on the idEstado is Activate.
         /// </summary>
         /// <param name="where"></param>
         /// <returns></returns>
@@ -33,6 +34,22 @@ namespace DataModel.GenericRepository
         {
             var formatosAct = Context.FORMATO.Where(c => c.IdEstado == 1);
             return formatosAct;
+        }
+
+        /// <summary>
+        /// Retrieve if exist a norma in formato entity by IdNorma
+        /// </summary>
+        /// <param name="normaId"></param>
+        /// <returns></returns>
+        public bool ExistNorma(int normaId)
+        {
+            int count = 0;
+            count = Context.FORMATO.Count(c => c.IdNorma == normaId);
+            
+            if(count>0)
+                return true;
+            else
+                return false;
         }
 
 

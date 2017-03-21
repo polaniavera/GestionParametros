@@ -28,8 +28,8 @@ namespace DataModel
         public int IdEstado { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<NORMA_SECTOR> NORMA_SECTOR { get; set; }
+        public virtual ICollection<NORMA_SECTOR> NORMA_SECTOR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<SERVICIO> SERVICIO { get; set; }
+        public virtual ICollection<SERVICIO> SERVICIO { get; set; }
     }
 }

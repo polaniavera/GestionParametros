@@ -32,6 +32,7 @@ namespace DataModel.UnitOfWork
         private NormaSectorRepositoryCustom _normaSectorRepositoryCustom;
         private TablaRepositoryCustom _tablaRepositoryCustom;
         private FormatoRepositoryCustom _formatoRepositoryCustom;
+        private FormatoServicioRepositoryCustom _formatoServicioRepositoryCustom;
         #endregion
 
         public UnitOfWork()
@@ -220,6 +221,19 @@ namespace DataModel.UnitOfWork
                 if (this._formatoRepositoryCustom == null)
                     this._formatoRepositoryCustom = new FormatoRepositoryCustom(_context);
                 return _formatoRepositoryCustom;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for formatoServicio repository custom.
+        /// </summary>
+        public FormatoServicioRepositoryCustom FormatoServicioRepositoryCustom
+        {
+            get
+            {
+                if (this._formatoServicioRepositoryCustom == null)
+                    this._formatoServicioRepositoryCustom = new FormatoServicioRepositoryCustom(_context);
+                return _formatoServicioRepositoryCustom;
             }
         }
 

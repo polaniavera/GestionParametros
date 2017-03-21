@@ -15,10 +15,8 @@ namespace DataModel
     
     public partial class WebApiDbEntities : DbContext
     {
-        public WebApiDbEntities()
-            : base("name=WebApiDbEntities")
+        public WebApiDbEntities() : base("name=WebApiDbEntities")
         {
-            //disable the lazy load for avoid loops
             base.Configuration.LazyLoadingEnabled = false;
         }
     
