@@ -71,5 +71,20 @@ namespace BusinessServices
             }
             return success;
         }
+
+        /// <summary>
+        /// Retrieve if exist a plantilla in formato entity by IdFormato
+        /// </summary>
+        /// <param name="formatoId"></param>
+        /// <returns></returns>
+        public bool ExistPlantilla(int formatoId)
+        {
+            var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
+
+            if (plantillas.Count() > 0)
+                return true;
+            else
+                return false;
+        }
     }
 }

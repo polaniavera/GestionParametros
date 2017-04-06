@@ -91,14 +91,17 @@ namespace BusinessServices
             {
                 var formato = new FORMATO
                 {
-                    Codigo = formatoEntity.Codigo,
-                    FORMATO_PLANTILLA = formatoEntity.FORMATO_PLANTILLA,
-                    IdEstado = formatoEntity.IdEstado,
                     IdFormato = formatoEntity.IdFormato,
-                    IdPeriodicidad = formatoEntity.IdPeriodicidad,
-                    IdPlazo = formatoEntity.IdPlazo,
+                    IdNorma = formatoEntity.IdNorma,
+                    Codigo = formatoEntity.Codigo,
+                    Nombre = formatoEntity.Nombre,
                     IdTipoFormato = formatoEntity.IdTipoFormato,
-                    Nombre = formatoEntity.Nombre
+                    IdPlazo = formatoEntity.IdPlazo,
+                    IdPeriodicidad = formatoEntity.IdPeriodicidad,
+                    IdEstado = formatoEntity.IdEstado,
+                    DiasPlazo = formatoEntity.DiasPlazo,
+                    IdSeccion = formatoEntity.IdSeccion,
+                    InlcuyeFecha = formatoEntity.InlcuyeFecha
                 };
                 _unitOfWork.FormatoRepository.Insert(formato);
                 _unitOfWork.Save();
@@ -123,14 +126,17 @@ namespace BusinessServices
                     var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
                     if (formato != null)
                     {
-                        formato.Codigo = formatoEntity.Codigo;
-                        formato.FORMATO_PLANTILLA = formatoEntity.FORMATO_PLANTILLA;
-                        formato.IdEstado = formatoEntity.IdEstado;
                         formato.IdFormato = formatoEntity.IdFormato;
-                        formato.IdPeriodicidad = formatoEntity.IdPeriodicidad;
-                        formato.IdPlazo = formatoEntity.IdPlazo;
-                        formato.IdTipoFormato = formatoEntity.IdTipoFormato;
+                        formato.IdNorma = formatoEntity.IdNorma;
+                        formato.Codigo = formatoEntity.Codigo;
                         formato.Nombre = formatoEntity.Nombre;
+                        formato.IdTipoFormato = formatoEntity.IdTipoFormato;
+                        formato.IdPlazo = formatoEntity.IdPlazo;
+                        formato.IdPeriodicidad = formatoEntity.IdPeriodicidad;
+                        formato.IdEstado = formatoEntity.IdEstado;
+                        formato.DiasPlazo = formatoEntity.DiasPlazo;
+                        formato.IdSeccion = formatoEntity.IdSeccion;
+                        formato.InlcuyeFecha = formatoEntity.InlcuyeFecha;
 
                         _unitOfWork.FormatoRepository.Update(formato);
                         _unitOfWork.Save();
@@ -309,6 +315,7 @@ namespace BusinessServices
 
                 if (formato != null)
                 {
+                    success = true;
                     //Encuentra si el formato cambio de estado con respecto al formato a actualizar
                     if (!(formato.IdEstado == formatoEntity.IdEstado))
                     {
@@ -378,8 +385,9 @@ namespace BusinessServices
                             }
                         }
                     }
+                    scope.Complete();
+                    success = true;
                 }
-                success = true;
             }
             return success;
         }
@@ -434,8 +442,9 @@ namespace BusinessServices
                             }
                         }
                     }
+                    scope.Complete();
+                    success = true;
                 }
-                success = true;
             }
             return success;
         }

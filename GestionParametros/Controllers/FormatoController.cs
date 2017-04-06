@@ -20,6 +20,7 @@ namespace GestionParametros.Controllers
         private readonly ITablaValorServices _tablaValorServices;
         private readonly IPeriodicidadServices _periodicidadServices;
         private readonly IPlazoServices _plazoServices;
+        private readonly IFormatoPlantillaServices _formatoPlantillaServices;
 
         public static string TIPOFORMATO = "TIPOFORMATO";
         public static string SECCION = "SECCION";
@@ -39,7 +40,8 @@ namespace GestionParametros.Controllers
             ITablaServices tablaServices,
             ITablaValorServices tablaValorServices,
             IPeriodicidadServices periodicidadServices,
-            IPlazoServices plazoServices)
+            IPlazoServices plazoServices,
+            IFormatoPlantillaServices formatoPlantillaServices)
         {
             _formatoServices = formatoServices;
             _normaServices = normaServices;
@@ -50,6 +52,7 @@ namespace GestionParametros.Controllers
             _tablaValorServices = tablaValorServices;
             _periodicidadServices = periodicidadServices;
             _plazoServices = plazoServices;
+            _formatoPlantillaServices = formatoPlantillaServices;
         }
 
         #endregion
@@ -114,10 +117,14 @@ namespace GestionParametros.Controllers
         }
 
         // DELETE api/formato/delete/5
+        [Route("delete/{id:int}")]
         public bool delete(int id)
         {
             if (id > 0)
-                return _formatoServices.DeleteFormato(id);
+                if (_formatoPlantillaServices.ExistPlantilla(id))
+                    return false;
+                else
+                    return _formatoServices.DeleteFormato(id);
             return false;
         }
 
@@ -125,11 +132,32 @@ namespace GestionParametros.Controllers
         [Route("inactivate/{id:int}")]
         public bool inactivate(int id)
         {
+            bool success = false;
             if (id > 0)
             {
-                return _formatoServices.InactivateFormato(id);
+                success = _formatoServices.InactivateFormatoRelations(id);
+                if (success)
+                {
+                    success = _formatoServices.InactivateFormato(id);
+                }
             }
-            return false;
+            return success;
+        }
+
+        // POST api/formato/activate/5
+        [Route("activate/{id:int}")]
+        public bool activate(int id)
+        {
+            bool success = false;
+            if (id > 0)
+            {
+                success = _formatoServices.ActivateFormatoRelations(id);
+                if (success)
+                {
+                    success = _formatoServices.ActivateFormato(id);
+                }
+            }
+            return success;
         }
 
         // GET api/formato/nueva
@@ -196,9 +224,9 @@ namespace GestionParametros.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
         }
 
-        // PUT api/formato/update/5
-        [Route("update/{id:int}")]
-        public bool update(int id, [FromBody]FormatoEntity formatoEntity)
+        // PUT api/formato/update
+        [Route("update")]
+        public bool update([FromBody]FormatoEntity formatoEntity)
         {
             bool success = false;
             if (formatoEntity != null)
