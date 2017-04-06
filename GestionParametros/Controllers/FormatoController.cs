@@ -23,6 +23,7 @@ namespace GestionParametros.Controllers
 
         public static string TIPOFORMATO = "TIPOFORMATO";
         public static string SECCION = "SECCION";
+        public static string ESTADO = "ESTADO";
 
         #region Public Constructor
 
@@ -94,7 +95,7 @@ namespace GestionParametros.Controllers
             var formato = _formatoServices.GetFormatoById(id);
             if (formato != null)
             {
-                //formato = _tablaValorServices.setDescripcion(formato);
+                formato = _formatoServices.setDescripcion(formato);
 
                 return Request.CreateResponse(HttpStatusCode.OK, formato);
             }
@@ -105,18 +106,11 @@ namespace GestionParametros.Controllers
         [Route("create")]
         public int create([FromBody] FormatoEntity formatoEntity)
         {
-            return _formatoServices.CreateFormato(formatoEntity);
-        }
-
-        // PUT api/formato/update/5
-        [Route("update/{id:int}")]
-        public bool update(int id, [FromBody]FormatoEntity formatoEntity)
-        {
-            if (id > 0)
+            if (formatoEntity != null)
             {
-                return _formatoServices.UpdateFormato(id, formatoEntity);
+                return _formatoServices.CreateFormato(formatoEntity);
             }
-            return false;
+            return 0;
         }
 
         // DELETE api/formato/delete/5
@@ -138,22 +132,6 @@ namespace GestionParametros.Controllers
             return false;
         }
 
-        // POST api/formato/createformato
-        [Route("createformato")]
-        public bool createFormato([FromBody] FormatoEntity formatoEntity, [FromUri] int[] formatoArray)
-        {
-            var idFormato = _formatoServices.CreateFormato(formatoEntity);
-            bool sector = false;
-
-            foreach (int idSectorServicio in formatoArray)
-            {
-                //sector = _normaSectorServices.CreateNormaSector(idSectorServicio, idNorma);
-                //if (!sector)
-                //    return false;
-            }
-            return true;
-        }
-
         // GET api/formato/nueva
         [Route("nueva")]
         public HttpResponseMessage getNueva()
@@ -168,14 +146,16 @@ namespace GestionParametros.Controllers
             var tipoPlazo = _plazoServices.GetAllPlazos();
             //Lista Sección
             var seccionList = _tablaServices.GetParametrosVert(SECCION);
+            //Lista Sección
+            var estadoList = _tablaServices.GetParametrosVert(ESTADO);
 
-            if (normas != null && tipoFormato != null && tipoPeriodicidad != null && tipoPlazo != null && seccionList != null)
+            if (normas != null && tipoFormato != null && tipoPeriodicidad != null && tipoPlazo != null && seccionList != null && estadoList != null)
             {
                 //var normaEntities = normas as List<NormaPadreEntity> ?? normas.ToList();               
                 //var sectorServicioEntities = sectorList as List<SectorServicioEntity> ?? sectorList.ToList();
                 //var entidadEntities = entidadList as List<EntidadEntity> ?? entidadList.ToList();
 
-                object[] jsonArray = { normas, tipoFormato, tipoPeriodicidad, tipoPlazo, seccionList };
+                object[] jsonArray = {normas, tipoFormato, tipoPeriodicidad, tipoPlazo, seccionList, estadoList};
 
                 return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
 
@@ -183,18 +163,58 @@ namespace GestionParametros.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
         }
 
-        // POST api/norma/editar/save
-        //[Route("editar/save")]
-        //public bool editarNorma([FromBody] NormaEntity normaEntity)
-        //{
-        //    //var normaFlag = _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
+        // POST api/formato/editar/2
+        [Route("editar/{idFormato:int}")]
+        public HttpResponseMessage editarFormato(int idFormato)
+        {
+            //Formato a editar
+            var formatoEditar = _formatoServices.GetFormatoById(idFormato);
+            //Normatividad Padre
+            var normas = _normaServices.GetNormasPadre();
+            //Tipo Formato
+            var tipoFormato = _tablaServices.GetParametrosVert(TIPOFORMATO);
+            //Tipo periodicidad
+            var tipoPeriodicidad = _periodicidadServices.GetAllPeriodicidades();
+            //Tipo plazo
+            var tipoPlazo = _plazoServices.GetAllPlazos();
+            //Lista Sección
+            var seccionList = _tablaServices.GetParametrosVert(SECCION);
+            //Lista Sección
+            var estadoList = _tablaServices.GetParametrosVert(ESTADO);
 
-        //    var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
-        //    normaEntity = _normaSectorServices.EditNormaSector(normaEntity, normaSectorById);
+            if (formatoEditar != null && normas != null && tipoFormato != null && tipoPeriodicidad != null && tipoPlazo != null && seccionList != null && estadoList != null)
+            {
+                //var normaEntities = normas as List<NormaPadreEntity> ?? normas.ToList();               
+                //var sectorServicioEntities = sectorList as List<SectorServicioEntity> ?? sectorList.ToList();
+                //var entidadEntities = entidadList as List<EntidadEntity> ?? entidadList.ToList();
 
-        //    return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity); ;
-        //}
+                object[] jsonArray = { formatoEditar, normas, tipoFormato, tipoPeriodicidad, tipoPlazo, seccionList, estadoList };
 
-        
+                return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
+
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
+        }
+
+        // PUT api/formato/update/5
+        [Route("update/{id:int}")]
+        public bool update(int id, [FromBody]FormatoEntity formatoEntity)
+        {
+            bool success = false;
+            if (formatoEntity != null)
+            {
+                //Reconoce cuando cambia el estado del formato
+                //y actualiza todas sus relaciones al nuevo estado
+                success = _formatoServices.changeFormatoState(formatoEntity);
+
+                if (success)
+                {
+                    //Actualiza el formato como tal
+                    success = _formatoServices.UpdateFormato(formatoEntity.IdFormato, formatoEntity);
+                }
+            }
+            return success;
+        }
+
     }
 }

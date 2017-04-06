@@ -52,6 +52,34 @@ namespace DataModel.GenericRepository
                 return false;
         }
 
+        /// <summary>
+        /// Retrieve if exist a formato by IdNorma
+        /// </summary>
+        /// <param name="normaId"></param>
+        /// <returns></returns>
+        public IEnumerable<FORMATO> GetByIdNorma(int normaId)
+        {
+            var formatosByNorma = Context.FORMATO.Where(c => c.IdNorma == normaId).ToList();
+            return formatosByNorma;
+        }
+
+        /// <summary>
+        /// Retrieve campos by IdFormato
+        /// </summary>
+        /// <param name="formatoId"></param>
+        /// <returns></returns>
+        public IEnumerable<PLANTILLA_CAMPO> GetCamposByFormato(int IdFormato)
+        {
+            var camposByFormato =
+               (from f in Context.FORMATO
+                join fp in Context.FORMATO_PLANTILLA on f.IdFormato equals fp.IdFormato
+                join pc in Context.PLANTILLA_CAMPO on fp.IdFormatoPlantilla equals pc.IdFormatoPlantilla
+                where f.IdFormato == IdFormato
+                select pc).ToList();
+
+            return camposByFormato;
+        }
+
 
 
         #endregion

@@ -28,6 +28,9 @@ namespace DataModel.UnitOfWork
         private GenericRepository<NORMA_SECTOR> _normaSectorRepository;
         private GenericRepository<PERIODICIDAD> _periodicidadRepository;
         private GenericRepository<PLAZO> _plazoRepository;
+        private GenericRepository<PLANTILLA_CAMPO> _plantillaCampoRepository;
+        private GenericRepository<FORMATO_PLANTILLA> _formatoPlantillaRepository;
+        private GenericRepository<FORMATO_SERVICIO> _formatoServicioRepository;
         private NormaRepositoryCustom _normaRepositoryCustom;
         private NormaSectorRepositoryCustom _normaSectorRepositoryCustom;
         private TablaRepositoryCustom _tablaRepositoryCustom;
@@ -212,6 +215,32 @@ namespace DataModel.UnitOfWork
         }
 
         /// <summary>
+        /// Get/Set Property for plazo repository.
+        /// </summary>
+        public GenericRepository<FORMATO_PLANTILLA> FormatoPlantillaRepository
+        {
+            get
+            {
+                if (this._formatoPlantillaRepository == null)
+                    this._formatoPlantillaRepository = new GenericRepository<FORMATO_PLANTILLA>(_context);
+                return _formatoPlantillaRepository;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for servicio repository.
+        /// </summary>
+        public GenericRepository<FORMATO_SERVICIO> FormatoServicioRepository
+        {
+            get
+            {
+                if (this._formatoServicioRepository == null)
+                    this._formatoServicioRepository = new GenericRepository<FORMATO_SERVICIO>(_context);
+                return _formatoServicioRepository;
+            }
+        }
+
+        /// <summary>
         /// Get/Set Property for formato repository custom.
         /// </summary>
         public FormatoRepositoryCustom FormatoRepositoryCustom
@@ -234,6 +263,19 @@ namespace DataModel.UnitOfWork
                 if (this._formatoServicioRepositoryCustom == null)
                     this._formatoServicioRepositoryCustom = new FormatoServicioRepositoryCustom(_context);
                 return _formatoServicioRepositoryCustom;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for plantillaCampo repository.
+        /// </summary>
+        public GenericRepository<PLANTILLA_CAMPO> PlantillaCampoRepository
+        {
+            get
+            {
+                if (this._plantillaCampoRepository == null)
+                    this._plantillaCampoRepository = new GenericRepository<PLANTILLA_CAMPO>(_context);
+                return _plantillaCampoRepository;
             }
         }
 

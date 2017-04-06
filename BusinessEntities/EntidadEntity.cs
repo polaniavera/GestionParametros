@@ -9,7 +9,7 @@ namespace BusinessEntities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public EntidadEntity()
         {
-            this.ENTIDAD_CANAL = new HashSet<ENTIDAD_CANAL>();
+            //this.ENTIDAD_CANAL = new HashSet<ENTIDAD_CANAL>();
             this.ENTIDAD_SERVICIO = new HashSet<ENTIDAD_SERVICIO>();
         }
 
@@ -33,8 +33,8 @@ namespace BusinessEntities
         public string CodigoHomologado { get; set; }
         public int IdEstado { get; set; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ENTIDAD_CANAL> ENTIDAD_CANAL { get; set; }
+        //[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //public virtual ICollection<ENTIDAD_CANAL> ENTIDAD_CANAL { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ENTIDAD_SERVICIO> ENTIDAD_SERVICIO { get; set; }
     }

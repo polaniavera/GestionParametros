@@ -40,5 +40,25 @@ namespace BusinessServices
             }
             return null;
         }
+
+        /// <summary>
+        /// Fetches plazo details by id
+        /// </summary>
+        /// <param name="plazoId"></param>
+        /// <returns></returns>
+        public PlazoEntity GetPlazoById(int plazoId)
+        {
+            var plazo = _unitOfWork.PlazoRepository.GetByID(plazoId);
+            if (plazo != null)
+            {
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<PLAZO, PlazoEntity>();
+                });
+                var plazodModel = Mapper.Map<PLAZO, PlazoEntity>(plazo);
+                return plazodModel;
+            }
+            return null;
+        }
     }
 }

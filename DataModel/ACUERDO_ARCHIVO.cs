@@ -12,21 +12,14 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class PLAZO
+    public partial class ACUERDO_ARCHIVO
     {
-        public PLAZO()
-        {
-            this.FORMATO = new HashSet<FORMATO>();
-        }
+        public int IdAcuerdoArchivo { get; set; }
+        public int IdAcuerdo { get; set; }
+        public int IdUrlLink { get; set; }
+        public string NombreArchivo { get; set; }
+        public int IdTipoArchivo { get; set; }
     
-        public int IdPlazo { get; set; }
-        public string Codigo { get; set; }
-        public string Descripcion { get; set; }
-        public bool CalcularFecha { get; set; }
-        public bool PeriodoVencido { get; set; }
-        public bool UltimoDia { get; set; }
-        public int TipoDia { get; set; }
-    
-        public virtual ICollection<FORMATO> FORMATO { get; set; }
+        public virtual ACUERDO ACUERDO { get; set; }
     }
 }

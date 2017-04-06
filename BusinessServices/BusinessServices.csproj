@@ -64,14 +64,17 @@
   <ItemGroup>
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="EntidadServices.cs" />
+    <Compile Include="FormatoPlantillaServices.cs" />
     <Compile Include="FormatoServices.cs" />
     <Compile Include="FormatoServicioServices.cs" />
     <Compile Include="IEntidadServices.cs" />
+    <Compile Include="IFormatoPlantillaServices.cs" />
     <Compile Include="IFormatoServices.cs" />
     <Compile Include="IFormatoServicioServices.cs" />
     <Compile Include="INormaSectorServices.cs" />
     <Compile Include="INormaServices.cs" />
     <Compile Include="IPeriodicidadServices.cs" />
+    <Compile Include="IPlantillaCampoServices.cs" />
     <Compile Include="IPlazoServices.cs" />
     <Compile Include="ISectorServicioServices.cs" />
     <Compile Include="ITablaCampoServices.cs" />
@@ -80,7 +83,7 @@
     <Compile Include="NormaSectorServices.cs" />
     <Compile Include="NormaServices.cs" />
     <Compile Include="PeriodicidadServices.cs" />
-    <Compile Include="PerioidicidadEntity.cs" />
+    <Compile Include="PlantillaCampoServices.cs" />
     <Compile Include="PlazoServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SectorServicioServices.cs" />

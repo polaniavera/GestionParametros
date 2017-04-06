@@ -13,7 +13,7 @@ namespace BusinessServices
         int CreateTablaValor(TablaValorEntity tablaValorEntity);
         bool UpdateTablaValor(int tablaValorId, TablaValorEntity tablaValorEntity);
         bool DeleteTablaValor(int tablaValorId);
-        NormaEntity setDescripcion(NormaEntity norma);
+        NormaEntity setDescripcion(NormaEntity norma, List<NormaSectorEntity> normaSector);
         IEnumerable<NormaEntity> setDescripcionList(IEnumerable<NormaEntity> normas);
     }
 }

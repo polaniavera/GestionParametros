@@ -35,7 +35,29 @@ namespace DataModel.GenericRepository
             return normasAct;
         }
 
+        /// <summary>
+        /// Retrieve if exist a servicio in formato_servicio entity by IdSector
+        /// </summary>
+        /// <param name="normaId"></param>
+        /// <returns></returns>
+        public bool ExistServicio(int sectorId)
+        {
+            var sectoresByNorma =
+               (from ns in Context.NORMA_SECTOR
+                join ss in Context.SECTOR_SERVICIO on ns.IdSectorServicio equals ss.IdSectorServicio
+                join s in Context.SERVICIO on ss.IdSectorServicio equals s.IdSectorServicio
+                join fs in Context.FORMATO_SERVICIO on s.IdServicio equals fs.IdServicio
+                where ns.IdNormaSector == sectorId
+                select new
+                {
+                    sector = ns
+                }).ToList();
 
+            if (sectoresByNorma.Count > 0)
+                return true;
+            else
+                return false;
+        }
 
         #endregion
     }

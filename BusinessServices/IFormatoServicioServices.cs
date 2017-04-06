@@ -9,5 +9,7 @@ namespace BusinessServices
     public interface IFormatoServicioServices
     {
         bool ExistSectorFormato(int sectorId);
+        bool InactivateServicio(int formatoServicioId);
+        bool ActivateServicio(int formatoServicioId);
     }
 }

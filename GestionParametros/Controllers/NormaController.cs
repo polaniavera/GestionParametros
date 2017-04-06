@@ -23,6 +23,8 @@ namespace GestionParametros.Controllers
         private readonly IFormatoServicioServices _formatoServicioServices;
 
         public static string TIPONORMA = "TIPONORMA";
+        public static string SECCION = "SECCION";
+        public static string ESTADO = "ESTADO";
 
         #region Public Constructor
 
@@ -59,7 +61,6 @@ namespace GestionParametros.Controllers
             if (normas != null)
             {
                 normas = _tablaValorServices.setDescripcionList(normas);
-                //normas = _entidadServices.setDescripcionList(normas);
 
                 var normaEntities = normas as List<NormaEntity> ?? normas.ToList();
                 if (normaEntities.Any())
@@ -67,7 +68,6 @@ namespace GestionParametros.Controllers
             }
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Formatos not found");
         }
-
 
         // GET api/norma/getActive
         [Route("getActive")]
@@ -90,15 +90,16 @@ namespace GestionParametros.Controllers
         public HttpResponseMessage get(int id)
         {
             var norma = _normaServices.GetNormaById(id);
-            var normaSector = _normaSectorServices.GetNormaSectorById(norma.IdNorma);
 
             if (norma != null)
             {
-                norma = _tablaValorServices.setDescripcion(norma);
 
-                object[] jsonArray = { norma, normaSector };
+                var normaSector = _normaSectorServices.GetNormaSectorById(norma.IdNorma).ToList();
+                norma = _tablaValorServices.setDescripcion(norma, normaSector);
 
-                return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
+                //object[] jsonArray = { norma, normaSector };
+
+                return Request.CreateResponse(HttpStatusCode.OK, norma);
             }
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
         }
@@ -107,7 +108,11 @@ namespace GestionParametros.Controllers
         [Route("create")]
         public int create([FromBody] NormaEntity normaEntity)
         {
-            return _normaServices.CreateNorma(normaEntity);
+            if (normaEntity != null)
+            {
+                return _normaServices.CreateNorma(normaEntity);
+            }
+            return 0;
         }
 
         // PUT api/norma/update/5
@@ -141,7 +146,26 @@ namespace GestionParametros.Controllers
         {
             if (id > 0)
             {
-                return _normaServices.InactivateNorma(id);
+                return _normaServices.InactivateNormaRelations(id);
+                //if (relations)
+                //{
+                //    return _normaServices.InactivateNorma(id);
+                //}
+            }
+            return false;
+        }
+
+        // POST api/norma/activate/5
+        [Route("activate/{id:int}")]
+        public bool activate(int id)
+        {
+            if (id > 0)
+            {
+                return _normaServices.ActivateNormaRelations(id);
+                //if (relations)
+                //{
+                //    return _normaServices.ActivateNorma(id);
+                //}
             }
             return false;
         }
@@ -166,6 +190,35 @@ namespace GestionParametros.Controllers
         [Route("nueva")]
         public HttpResponseMessage getNueva()
         {
+            //Lista Tipo Norma
+            var tipoNormaList = _tablaServices.GetParametrosVert(TIPONORMA);
+            //Normatividad Padre
+            var normas = _normaServices.GetNormasPadre();
+            //Lista Entidades
+            var entidadList = _entidadServices.GetAllEntidades();
+            //Lista Sectores
+            var sectorList = _sectorServicioServices.GetAllSectorServicios();
+            //Lista Sección
+            var estadoList = _tablaServices.GetParametrosVert(ESTADO);
+
+            if (tipoNormaList != null && normas != null && entidadList != null && sectorList != null && estadoList != null)
+            {
+                //var normaEntities = normas as List<NormaPadreEntity> ?? normas.ToList();               
+                //var sectorServicioEntities = sectorList as List<SectorServicioEntity> ?? sectorList.ToList();
+                //var entidadEntities = entidadList as List<EntidadEntity> ?? entidadList.ToList();
+                
+                object[] jsonArray = {tipoNormaList, normas, entidadList, sectorList, estadoList};
+
+                return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
+
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
+        }
+
+        // POST api/norma/editar/2
+        [Route("editar/{idNorma:int}")]
+        public HttpResponseMessage editarNorma(int idNorma)
+        {
             //Normatividad Padre
             var normas = _normaServices.GetNormasPadre();
             //Lista Sectores
@@ -174,14 +227,18 @@ namespace GestionParametros.Controllers
             var entidadList = _entidadServices.GetAllEntidades();
             //Lista Tipo Norma
             var tipoNormaList = _tablaServices.GetParametrosVert(TIPONORMA);
+            //Norma a editar
+            var normaEditar = _normaServices.GetNormaById(idNorma);
+            //Lista de sectores de la norma a editar
+            var normaSector = _normaSectorServices.GetNormaSectorById(idNorma);
 
-            if (normas != null && sectorList != null && entidadList != null && tipoNormaList != null)
+            if (normas != null && sectorList != null && entidadList != null && tipoNormaList != null && normaEditar != null && normaSector != null)
             {
                 //var normaEntities = normas as List<NormaPadreEntity> ?? normas.ToList();               
                 //var sectorServicioEntities = sectorList as List<SectorServicioEntity> ?? sectorList.ToList();
                 //var entidadEntities = entidadList as List<EntidadEntity> ?? entidadList.ToList();
-                
-                object[] jsonArray = {normas, sectorList, entidadList, tipoNormaList};
+
+                object[] jsonArray = { normas, sectorList, entidadList, tipoNormaList, normaEditar, normaSector };
 
                 return Request.CreateResponse(HttpStatusCode.OK, jsonArray);
 
@@ -189,38 +246,36 @@ namespace GestionParametros.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
         }
 
-        // POST api/norma/editar/save
-        [Route("editar/save")]
-        public bool editarNorma([FromBody] NormaEntity normaEntity)
-        {
-            //var normaFlag = _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
-
-            var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
-            normaEntity = _normaSectorServices.EditNormaSector(normaEntity, normaSectorById);
-           
-            return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity); ;
-        }
-
 
         // POST  api/norma/update
         [Route("update")]
         public bool updateNorma([FromBody] NormaEntity normaEntity)
         {
+            if (normaEntity == null)
+            {
+                return false;
+            }
+
             bool deleteSector = false;
-            bool existSector = false;
+
             //Busca las normas sectores relacionadas con la norma
             var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
 
-            foreach (NormaSectorEntity sector in normaSectorById)
+            //si existe relacion del sector en la tabla formato_servicio no la borra
+            if (_normaServices.ValidateSector(normaEntity, normaSectorById))
             {
-                //si existe relacion del sector en la tabla formato_servicio no la borra
-                existSector = _formatoServicioServices.ExistSectorFormato(sector.IdNormaSector);
-                if (!existSector)
+                foreach (NormaSectorEntity sector in normaSectorById)
+                {
+                    //Si no existe relacion borra los sectores directamente de la tabla NormaSector
                     deleteSector = _normaSectorServices.DeleteNormaSector(sector.IdNormaSector);
-                               
-                if (!deleteSector)
-                    return false;
+                    if (!deleteSector)
+                        return false;
+                }
             }
+
+            //Reconoce cuando cambia el estado de la norma
+            //y actualiza todas sus relaciones al nuevo estado
+            normaEntity = _normaServices.changeNormaState(normaEntity);
 
             return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
         }

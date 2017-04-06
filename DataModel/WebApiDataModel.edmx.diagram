@@ -4,41 +4,34 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="560a744daaca4afd82497f12f1c06c7b" Name="Diagram1" ZoomLevel="73">
-        <EntityTypeShape EntityType="WebApiDbModel.CANAL" Width="1.5" PointX="7.75" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.CANAL_CAMPO" Width="1.5" PointX="10" PointY="4.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.CANAL_REGISTRO" Width="1.5" PointX="10" PointY="7.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.CANAL_VALOR" Width="1.5" PointX="12.25" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.ENTIDAD_CANAL" Width="1.5" PointX="10" PointY="10.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.ACUERDO" Width="1.5" PointX="6" PointY="28.125" IsExpanded="true" />
+      <Diagram DiagramId="fccc356fa6a74e49b2f6c32ca3501d25" Name="Diagram1">
+        <EntityTypeShape EntityType="WebApiDbModel.ACUERDO" Width="1.5" PointX="3" PointY="30.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.ACUERDO_ARCHIVO" Width="1.5" PointX="5.25" PointY="31.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WebApiDbModel.FORMATO" Width="1.5" PointX="0.75" PointY="18.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.FORMATO_ACUERDO" Width="1.5" PointX="8.25" PointY="21.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.FORMATO_ACUERDO" Width="1.5" PointX="5.25" PointY="18.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WebApiDbModel.FORMATO_PLANTILLA" Width="1.5" PointX="3" PointY="19.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebApiDbModel.FORMATO_SERVICIO" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WebApiDbModel.NORMA" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.NORMA_SECTOR" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.NORMA_SECTOR" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WebApiDbModel.PLANTILLA_CAMPO" Width="1.5" PointX="5.25" PointY="22.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.CAMPO_REGLA" Width="1.5" PointX="7.5" PointY="24.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.DIAFESTIVO" Width="1.5" PointX="2.75" PointY="2.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.ENTIDAD" Width="1.5" PointX="3" PointY="12" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.CAMPO_REGLA" Width="1.5" PointX="7.5" PointY="22.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.DIAFESTIVO" Width="1.5" PointX="2.75" PointY="2.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.ENTIDAD" Width="1.5" PointX="3" PointY="12.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WebApiDbModel.ENTIDAD_SERVICIO" Width="1.5" PointX="5.25" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.PERIODICIDAD" Width="1.5" PointX="1.5" PointY="23.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.PERIODO" Width="1.5" PointX="3.75" PointY="25.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.PLAZO" Width="1.5" PointX="1.5" PointY="26.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.REGLA" Width="1.5" PointX="5.25" PointY="31.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.SECTOR_SERVICIO" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.SERVICIO" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.TABLA" Width="1.5" PointX="5.75" PointY="16.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.TABLA_CAMPO" Width="1.5" PointX="8" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.TABLA_REGISTRO" Width="1.5" PointX="8" PointY="18.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="WebApiDbModel.TABLA_VALOR" Width="1.5" PointX="10.25" PointY="15.75" IsExpanded="true" />
-        <AssociationConnector Association="WebApiDbModel.FK_CANAL_CAMPO_CANAL" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.FK_CANAL_REGISTRO_CANAL" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.FK_ENTIDAD_CANAL_CANAL" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.FK_CANAL_VALOR_CANAL_CAMPO" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.FK_CANAL_VALOR_CANAL_REGISTRO" ManuallyRouted="false" />
-        <AssociationConnector Association="WebApiDbModel.FK_ENTIDAD_CANAL_ENTIDAD" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WebApiDbModel.PERIODICIDAD" Width="1.5" PointX="1.5" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.PERIODO" Width="1.5" PointX="3.75" PointY="35.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.PLAZO" Width="1.5" PointX="1.5" PointY="26.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.REGLA" Width="1.5" PointX="5.25" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.SECTOR_SERVICIO" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.SERVICIO" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.TABLA" Width="1.5" PointX="7.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.TABLA_CAMPO" Width="1.5" PointX="10" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.TABLA_REGISTRO" Width="1.5" PointX="10" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.TABLA_VALOR" Width="1.5" PointX="12.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WebApiDbModel.INTEROPERATIVIDAD" Width="1.5" PointX="7.75" PointY="9.25" IsExpanded="true" />
+        <AssociationConnector Association="WebApiDbModel.FK_ACUERDO_ARCHIVOS_ACUERDO" ManuallyRouted="false" />
         <AssociationConnector Association="WebApiDbModel.FK_PLANTILLA_ACUERDO_ACUERDO" ManuallyRouted="false" />
+        <AssociationConnector Association="WebApiDbModel.FK_FORMATO_NORMA" ManuallyRouted="false" />
         <AssociationConnector Association="WebApiDbModel.FK_FORMATO_PERIODICIDAD" ManuallyRouted="false" />
         <AssociationConnector Association="WebApiDbModel.FK_FORMATO_PLANTILLA_FORMATO" ManuallyRouted="false" />
         <AssociationConnector Association="WebApiDbModel.FK_FORMATO_PLAZO" ManuallyRouted="false" />

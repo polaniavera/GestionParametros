@@ -5,57 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="WebApiDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="CANAL">
-          <Key>
-            <PropertyRef Name="IdCanal" />
-          </Key>
-          <Property Name="IdCanal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Codigo" Type="varchar" MaxLength="15" Nullable="false" />
-          <Property Name="Nombre" Type="nchar" MaxLength="30" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="IdEstado" Type="int" />
-        </EntityType>
-        <EntityType Name="CANAL_CAMPO">
-          <Key>
-            <PropertyRef Name="IdCampo" />
-          </Key>
-          <Property Name="IdCampo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdCanal" Type="int" Nullable="false" />
-          <Property Name="Campo" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="255" />
-          <Property Name="IdTipoDato" Type="int" />
-          <Property Name="Tamaño" Type="int" />
-          <Property Name="Editable" Type="bit" />
-        </EntityType>
-        <EntityType Name="CANAL_REGISTRO">
-          <Key>
-            <PropertyRef Name="IdCanalRegistro" />
-          </Key>
-          <Property Name="IdCanalRegistro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdCanal" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="CANAL_VALOR">
-          <Key>
-            <PropertyRef Name="IdCanalValor" />
-          </Key>
-          <Property Name="IdCanalValor" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdCampo" Type="int" Nullable="false" />
-          <Property Name="IdCanalRegistro" Type="int" Nullable="false" />
-          <Property Name="ValorAlfanumerico" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="ValorEntero" Type="int" />
-          <Property Name="ValorDinero" Type="numeric" Precision="18" Scale="2" />
-          <Property Name="ValorTasa" Type="numeric" Precision="18" Scale="9" />
-          <Property Name="ValorFecha" Type="datetime" />
-        </EntityType>
-        <EntityType Name="ENTIDAD_CANAL">
-          <Key>
-            <PropertyRef Name="IdEntidadCanal" />
-          </Key>
-          <Property Name="IdEntidadCanal" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdEntidad" Type="int" Nullable="false" />
-          <Property Name="IdCanal" Type="int" Nullable="false" />
-          <Property Name="IdEstado" Type="int" Nullable="false" />
-        </EntityType>
         <EntityType Name="ACUERDO">
           <Key>
             <PropertyRef Name="IdAcuerdo" />
@@ -63,18 +12,33 @@
           <Property Name="IdAcuerdo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdTipoAcuerdo" Type="int" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Nombre" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="FechaAcuerdo" Type="datetime" Nullable="false" />
+          <Property Name="IdEntidad" Type="int" Nullable="false" />
           <Property Name="IdEntidadContraparte" Type="int" Nullable="false" />
-          <Property Name="Duracion" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="Objeto" Type="varchar(max)" Nullable="false" />
+          <Property Name="FechaInicio" Type="datetime" Nullable="false" />
+          <Property Name="FechaFin" Type="datetime" />
+          <Property Name="Duracion" Type="varchar" MaxLength="10" />
+          <Property Name="IdDuracionConcepto" Type="int" />
+          <Property Name="Observacion" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ACUERDO_ARCHIVO">
+          <Key>
+            <PropertyRef Name="IdAcuerdoArchivo" />
+          </Key>
+          <Property Name="IdAcuerdoArchivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAcuerdo" Type="int" Nullable="false" />
+          <Property Name="IdUrlLink" Type="int" Nullable="false" />
+          <Property Name="NombreArchivo" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="IdTipoArchivo" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FORMATO">
           <Key>
             <PropertyRef Name="IdFormato" />
           </Key>
           <Property Name="IdFormato" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdNorma" Type="int" Nullable="false" />
+          <Property Name="IdNorma" Type="int" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="45" Nullable="false" />
           <Property Name="IdTipoFormato" Type="int" Nullable="false" />
@@ -87,9 +51,9 @@
         </EntityType>
         <EntityType Name="FORMATO_ACUERDO">
           <Key>
-            <PropertyRef Name="IdFormatocAuerdo" />
+            <PropertyRef Name="IdFormatoAcuerdo" />
           </Key>
-          <Property Name="IdFormatocAuerdo" Type="int" Nullable="false" />
+          <Property Name="IdFormatoAcuerdo" Type="int" Nullable="false" />
           <Property Name="IdAcuerdo" Type="int" Nullable="false" />
           <Property Name="IdFormatoPlantilla" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
@@ -102,6 +66,7 @@
           <Property Name="IdFormato" Type="int" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="IdEstado" Type="int" />
+          <Property Name="FechaRegistro" Type="datetime" />
         </EntityType>
         <EntityType Name="FORMATO_SERVICIO">
           <Key>
@@ -201,6 +166,24 @@
           <Property Name="IdServicio" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="INTEROPERATIVIDAD">
+          <Key>
+            <PropertyRef Name="IdInterOperatividad" />
+            <PropertyRef Name="Ip" />
+            <PropertyRef Name="Puerto" />
+            <PropertyRef Name="URLLink" />
+            <PropertyRef Name="Usuario" />
+            <PropertyRef Name="Clave" />
+          </Key>
+          <Property Name="IdInterOperatividad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Ip" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Puerto" Type="int" Nullable="false" />
+          <Property Name="URLLink" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Usuario" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
         <EntityType Name="PERIODICIDAD">
           <Key>
             <PropertyRef Name="IdPeriodicidad" />
@@ -214,9 +197,9 @@
             <PropertyRef Name="IdPeriodo" />
           </Key>
           <Property Name="IdPeriodo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdPeriodicidad" Type="int" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IdPeriodicidad" Type="int" Nullable="false" />
           <Property Name="MesInicio" Type="int" Nullable="false" />
           <Property Name="MesFin" Type="int" Nullable="false" />
         </EntityType>
@@ -277,8 +260,10 @@
           </Key>
           <Property Name="IdTabla" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
-          <Property Name="IdTipoTabla" Type="int" />
+          <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="IdTipoTabla" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TABLA_CAMPO">
           <Key>
@@ -287,6 +272,7 @@
           <Property Name="IdCampo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdTabla" Type="int" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="60" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" />
           <Property Name="IdTipoDato" Type="int" />
           <Property Name="Tamaño" Type="int" />
@@ -312,6 +298,18 @@
           <Property Name="ValorDinero" Type="numeric" Precision="18" Scale="2" />
           <Property Name="ValorTasa" Type="numeric" Precision="18" Scale="9" />
         </EntityType>
+        <Association Name="FK_ACUERDO_ARCHIVOS_ACUERDO">
+          <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="1" />
+          <End Role="ACUERDO_ARCHIVO" Type="Self.ACUERDO_ARCHIVO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ACUERDO">
+              <PropertyRef Name="IdAcuerdo" />
+            </Principal>
+            <Dependent Role="ACUERDO_ARCHIVO">
+              <PropertyRef Name="IdAcuerdo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CAMPO_REGLA_PLANTILLA_CAMPO">
           <End Role="PLANTILLA_CAMPO" Type="Self.PLANTILLA_CAMPO" Multiplicity="1" />
           <End Role="CAMPO_REGLA" Type="Self.CAMPO_REGLA" Multiplicity="*" />
@@ -333,78 +331,6 @@
             </Principal>
             <Dependent Role="CAMPO_REGLA">
               <PropertyRef Name="IdRegla" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_CAMPO_CANAL">
-          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
-          <End Role="CANAL_CAMPO" Type="Self.CANAL_CAMPO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Principal>
-            <Dependent Role="CANAL_CAMPO">
-              <PropertyRef Name="IdCanal" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_REGISTRO_CANAL">
-          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
-          <End Role="CANAL_REGISTRO" Type="Self.CANAL_REGISTRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Principal>
-            <Dependent Role="CANAL_REGISTRO">
-              <PropertyRef Name="IdCanal" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_VALOR_CANAL_CAMPO">
-          <End Role="CANAL_CAMPO" Type="Self.CANAL_CAMPO" Multiplicity="1" />
-          <End Role="CANAL_VALOR" Type="Self.CANAL_VALOR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL_CAMPO">
-              <PropertyRef Name="IdCampo" />
-            </Principal>
-            <Dependent Role="CANAL_VALOR">
-              <PropertyRef Name="IdCampo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_VALOR_CANAL_REGISTRO">
-          <End Role="CANAL_REGISTRO" Type="Self.CANAL_REGISTRO" Multiplicity="1" />
-          <End Role="CANAL_VALOR" Type="Self.CANAL_VALOR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL_REGISTRO">
-              <PropertyRef Name="IdCanalRegistro" />
-            </Principal>
-            <Dependent Role="CANAL_VALOR">
-              <PropertyRef Name="IdCanalRegistro" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ENTIDAD_CANAL_CANAL">
-          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
-          <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Principal>
-            <Dependent Role="ENTIDAD_CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ENTIDAD_CANAL_ENTIDAD">
-          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
-          <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ENTIDAD">
-              <PropertyRef Name="IdEntidad" />
-            </Principal>
-            <Dependent Role="ENTIDAD_CANAL">
-              <PropertyRef Name="IdEntidad" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -441,6 +367,18 @@
             </Principal>
             <Dependent Role="FORMATO_ACUERDO">
               <PropertyRef Name="IdFormatoPlantilla" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMATO_NORMA">
+          <End Role="NORMA" Type="Self.NORMA" Multiplicity="0..1" />
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NORMA">
+              <PropertyRef Name="IdNorma" />
+            </Principal>
+            <Dependent Role="FORMATO">
+              <PropertyRef Name="IdNorma" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -637,12 +575,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="WebApiDbModelStoreContainer">
-          <EntitySet Name="CANAL" EntityType="Self.CANAL" Schema="GC" store:Type="Tables" />
-          <EntitySet Name="CANAL_CAMPO" EntityType="Self.CANAL_CAMPO" Schema="GC" store:Type="Tables" />
-          <EntitySet Name="CANAL_REGISTRO" EntityType="Self.CANAL_REGISTRO" Schema="GC" store:Type="Tables" />
-          <EntitySet Name="CANAL_VALOR" EntityType="Self.CANAL_VALOR" Schema="GC" store:Type="Tables" />
-          <EntitySet Name="ENTIDAD_CANAL" EntityType="Self.ENTIDAD_CANAL" Schema="GC" store:Type="Tables" />
           <EntitySet Name="ACUERDO" EntityType="Self.ACUERDO" Schema="GN" store:Type="Tables" />
+          <EntitySet Name="ACUERDO_ARCHIVO" EntityType="Self.ACUERDO_ARCHIVO" Schema="GN" store:Type="Tables" />
           <EntitySet Name="FORMATO" EntityType="Self.FORMATO" Schema="GN" store:Type="Tables" />
           <EntitySet Name="FORMATO_ACUERDO" EntityType="Self.FORMATO_ACUERDO" Schema="GN" store:Type="Tables" />
           <EntitySet Name="FORMATO_PLANTILLA" EntityType="Self.FORMATO_PLANTILLA" Schema="GN" store:Type="Tables" />
@@ -664,6 +598,20 @@
           <EntitySet Name="TABLA_CAMPO" EntityType="Self.TABLA_CAMPO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_REGISTRO" EntityType="Self.TABLA_REGISTRO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_VALOR" EntityType="Self.TABLA_VALOR" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="INTEROPERATIVIDAD" EntityType="Self.INTEROPERATIVIDAD" store:Type="Tables" store:Schema="GP">
+            <DefiningQuery>SELECT 
+    [INTEROPERATIVIDAD].[IdInterOperatividad] AS [IdInterOperatividad], 
+    [INTEROPERATIVIDAD].[Ip] AS [Ip], 
+    [INTEROPERATIVIDAD].[Puerto] AS [Puerto], 
+    [INTEROPERATIVIDAD].[URLLink] AS [URLLink], 
+    [INTEROPERATIVIDAD].[Usuario] AS [Usuario], 
+    [INTEROPERATIVIDAD].[Clave] AS [Clave]
+    FROM [GP].[INTEROPERATIVIDAD] AS [INTEROPERATIVIDAD]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_ACUERDO_ARCHIVOS_ACUERDO" Association="Self.FK_ACUERDO_ARCHIVOS_ACUERDO">
+            <End Role="ACUERDO" EntitySet="ACUERDO" />
+            <End Role="ACUERDO_ARCHIVO" EntitySet="ACUERDO_ARCHIVO" />
+          </AssociationSet>
           <AssociationSet Name="FK_CAMPO_REGLA_PLANTILLA_CAMPO" Association="Self.FK_CAMPO_REGLA_PLANTILLA_CAMPO">
             <End Role="PLANTILLA_CAMPO" EntitySet="PLANTILLA_CAMPO" />
             <End Role="CAMPO_REGLA" EntitySet="CAMPO_REGLA" />
@@ -671,30 +619,6 @@
           <AssociationSet Name="FK_CAMPO_REGLA_REGLA" Association="Self.FK_CAMPO_REGLA_REGLA">
             <End Role="REGLA" EntitySet="REGLA" />
             <End Role="CAMPO_REGLA" EntitySet="CAMPO_REGLA" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_CAMPO_CANAL" Association="Self.FK_CANAL_CAMPO_CANAL">
-            <End Role="CANAL" EntitySet="CANAL" />
-            <End Role="CANAL_CAMPO" EntitySet="CANAL_CAMPO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_REGISTRO_CANAL" Association="Self.FK_CANAL_REGISTRO_CANAL">
-            <End Role="CANAL" EntitySet="CANAL" />
-            <End Role="CANAL_REGISTRO" EntitySet="CANAL_REGISTRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_VALOR_CANAL_CAMPO" Association="Self.FK_CANAL_VALOR_CANAL_CAMPO">
-            <End Role="CANAL_CAMPO" EntitySet="CANAL_CAMPO" />
-            <End Role="CANAL_VALOR" EntitySet="CANAL_VALOR" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_VALOR_CANAL_REGISTRO" Association="Self.FK_CANAL_VALOR_CANAL_REGISTRO">
-            <End Role="CANAL_REGISTRO" EntitySet="CANAL_REGISTRO" />
-            <End Role="CANAL_VALOR" EntitySet="CANAL_VALOR" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ENTIDAD_CANAL_CANAL" Association="Self.FK_ENTIDAD_CANAL_CANAL">
-            <End Role="CANAL" EntitySet="CANAL" />
-            <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ENTIDAD_CANAL_ENTIDAD" Association="Self.FK_ENTIDAD_CANAL_ENTIDAD">
-            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
-            <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
           </AssociationSet>
           <AssociationSet Name="FK_ENTIDAD_SERVICIO_ENTIDAD" Association="Self.FK_ENTIDAD_SERVICIO_ENTIDAD">
             <End Role="ENTIDAD" EntitySet="ENTIDAD" />
@@ -707,6 +631,10 @@
           <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_NORMA" Association="Self.FK_FORMATO_NORMA">
+            <End Role="NORMA" EntitySet="NORMA" />
+            <End Role="FORMATO" EntitySet="FORMATO" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMATO_PERIODICIDAD" Association="Self.FK_FORMATO_PERIODICIDAD">
             <End Role="PERIODICIDAD" EntitySet="PERIODICIDAD" />
@@ -778,68 +706,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="WebApiDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="CANAL">
-          <Key>
-            <PropertyRef Name="IdCanal" />
-          </Key>
-          <Property Name="IdCanal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Codigo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Nombre" Type="String" MaxLength="30" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdEstado" Type="Int32" />
-          <NavigationProperty Name="CANAL_CAMPO" Relationship="Self.FK_CANAL_CAMPO_CANAL" FromRole="CANAL" ToRole="CANAL_CAMPO" />
-          <NavigationProperty Name="CANAL_REGISTRO" Relationship="Self.FK_CANAL_REGISTRO_CANAL" FromRole="CANAL" ToRole="CANAL_REGISTRO" />
-          <NavigationProperty Name="ENTIDAD_CANAL" Relationship="Self.FK_ENTIDAD_CANAL_CANAL" FromRole="CANAL" ToRole="ENTIDAD_CANAL" />
-        </EntityType>
-        <EntityType Name="CANAL_CAMPO">
-          <Key>
-            <PropertyRef Name="IdCampo" />
-          </Key>
-          <Property Name="IdCampo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdCanal" Type="Int32" Nullable="false" />
-          <Property Name="Campo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
-          <Property Name="IdTipoDato" Type="Int32" />
-          <Property Name="Tamaño" Type="Int32" />
-          <Property Name="Editable" Type="Boolean" />
-          <NavigationProperty Name="CANAL" Relationship="Self.FK_CANAL_CAMPO_CANAL" FromRole="CANAL_CAMPO" ToRole="CANAL" />
-          <NavigationProperty Name="CANAL_VALOR" Relationship="Self.FK_CANAL_VALOR_CANAL_CAMPO" FromRole="CANAL_CAMPO" ToRole="CANAL_VALOR" />
-        </EntityType>
-        <EntityType Name="CANAL_REGISTRO">
-          <Key>
-            <PropertyRef Name="IdCanalRegistro" />
-          </Key>
-          <Property Name="IdCanalRegistro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdCanal" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CANAL" Relationship="Self.FK_CANAL_REGISTRO_CANAL" FromRole="CANAL_REGISTRO" ToRole="CANAL" />
-          <NavigationProperty Name="CANAL_VALOR" Relationship="Self.FK_CANAL_VALOR_CANAL_REGISTRO" FromRole="CANAL_REGISTRO" ToRole="CANAL_VALOR" />
-        </EntityType>
-        <EntityType Name="CANAL_VALOR">
-          <Key>
-            <PropertyRef Name="IdCanalValor" />
-          </Key>
-          <Property Name="IdCanalValor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdCampo" Type="Int32" Nullable="false" />
-          <Property Name="IdCanalRegistro" Type="Int32" Nullable="false" />
-          <Property Name="ValorAlfanumerico" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ValorEntero" Type="Int32" />
-          <Property Name="ValorDinero" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="ValorTasa" Type="Decimal" Precision="18" Scale="9" />
-          <Property Name="ValorFecha" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="CANAL_CAMPO" Relationship="Self.FK_CANAL_VALOR_CANAL_CAMPO" FromRole="CANAL_VALOR" ToRole="CANAL_CAMPO" />
-          <NavigationProperty Name="CANAL_REGISTRO" Relationship="Self.FK_CANAL_VALOR_CANAL_REGISTRO" FromRole="CANAL_VALOR" ToRole="CANAL_REGISTRO" />
-        </EntityType>
-        <EntityType Name="ENTIDAD_CANAL">
-          <Key>
-            <PropertyRef Name="IdEntidadCanal" />
-          </Key>
-          <Property Name="IdEntidadCanal" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdEntidad" Type="Int32" Nullable="false" />
-          <Property Name="IdCanal" Type="Int32" Nullable="false" />
-          <Property Name="IdEstado" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="CANAL" Relationship="Self.FK_ENTIDAD_CANAL_CANAL" FromRole="ENTIDAD_CANAL" ToRole="CANAL" />
-          <NavigationProperty Name="ENTIDAD" Relationship="Self.FK_ENTIDAD_CANAL_ENTIDAD" FromRole="ENTIDAD_CANAL" ToRole="ENTIDAD" />
-        </EntityType>
         <EntityType Name="ACUERDO">
           <Key>
             <PropertyRef Name="IdAcuerdo" />
@@ -847,19 +713,36 @@
           <Property Name="IdAcuerdo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdTipoAcuerdo" Type="Int32" Nullable="false" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FechaAcuerdo" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdEntidad" Type="Int32" Nullable="false" />
           <Property Name="IdEntidadContraparte" Type="Int32" Nullable="false" />
-          <Property Name="Duracion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="Objeto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FechaInicio" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FechaFin" Type="DateTime" Precision="3" />
+          <Property Name="Duracion" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IdDuracionConcepto" Type="Int32" />
+          <Property Name="Observacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ACUERDO_ARCHIVO" Relationship="Self.FK_ACUERDO_ARCHIVOS_ACUERDO" FromRole="ACUERDO" ToRole="ACUERDO_ARCHIVO" />
           <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_PLANTILLA_ACUERDO_ACUERDO" FromRole="ACUERDO" ToRole="FORMATO_ACUERDO" />
+        </EntityType>
+        <EntityType Name="ACUERDO_ARCHIVO">
+          <Key>
+            <PropertyRef Name="IdAcuerdoArchivo" />
+          </Key>
+          <Property Name="IdAcuerdoArchivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAcuerdo" Type="Int32" Nullable="false" />
+          <Property Name="IdUrlLink" Type="Int32" Nullable="false" />
+          <Property Name="NombreArchivo" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdTipoArchivo" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACUERDO" Relationship="Self.FK_ACUERDO_ARCHIVOS_ACUERDO" FromRole="ACUERDO_ARCHIVO" ToRole="ACUERDO" />
         </EntityType>
         <EntityType Name="FORMATO">
           <Key>
             <PropertyRef Name="IdFormato" />
           </Key>
           <Property Name="IdFormato" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdNorma" Type="Int32" Nullable="false" />
+          <Property Name="IdNorma" Type="Int32" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombre" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdTipoFormato" Type="Int32" Nullable="false" />
@@ -869,15 +752,16 @@
           <Property Name="DiasPlazo" Type="Int32" />
           <Property Name="IdSeccion" Type="Int32" />
           <Property Name="InlcuyeFecha" Type="Boolean" />
+          <NavigationProperty Name="NORMA" Relationship="Self.FK_FORMATO_NORMA" FromRole="FORMATO" ToRole="NORMA" />
           <NavigationProperty Name="PERIODICIDAD" Relationship="Self.FK_FORMATO_PERIODICIDAD" FromRole="FORMATO" ToRole="PERIODICIDAD" />
           <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_PLANTILLA_FORMATO" FromRole="FORMATO" ToRole="FORMATO_PLANTILLA" />
           <NavigationProperty Name="PLAZO" Relationship="Self.FK_FORMATO_PLAZO" FromRole="FORMATO" ToRole="PLAZO" />
         </EntityType>
         <EntityType Name="FORMATO_ACUERDO">
           <Key>
-            <PropertyRef Name="IdFormatocAuerdo" />
+            <PropertyRef Name="IdFormatoAcuerdo" />
           </Key>
-          <Property Name="IdFormatocAuerdo" Type="Int32" Nullable="false" />
+          <Property Name="IdFormatoAcuerdo" Type="Int32" Nullable="false" />
           <Property Name="IdAcuerdo" Type="Int32" Nullable="false" />
           <Property Name="IdFormatoPlantilla" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
@@ -892,6 +776,7 @@
           <Property Name="IdFormato" Type="Int32" Nullable="false" />
           <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" />
+          <Property Name="FechaRegistro" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_PLANTILLA_FORMATO" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO" />
           <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_ACUERDO" />
           <NavigationProperty Name="FORMATO_SERVICIO" Relationship="Self.FK_FORMATO_SERVICIO_FORMATO_PLANTILLA" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_SERVICIO" />
@@ -925,6 +810,7 @@
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <Property Name="IdUrlLink" Type="Int32" />
           <Property Name="IdSeccion" Type="Int32" />
+          <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_NORMA" FromRole="NORMA" ToRole="FORMATO" />
           <NavigationProperty Name="NORMA_SECTOR" Relationship="Self.FK_NORMA_SECTOR_NORMA" FromRole="NORMA" ToRole="NORMA_SECTOR" />
         </EntityType>
         <EntityType Name="NORMA_SECTOR">
@@ -994,7 +880,6 @@
           <Property Name="IdCodigoHomologado" Type="Int32" />
           <Property Name="CodigoHomologado" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="ENTIDAD_CANAL" Relationship="Self.FK_ENTIDAD_CANAL_ENTIDAD" FromRole="ENTIDAD" ToRole="ENTIDAD_CANAL" />
           <NavigationProperty Name="ENTIDAD_SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_ENTIDAD" FromRole="ENTIDAD" ToRole="ENTIDAD_SERVICIO" />
         </EntityType>
         <EntityType Name="ENTIDAD_SERVICIO">
@@ -1023,9 +908,9 @@
             <PropertyRef Name="IdPeriodo" />
           </Key>
           <Property Name="IdPeriodo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" />
           <Property Name="MesInicio" Type="Int32" Nullable="false" />
           <Property Name="MesFin" Type="Int32" Nullable="false" />
           <NavigationProperty Name="PERIODICIDAD" Relationship="Self.FK_PERIODO_PERIODICIDAD" FromRole="PERIODO" ToRole="PERIODICIDAD" />
@@ -1096,8 +981,10 @@
           </Key>
           <Property Name="IdTabla" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Codigo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IdTipoTabla" Type="Int32" />
+          <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="IdTipoTabla" Type="Int32" Nullable="false" />
           <NavigationProperty Name="TABLA_CAMPO" Relationship="Self.FK_TABLA_CAMPO_TABLA" FromRole="TABLA" ToRole="TABLA_CAMPO" />
           <NavigationProperty Name="TABLA_REGISTRO" Relationship="Self.FK_TABLA_REGISTRO_TABLA" FromRole="TABLA" ToRole="TABLA_REGISTRO" />
         </EntityType>
@@ -1108,6 +995,7 @@
           <Property Name="IdCampo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdTabla" Type="Int32" Nullable="false" />
           <Property Name="Codigo" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="IdTipoDato" Type="Int32" />
           <Property Name="Tamaño" Type="Int32" />
@@ -1139,75 +1027,31 @@
           <NavigationProperty Name="TABLA_CAMPO" Relationship="Self.FK_TABLA_VALOR_TABLA_CAMPO" FromRole="TABLA_VALOR" ToRole="TABLA_CAMPO" />
           <NavigationProperty Name="TABLA_REGISTRO" Relationship="Self.FK_TABLA_VALOR_TABLA_REGISTRO" FromRole="TABLA_VALOR" ToRole="TABLA_REGISTRO" />
         </EntityType>
-        <Association Name="FK_CANAL_CAMPO_CANAL">
-          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
-          <End Role="CANAL_CAMPO" Type="Self.CANAL_CAMPO" Multiplicity="*" />
+        <EntityType Name="INTEROPERATIVIDAD">
+          <Key>
+            <PropertyRef Name="IdInterOperatividad" />
+            <PropertyRef Name="Ip" />
+            <PropertyRef Name="Puerto" />
+            <PropertyRef Name="URLLink" />
+            <PropertyRef Name="Usuario" />
+            <PropertyRef Name="Clave" />
+          </Key>
+          <Property Name="IdInterOperatividad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Puerto" Type="Int32" Nullable="false" />
+          <Property Name="URLLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ACUERDO_ARCHIVOS_ACUERDO">
+          <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="1" />
+          <End Role="ACUERDO_ARCHIVO" Type="Self.ACUERDO_ARCHIVO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CANAL">
-              <PropertyRef Name="IdCanal" />
+            <Principal Role="ACUERDO">
+              <PropertyRef Name="IdAcuerdo" />
             </Principal>
-            <Dependent Role="CANAL_CAMPO">
-              <PropertyRef Name="IdCanal" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_REGISTRO_CANAL">
-          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
-          <End Role="CANAL_REGISTRO" Type="Self.CANAL_REGISTRO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Principal>
-            <Dependent Role="CANAL_REGISTRO">
-              <PropertyRef Name="IdCanal" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ENTIDAD_CANAL_CANAL">
-          <End Role="CANAL" Type="Self.CANAL" Multiplicity="1" />
-          <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Principal>
-            <Dependent Role="ENTIDAD_CANAL">
-              <PropertyRef Name="IdCanal" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_VALOR_CANAL_CAMPO">
-          <End Role="CANAL_CAMPO" Type="Self.CANAL_CAMPO" Multiplicity="1" />
-          <End Role="CANAL_VALOR" Type="Self.CANAL_VALOR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL_CAMPO">
-              <PropertyRef Name="IdCampo" />
-            </Principal>
-            <Dependent Role="CANAL_VALOR">
-              <PropertyRef Name="IdCampo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CANAL_VALOR_CANAL_REGISTRO">
-          <End Role="CANAL_REGISTRO" Type="Self.CANAL_REGISTRO" Multiplicity="1" />
-          <End Role="CANAL_VALOR" Type="Self.CANAL_VALOR" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CANAL_REGISTRO">
-              <PropertyRef Name="IdCanalRegistro" />
-            </Principal>
-            <Dependent Role="CANAL_VALOR">
-              <PropertyRef Name="IdCanalRegistro" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ENTIDAD_CANAL_ENTIDAD">
-          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
-          <End Role="ENTIDAD_CANAL" Type="Self.ENTIDAD_CANAL" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ENTIDAD">
-              <PropertyRef Name="IdEntidad" />
-            </Principal>
-            <Dependent Role="ENTIDAD_CANAL">
-              <PropertyRef Name="IdEntidad" />
+            <Dependent Role="ACUERDO_ARCHIVO">
+              <PropertyRef Name="IdAcuerdo" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1220,6 +1064,18 @@
             </Principal>
             <Dependent Role="FORMATO_ACUERDO">
               <PropertyRef Name="IdAcuerdo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMATO_NORMA">
+          <End Role="NORMA" Type="Self.NORMA" Multiplicity="0..1" />
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="NORMA">
+              <PropertyRef Name="IdNorma" />
+            </Principal>
+            <Dependent Role="FORMATO">
+              <PropertyRef Name="IdNorma" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1464,12 +1320,8 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="WebApiDbEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CANAL" EntityType="Self.CANAL" />
-          <EntitySet Name="CANAL_CAMPO" EntityType="Self.CANAL_CAMPO" />
-          <EntitySet Name="CANAL_REGISTRO" EntityType="Self.CANAL_REGISTRO" />
-          <EntitySet Name="CANAL_VALOR" EntityType="Self.CANAL_VALOR" />
-          <EntitySet Name="ENTIDAD_CANAL" EntityType="Self.ENTIDAD_CANAL" />
           <EntitySet Name="ACUERDO" EntityType="Self.ACUERDO" />
+          <EntitySet Name="ACUERDO_ARCHIVO" EntityType="Self.ACUERDO_ARCHIVO" />
           <EntitySet Name="FORMATO" EntityType="Self.FORMATO" />
           <EntitySet Name="FORMATO_ACUERDO" EntityType="Self.FORMATO_ACUERDO" />
           <EntitySet Name="FORMATO_PLANTILLA" EntityType="Self.FORMATO_PLANTILLA" />
@@ -1491,33 +1343,18 @@
           <EntitySet Name="TABLA_CAMPO" EntityType="Self.TABLA_CAMPO" />
           <EntitySet Name="TABLA_REGISTRO" EntityType="Self.TABLA_REGISTRO" />
           <EntitySet Name="TABLA_VALOR" EntityType="Self.TABLA_VALOR" />
-          <AssociationSet Name="FK_CANAL_CAMPO_CANAL" Association="Self.FK_CANAL_CAMPO_CANAL">
-            <End Role="CANAL" EntitySet="CANAL" />
-            <End Role="CANAL_CAMPO" EntitySet="CANAL_CAMPO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_REGISTRO_CANAL" Association="Self.FK_CANAL_REGISTRO_CANAL">
-            <End Role="CANAL" EntitySet="CANAL" />
-            <End Role="CANAL_REGISTRO" EntitySet="CANAL_REGISTRO" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ENTIDAD_CANAL_CANAL" Association="Self.FK_ENTIDAD_CANAL_CANAL">
-            <End Role="CANAL" EntitySet="CANAL" />
-            <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_VALOR_CANAL_CAMPO" Association="Self.FK_CANAL_VALOR_CANAL_CAMPO">
-            <End Role="CANAL_CAMPO" EntitySet="CANAL_CAMPO" />
-            <End Role="CANAL_VALOR" EntitySet="CANAL_VALOR" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CANAL_VALOR_CANAL_REGISTRO" Association="Self.FK_CANAL_VALOR_CANAL_REGISTRO">
-            <End Role="CANAL_REGISTRO" EntitySet="CANAL_REGISTRO" />
-            <End Role="CANAL_VALOR" EntitySet="CANAL_VALOR" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ENTIDAD_CANAL_ENTIDAD" Association="Self.FK_ENTIDAD_CANAL_ENTIDAD">
-            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
-            <End Role="ENTIDAD_CANAL" EntitySet="ENTIDAD_CANAL" />
+          <EntitySet Name="INTEROPERATIVIDAD" EntityType="Self.INTEROPERATIVIDAD" />
+          <AssociationSet Name="FK_ACUERDO_ARCHIVOS_ACUERDO" Association="Self.FK_ACUERDO_ARCHIVOS_ACUERDO">
+            <End Role="ACUERDO" EntitySet="ACUERDO" />
+            <End Role="ACUERDO_ARCHIVO" EntitySet="ACUERDO_ARCHIVO" />
           </AssociationSet>
           <AssociationSet Name="FK_PLANTILLA_ACUERDO_ACUERDO" Association="Self.FK_PLANTILLA_ACUERDO_ACUERDO">
             <End Role="ACUERDO" EntitySet="ACUERDO" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_NORMA" Association="Self.FK_FORMATO_NORMA">
+            <End Role="NORMA" EntitySet="NORMA" />
+            <End Role="FORMATO" EntitySet="FORMATO" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMATO_PERIODICIDAD" Association="Self.FK_FORMATO_PERIODICIDAD">
             <End Role="PERIODICIDAD" EntitySet="PERIODICIDAD" />
@@ -1606,73 +1443,33 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WebApiDbModelStoreContainer" CdmEntityContainer="WebApiDbEntities">
-          <EntitySetMapping Name="CANAL">
-            <EntityTypeMapping TypeName="WebApiDbModel.CANAL">
-              <MappingFragment StoreEntitySet="CANAL">
-                <ScalarProperty Name="IdCanal" ColumnName="IdCanal" />
-                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CANAL_CAMPO">
-            <EntityTypeMapping TypeName="WebApiDbModel.CANAL_CAMPO">
-              <MappingFragment StoreEntitySet="CANAL_CAMPO">
-                <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
-                <ScalarProperty Name="IdCanal" ColumnName="IdCanal" />
-                <ScalarProperty Name="Campo" ColumnName="Campo" />
-                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
-                <ScalarProperty Name="IdTipoDato" ColumnName="IdTipoDato" />
-                <ScalarProperty Name="Tamaño" ColumnName="Tamaño" />
-                <ScalarProperty Name="Editable" ColumnName="Editable" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CANAL_REGISTRO">
-            <EntityTypeMapping TypeName="WebApiDbModel.CANAL_REGISTRO">
-              <MappingFragment StoreEntitySet="CANAL_REGISTRO">
-                <ScalarProperty Name="IdCanalRegistro" ColumnName="IdCanalRegistro" />
-                <ScalarProperty Name="IdCanal" ColumnName="IdCanal" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CANAL_VALOR">
-            <EntityTypeMapping TypeName="WebApiDbModel.CANAL_VALOR">
-              <MappingFragment StoreEntitySet="CANAL_VALOR">
-                <ScalarProperty Name="IdCanalValor" ColumnName="IdCanalValor" />
-                <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
-                <ScalarProperty Name="IdCanalRegistro" ColumnName="IdCanalRegistro" />
-                <ScalarProperty Name="ValorAlfanumerico" ColumnName="ValorAlfanumerico" />
-                <ScalarProperty Name="ValorEntero" ColumnName="ValorEntero" />
-                <ScalarProperty Name="ValorDinero" ColumnName="ValorDinero" />
-                <ScalarProperty Name="ValorTasa" ColumnName="ValorTasa" />
-                <ScalarProperty Name="ValorFecha" ColumnName="ValorFecha" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ENTIDAD_CANAL">
-            <EntityTypeMapping TypeName="WebApiDbModel.ENTIDAD_CANAL">
-              <MappingFragment StoreEntitySet="ENTIDAD_CANAL">
-                <ScalarProperty Name="IdEntidadCanal" ColumnName="IdEntidadCanal" />
-                <ScalarProperty Name="IdEntidad" ColumnName="IdEntidad" />
-                <ScalarProperty Name="IdCanal" ColumnName="IdCanal" />
-                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ACUERDO">
             <EntityTypeMapping TypeName="WebApiDbModel.ACUERDO">
               <MappingFragment StoreEntitySet="ACUERDO">
                 <ScalarProperty Name="IdAcuerdo" ColumnName="IdAcuerdo" />
                 <ScalarProperty Name="IdTipoAcuerdo" ColumnName="IdTipoAcuerdo" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
-                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="FechaAcuerdo" ColumnName="FechaAcuerdo" />
+                <ScalarProperty Name="IdEntidad" ColumnName="IdEntidad" />
                 <ScalarProperty Name="IdEntidadContraparte" ColumnName="IdEntidadContraparte" />
-                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="Objeto" ColumnName="Objeto" />
+                <ScalarProperty Name="FechaInicio" ColumnName="FechaInicio" />
+                <ScalarProperty Name="FechaFin" ColumnName="FechaFin" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+                <ScalarProperty Name="IdDuracionConcepto" ColumnName="IdDuracionConcepto" />
+                <ScalarProperty Name="Observacion" ColumnName="Observacion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ACUERDO_ARCHIVO">
+            <EntityTypeMapping TypeName="WebApiDbModel.ACUERDO_ARCHIVO">
+              <MappingFragment StoreEntitySet="ACUERDO_ARCHIVO">
+                <ScalarProperty Name="IdAcuerdoArchivo" ColumnName="IdAcuerdoArchivo" />
+                <ScalarProperty Name="IdAcuerdo" ColumnName="IdAcuerdo" />
+                <ScalarProperty Name="IdUrlLink" ColumnName="IdUrlLink" />
+                <ScalarProperty Name="NombreArchivo" ColumnName="NombreArchivo" />
+                <ScalarProperty Name="IdTipoArchivo" ColumnName="IdTipoArchivo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1696,7 +1493,7 @@
           <EntitySetMapping Name="FORMATO_ACUERDO">
             <EntityTypeMapping TypeName="WebApiDbModel.FORMATO_ACUERDO">
               <MappingFragment StoreEntitySet="FORMATO_ACUERDO">
-                <ScalarProperty Name="IdFormatocAuerdo" ColumnName="IdFormatocAuerdo" />
+                <ScalarProperty Name="IdFormatoAcuerdo" ColumnName="IdFormatoAcuerdo" />
                 <ScalarProperty Name="IdAcuerdo" ColumnName="IdAcuerdo" />
                 <ScalarProperty Name="IdFormatoPlantilla" ColumnName="IdFormatoPlantilla" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
@@ -1710,6 +1507,7 @@
                 <ScalarProperty Name="IdFormato" ColumnName="IdFormato" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="FechaRegistro" ColumnName="FechaRegistro" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1832,9 +1630,9 @@
             <EntityTypeMapping TypeName="WebApiDbModel.PERIODO">
               <MappingFragment StoreEntitySet="PERIODO">
                 <ScalarProperty Name="IdPeriodo" ColumnName="IdPeriodo" />
-                <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
                 <ScalarProperty Name="MesInicio" ColumnName="MesInicio" />
                 <ScalarProperty Name="MesFin" ColumnName="MesFin" />
               </MappingFragment>
@@ -1900,7 +1698,9 @@
               <MappingFragment StoreEntitySet="TABLA">
                 <ScalarProperty Name="IdTabla" ColumnName="IdTabla" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
                 <ScalarProperty Name="IdTipoTabla" ColumnName="IdTipoTabla" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1911,6 +1711,7 @@
                 <ScalarProperty Name="IdCampo" ColumnName="IdCampo" />
                 <ScalarProperty Name="IdTabla" ColumnName="IdTabla" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="IdTipoDato" ColumnName="IdTipoDato" />
                 <ScalarProperty Name="Tamaño" ColumnName="Tamaño" />
@@ -1937,6 +1738,18 @@
                 <ScalarProperty Name="ValorBoleano" ColumnName="ValorBoleano" />
                 <ScalarProperty Name="ValorDinero" ColumnName="ValorDinero" />
                 <ScalarProperty Name="ValorTasa" ColumnName="ValorTasa" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="INTEROPERATIVIDAD">
+            <EntityTypeMapping TypeName="WebApiDbModel.INTEROPERATIVIDAD">
+              <MappingFragment StoreEntitySet="INTEROPERATIVIDAD">
+                <ScalarProperty Name="IdInterOperatividad" ColumnName="IdInterOperatividad" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Puerto" ColumnName="Puerto" />
+                <ScalarProperty Name="URLLink" ColumnName="URLLink" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

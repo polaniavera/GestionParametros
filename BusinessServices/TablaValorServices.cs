@@ -142,7 +142,7 @@ namespace BusinessServices
             return success;
         }
 
-        public NormaEntity setDescripcion(NormaEntity norma)
+        public NormaEntity setDescripcion(NormaEntity norma, List<NormaSectorEntity> normaSector)
         {
             var valor = GetTablaValorById(norma.IdTipoNorma);
             if (valor != null)
@@ -151,6 +151,20 @@ namespace BusinessServices
             var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
             if (entidad != null)
                 norma.DescripcionEntidadEmite = entidad.Nombre;
+
+            if (normaSector != null)
+            {
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<NormaSectorEntity, NORMA_SECTOR>();
+                });
+                var sectorModel = Mapper.Map<List<NormaSectorEntity>, List<NORMA_SECTOR>>(normaSector);
+
+                foreach (NORMA_SECTOR sector in sectorModel)
+                {
+                    norma.NORMA_SECTOR.Add(sector);
+                }
+            }
 
             return norma;
         }

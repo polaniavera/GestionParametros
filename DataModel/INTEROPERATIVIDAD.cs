@@ -12,21 +12,13 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class PLAZO
+    public partial class INTEROPERATIVIDAD
     {
-        public PLAZO()
-        {
-            this.FORMATO = new HashSet<FORMATO>();
-        }
-    
-        public int IdPlazo { get; set; }
-        public string Codigo { get; set; }
-        public string Descripcion { get; set; }
-        public bool CalcularFecha { get; set; }
-        public bool PeriodoVencido { get; set; }
-        public bool UltimoDia { get; set; }
-        public int TipoDia { get; set; }
-    
-        public virtual ICollection<FORMATO> FORMATO { get; set; }
+        public int IdInterOperatividad { get; set; }
+        public string Ip { get; set; }
+        public int Puerto { get; set; }
+        public string URLLink { get; set; }
+        public string Usuario { get; set; }
+        public string Clave { get; set; }
     }
 }

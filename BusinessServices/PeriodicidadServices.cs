@@ -40,5 +40,25 @@ namespace BusinessServices
             }
             return null;
         }
+
+        /// <summary>
+        /// Fetches periodicidad details by id
+        /// </summary>
+        /// <param name="periodicidadId"></param>
+        /// <returns></returns>
+        public PeriodicidadEntity GetPeriodicidadById(int periodicidadId)
+        {
+            var periodicidad = _unitOfWork.PeriodicidadRepository.GetByID(periodicidadId);
+            if (periodicidad != null)
+            {
+                Mapper.Initialize(cfg =>
+                {
+                    cfg.CreateMap<PERIODICIDAD, PeriodicidadEntity>();
+                });
+                var periodicidadModel = Mapper.Map<PERIODICIDAD, PeriodicidadEntity>(periodicidad);
+                return periodicidadModel;
+            }
+            return null;
+        }
     }
 }
