@@ -275,6 +275,7 @@
     <Compile Include="Controllers\FormatoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NormaController.cs" />
+    <Compile Include="Controllers\PlantillaController.cs" />
     <Compile Include="Controllers\SectorServicioController.cs" />
     <Compile Include="Controllers\TablaCampoController.cs" />
     <Compile Include="Controllers\TablaController.cs" />

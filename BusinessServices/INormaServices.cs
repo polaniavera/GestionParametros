@@ -9,7 +9,7 @@ namespace BusinessServices
     public interface INormaServices
     {
         NormaEntity GetNormaById(int normaId);
-        IEnumerable<NormaEntity> GetAllNormas();
+        object[] GetAllNormas();
         IEnumerable<BusinessEntities.NormaEntity> GetAllNormasActive();
         int CreateNorma(NormaEntity normaEntity);
         bool UpdateNorma(int normaId, NormaEntity normaEntity);

@@ -62,6 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodigoError.cs" />
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="EntidadServices.cs" />
     <Compile Include="FormatoPlantillaServices.cs" />

@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomEntities\IdEntity.cs" />
     <Compile Include="CustomEntities\TablaValorListEntity.cs" />
     <Compile Include="EntidadEntity.cs" />
     <Compile Include="FormatoEntity.cs" />

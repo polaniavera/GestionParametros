@@ -2,6 +2,7 @@
 using BusinessEntities;
 using DataModel;
 using DataModel.UnitOfWork;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
@@ -63,28 +64,42 @@ namespace BusinessServices
         /// Fetches all the normas
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.NormaEntity> GetAllNormas()
+        public Object[] GetAllNormas()
         {
-            var normaServicios = _unitOfWork.NormaRepository.GetAll().ToList();
-            if (normaServicios.Any())
+            try
             {
-                Mapper.Initialize(cfg =>
+                var normaServicios = _unitOfWork.NormaRepository.GetAll().ToList();
+                if (normaServicios.Any())
                 {
-                    cfg.CreateMap<NORMA, NormaEntity>();
-                });
-                var normasModel = Mapper.Map<List<NORMA>, List<NormaEntity>>(normaServicios);
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<NORMA, NormaEntity>();
+                    });
+                    var normasModel = Mapper.Map<List<NORMA>, List<NormaEntity>>(normaServicios);
 
-                foreach (NormaEntity norma in normasModel)
-                {
-                    if (norma.IdEstado == 1)
-                        norma.DescripcionEstado = "Activo";
-                    else
-                        norma.DescripcionEstado = "Inactivo";
+                    foreach (NormaEntity norma in normasModel)
+                    {
+                        if (norma.IdEstado == 1)
+                            norma.DescripcionEstado = "Activo";
+                        else
+                            norma.DescripcionEstado = "Inactivo";
+                    }
+
+                    object[] resultado = { "0000", normasModel };
+                    return resultado;
                 }
-                
-                return normasModel;
+                var cod = new CodigoError();
+                var codigoError = cod.Error("null");
+                object[] resultado2 = { codigoError };
+                return resultado2;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>

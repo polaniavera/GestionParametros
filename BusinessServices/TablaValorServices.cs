@@ -5,6 +5,7 @@ using AutoMapper;
 using BusinessEntities;
 using DataModel;
 using DataModel.UnitOfWork;
+using System;
 
 namespace BusinessServices
 {
@@ -169,20 +170,30 @@ namespace BusinessServices
             return norma;
         }
 
-        public IEnumerable<NormaEntity> setDescripcionList(IEnumerable<NormaEntity> normas)
+        public object[] setDescripcionList(List<NormaEntity> normas)
         {
-            foreach (NormaEntity norma in normas)
+            try
             {
-                var valor = GetTablaValorById(norma.IdTipoNorma);
-                if(valor!=null)
-                    norma.DescripcionTipoNorma = valor.ValorAlfanumerico;
+                foreach (NormaEntity norma in normas)
+                {
+                    var valor = GetTablaValorById(norma.IdTipoNorma);
+                    if (valor != null)
+                        norma.DescripcionTipoNorma = valor.ValorAlfanumerico;
 
-                var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
-                if (entidad != null)
-                    norma.DescripcionEntidadEmite = entidad.Nombre;
+                    var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
+                    if (entidad != null)
+                        norma.DescripcionEntidadEmite = entidad.Nombre;
+                }
+                object[] resultado = { "0000", normas };
+                return resultado;
             }
-
-            return normas;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
     }

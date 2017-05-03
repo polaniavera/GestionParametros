@@ -1,7 +1,7 @@
 ﻿using BusinessEntities;
+using BusinessEntities.CustomEntities;
 using BusinessServices;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,7 +20,6 @@ namespace GestionParametros.Controllers
         private readonly ITablaServices _tablaServices;
         private readonly ITablaValorServices _tablaValorServices;
         private readonly IFormatoServices _formatoServices;
-        private readonly IFormatoServicioServices _formatoServicioServices;
 
         public static string TIPONORMA = "TIPONORMA";
         public static string SECCION = "SECCION";
@@ -38,8 +37,7 @@ namespace GestionParametros.Controllers
             IEntidadServices entidadServices,
             ITablaServices tablaServices,
             ITablaValorServices tablaValorServices,
-            IFormatoServices formatoServices,
-            IFormatoServicioServices formatoServicioServices)
+            IFormatoServices formatoServices)
         {
             _normaServices = normaServices;
             _normaSectorServices = normaSectorServices;
@@ -48,7 +46,6 @@ namespace GestionParametros.Controllers
             _tablaServices = tablaServices;
             _tablaValorServices = tablaValorServices;
             _formatoServices = formatoServices;
-            _formatoServicioServices = formatoServicioServices;
         }
 
         #endregion
@@ -58,15 +55,20 @@ namespace GestionParametros.Controllers
         public HttpResponseMessage get()
         {
             var normas = _normaServices.GetAllNormas();
-            if (normas != null)
+            if (normas != null && normas[0].Equals("0000"))
             {
-                normas = _tablaValorServices.setDescripcionList(normas);
+                List<NormaEntity> normasList = (List<NormaEntity>) normas.ElementAt(1);
+                normas = _tablaValorServices.setDescripcionList(normasList);
 
-                var normaEntities = normas as List<NormaEntity> ?? normas.ToList();
-                if (normaEntities.Any())
-                    return Request.CreateResponse(HttpStatusCode.OK, normaEntities);
+                if (normas != null && normas[0].Equals("0000"))
+                {
+                    //var normaEntities = normas as List<NormaEntity> ?? normas.ToList();
+                    //if (normaEntities.Any())
+                    return Request.CreateResponse(HttpStatusCode.OK, normas);
+                }
+
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Formatos not found");
+            return Request.CreateResponse(HttpStatusCode.NotFound, normas);
         }
 
         // GET api/norma/getActive
@@ -85,10 +87,17 @@ namespace GestionParametros.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "normas not found");
         }
 
-        // GET api/norma/get/5
-        [Route("get/{id:int}")]
-        public HttpResponseMessage get(int id)
+        // GET api/norma/byId
+        [Route("byId")]
+        public HttpResponseMessage byId([FromBody] IdEntity entity)
         {
+            int id = 0;
+
+            if (entity != null)
+            {
+                id = entity.Id;
+            }
+
             var norma = _normaServices.GetNormaById(id);
 
             if (norma != null)
@@ -115,20 +124,17 @@ namespace GestionParametros.Controllers
             return 0;
         }
 
-        // PUT api/norma/update/5
-        //[Route("update/{id:int}")]
-        //public bool update(int id, [FromBody]NormaEntity normaEntity)
-        //{
-        //    if (id > 0)
-        //    {
-        //        return _normaServices.UpdateNorma(id, normaEntity);
-        //    }
-        //    return false;
-        //}
-
-        // DELETE api/norma/delete/5
-        public bool delete(int id)
+        // DELETE api/norma/delete
+        [Route("delete")]
+        public bool delete([FromBody] IdEntity entity)
         {
+            int id = 0;
+
+            if (entity != null)
+            {
+                id = entity.Id;
+            }
+
             if (id > 0)
             { 
                 //si existe relacion de la Norma en la tabla formato no la borra
@@ -140,32 +146,38 @@ namespace GestionParametros.Controllers
             return false;
         }
 
-        // POST api/norma/inactivate/5
-        [Route("inactivate/{id:int}")]
-        public bool inactivate(int id)
+        // POST api/norma/inactivate
+        [Route("inactivate")]
+        public bool inactivate([FromBody] IdEntity entity)
         {
+            int id = 0;
+
+            if (entity != null)
+            {
+                id = entity.Id;
+            }
+
             if (id > 0)
             {
                 return _normaServices.InactivateNormaRelations(id);
-                //if (relations)
-                //{
-                //    return _normaServices.InactivateNorma(id);
-                //}
             }
             return false;
         }
 
-        // POST api/norma/activate/5
-        [Route("activate/{id:int}")]
-        public bool activate(int id)
+        // POST api/norma/activate
+        [Route("activate")]
+        public bool activate([FromBody] IdEntity entity)
         {
+            int id = 0;
+
+            if (entity != null)
+            {
+                id = entity.Id;
+            }
+
             if (id > 0)
             {
                 return _normaServices.ActivateNormaRelations(id);
-                //if (relations)
-                //{
-                //    return _normaServices.ActivateNorma(id);
-                //}
             }
             return false;
         }
@@ -215,10 +227,17 @@ namespace GestionParametros.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
         }
 
-        // POST api/norma/editar/2
-        [Route("editar/{idNorma:int}")]
-        public HttpResponseMessage editarNorma(int idNorma)
+        // POST api/norma/editar
+        [Route("editar")]
+        public HttpResponseMessage editarNorma([FromBody] IdEntity entity)
         {
+            int id = 0;
+
+            if (entity != null)
+            {
+                id = entity.Id;
+            }
+
             //Normatividad Padre
             var normas = _normaServices.GetNormasPadre();
             //Lista Sectores
@@ -228,9 +247,9 @@ namespace GestionParametros.Controllers
             //Lista Tipo Norma
             var tipoNormaList = _tablaServices.GetParametrosVert(TIPONORMA);
             //Norma a editar
-            var normaEditar = _normaServices.GetNormaById(idNorma);
+            var normaEditar = _normaServices.GetNormaById(id);
             //Lista de sectores de la norma a editar
-            var normaSector = _normaSectorServices.GetNormaSectorById(idNorma);
+            var normaSector = _normaSectorServices.GetNormaSectorById(id);
 
             if (normas != null && sectorList != null && entidadList != null && tipoNormaList != null && normaEditar != null && normaSector != null)
             {
