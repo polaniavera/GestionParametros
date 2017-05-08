@@ -39,32 +39,46 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaId"></param>
         /// <returns></returns>
-        public BusinessEntities.NormaEntity GetNormaById(int normaId)
+        public object[] GetNormaById(int normaId)
         {
-            var normaServicio = _unitOfWork.NormaRepository.GetByID(normaId);
-            if (normaServicio != null)
+            try
             {
-                Mapper.Initialize(cfg =>
+                var normaServicio = _unitOfWork.NormaRepository.GetByID(normaId);
+                if (normaServicio != null)
                 {
-                    cfg.CreateMap<NORMA, NormaEntity>();
-                });
-                var normaModel = Mapper.Map<NORMA, NormaEntity>(normaServicio);
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<NORMA, NormaEntity>();
+                    });
+                    var normaModel = Mapper.Map<NORMA, NormaEntity>(normaServicio);
 
-                if (normaModel.IdEstado == 1)
-                    normaModel.DescripcionEstado = "Activo";
-                else
-                    normaModel.DescripcionEstado = "Inactivo";
+                    if (normaModel.IdEstado == 1)
+                        normaModel.DescripcionEstado = "Activo";
+                    else
+                        normaModel.DescripcionEstado = "Inactivo";
 
-                return normaModel;
+                    object[] resultado = { "0000", normaModel };
+                    return resultado;
+                }
+                var cod = new CodigoError();
+                var codigoError = cod.Error("null");
+                object[] resultado2 = { codigoError };
+                return resultado2;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
         /// Fetches all the normas
         /// </summary>
         /// <returns></returns>
-        public Object[] GetAllNormas()
+        public object[] GetAllNormas()
         {
             try
             {
@@ -106,19 +120,33 @@ namespace BusinessServices
         /// Fetches all the actives normas
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.NormaEntity> GetAllNormasActive()
+        public object[] GetAllNormasActive()
         {
-            var normaServicios = _unitOfWork.NormaRepositoryCustom.GetMany().ToList();
-            if (normaServicios.Any())
+            try
             {
-                Mapper.Initialize(cfg =>
+                var normaServicios = _unitOfWork.NormaRepositoryCustom.GetMany().ToList();
+                if (normaServicios.Any())
                 {
-                    cfg.CreateMap<NORMA, NormaEntity>();
-                });
-                var normasModel = Mapper.Map<List<NORMA>, List<NormaEntity>>(normaServicios);
-                return normasModel;
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<NORMA, NormaEntity>();
+                    });
+                    var normasModel = Mapper.Map<List<NORMA>, List<NormaEntity>>(normaServicios);
+                    object[] resultado = { "0000", normasModel };
+                    return resultado;
+                }
+                var cod = new CodigoError();
+                var codigoError = cod.Error("null");
+                object[] resultado2 = { codigoError };
+                return resultado2;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -126,31 +154,43 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaEntity"></param>
         /// <returns></returns>
-        public int CreateNorma(BusinessEntities.NormaEntity normaEntity)
+        public object[] CreateNorma(BusinessEntities.NormaEntity normaEntity)
         {
-            using (var scope = new TransactionScope())
+            try
             {
-                var normaServicio = new NORMA
+                using (var scope = new TransactionScope())
                 {
-                    CodigoNorma = normaEntity.CodigoNorma,
-                    Descripcion = normaEntity.Descripcion,
-                    FechaInicio = normaEntity.FechaInicio,
-                    FechaNorma = normaEntity.FechaNorma,
-                    IdEntidadEmite = normaEntity.IdEntidadEmite,
-                    IdEstado = normaEntity.IdEstado,
-                    IdNorma = normaEntity.IdNorma,
-                    IdNormaPadre = normaEntity.IdNormaPadre,
-                    IdTipoNorma = normaEntity.IdTipoNorma,
-                    NombreNorma = normaEntity.NombreNorma,
-                    NORMA_SECTOR = normaEntity.NORMA_SECTOR,
-                    IdUrlLink = normaEntity.IdUrlLink,
-                    NombreArchivo = normaEntity.NombreArchivo,
-                    IdSeccion = normaEntity.IdSeccion
-            };
-                _unitOfWork.NormaRepository.Insert(normaServicio);
-                _unitOfWork.Save();
-                scope.Complete();
-                return normaServicio.IdNorma;
+                    var normaServicio = new NORMA
+                    {
+                        CodigoNorma = normaEntity.CodigoNorma,
+                        Descripcion = normaEntity.Descripcion,
+                        FechaInicio = normaEntity.FechaInicio,
+                        FechaNorma = normaEntity.FechaNorma,
+                        IdEntidadEmite = normaEntity.IdEntidadEmite,
+                        IdEstado = normaEntity.IdEstado,
+                        IdNorma = normaEntity.IdNorma,
+                        IdNormaPadre = normaEntity.IdNormaPadre,
+                        IdTipoNorma = normaEntity.IdTipoNorma,
+                        NombreNorma = normaEntity.NombreNorma,
+                        NORMA_SECTOR = normaEntity.NORMA_SECTOR,
+                        IdUrlLink = normaEntity.IdUrlLink,
+                        NombreArchivo = normaEntity.NombreArchivo,
+                        IdSeccion = normaEntity.IdSeccion
+                    };
+                    _unitOfWork.NormaRepository.Insert(normaServicio);
+                    _unitOfWork.Save();
+                    scope.Complete();
+    
+                    object[] resultado = { "0000", normaServicio.IdNorma };
+                    return resultado;
+                }
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
             }
         }
 
@@ -160,39 +200,50 @@ namespace BusinessServices
         /// <param name="normaId"></param>
         /// <param name="normaEntity"></param>
         /// <returns></returns>
-        public bool UpdateNorma(int normaId, BusinessEntities.NormaEntity normaEntity)
+        public object[] UpdateNorma(int normaId, BusinessEntities.NormaEntity normaEntity)
         {
             var success = false;
-            if (normaEntity != null)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (normaEntity != null)
                 {
-                    var normaServicio = _unitOfWork.NormaRepository.GetByID(normaId);
-                    if (normaServicio != null)
+                    using (var scope = new TransactionScope())
                     {
-                        normaServicio.CodigoNorma = normaEntity.CodigoNorma;
-                        normaServicio.Descripcion = normaEntity.Descripcion;
-                        normaServicio.FechaInicio = normaEntity.FechaInicio;
-                        normaServicio.FechaNorma = normaEntity.FechaNorma;
-                        normaServicio.IdEntidadEmite = normaEntity.IdEntidadEmite;
-                        normaServicio.IdEstado = normaEntity.IdEstado;
-                        normaServicio.IdNorma = normaEntity.IdNorma;
-                        normaServicio.IdNormaPadre = normaEntity.IdNormaPadre;
-                        normaServicio.IdTipoNorma = normaEntity.IdTipoNorma;
-                        normaServicio.NombreNorma = normaEntity.NombreNorma;
-                        normaServicio.NORMA_SECTOR = normaEntity.NORMA_SECTOR;
-                        normaServicio.IdUrlLink = normaEntity.IdUrlLink;
-                        normaServicio.NombreArchivo = normaEntity.NombreArchivo;
-                        normaServicio.IdSeccion = normaEntity.IdSeccion;
+                        var normaServicio = _unitOfWork.NormaRepository.GetByID(normaId);
+                        if (normaServicio != null)
+                        {
+                            normaServicio.CodigoNorma = normaEntity.CodigoNorma;
+                            normaServicio.Descripcion = normaEntity.Descripcion;
+                            normaServicio.FechaInicio = normaEntity.FechaInicio;
+                            normaServicio.FechaNorma = normaEntity.FechaNorma;
+                            normaServicio.IdEntidadEmite = normaEntity.IdEntidadEmite;
+                            normaServicio.IdEstado = normaEntity.IdEstado;
+                            normaServicio.IdNorma = normaEntity.IdNorma;
+                            normaServicio.IdNormaPadre = normaEntity.IdNormaPadre;
+                            normaServicio.IdTipoNorma = normaEntity.IdTipoNorma;
+                            normaServicio.NombreNorma = normaEntity.NombreNorma;
+                            normaServicio.NORMA_SECTOR = normaEntity.NORMA_SECTOR;
+                            normaServicio.IdUrlLink = normaEntity.IdUrlLink;
+                            normaServicio.NombreArchivo = normaEntity.NombreArchivo;
+                            normaServicio.IdSeccion = normaEntity.IdSeccion;
 
-                        _unitOfWork.NormaRepository.Update(normaServicio);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                            _unitOfWork.NormaRepository.Update(normaServicio);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -200,25 +251,35 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaId"></param>
         /// <returns></returns>
-        public bool DeleteNorma(int normaId)
+        public object[] DeleteNorma(int normaId)
         {
             var success = false;
-            if (normaId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (normaId > 0)
                 {
-                    var norma = _unitOfWork.NormaRepository.GetByID(normaId);
-                    if (norma != null)
+                    using (var scope = new TransactionScope())
                     {
-                        _unitOfWork.NormaRepository.Delete(norma);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                        var norma = _unitOfWork.NormaRepository.GetByID(normaId);
+                        if (norma != null)
+                        {
+                            _unitOfWork.NormaRepository.Delete(norma);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
-
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -226,151 +287,91 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaId"></param>
         /// <returns></returns>
-        public bool InactivateNormaRelations(int normaId)
+        public object[] InactivateNormaRelations(int normaId)
         {
             var success = false;
-            if (normaId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (normaId > 0)
                 {
-                    var norma = _unitOfWork.NormaRepository.GetByID(normaId);
-                    if (norma != null)
+                    using (var scope = new TransactionScope())
                     {
-                        //Obtener los formatos relacionados con Norma para cambiarles el estado
-                        var formatos = _unitOfWork.FormatoRepositoryCustom.GetByIdNorma(normaId);
-                        if (formatos != null)
+                        var norma = _unitOfWork.NormaRepository.GetByID(normaId);
+                        if (norma != null)
                         {
-                            foreach (FORMATO formato in formatos)
+                            //Obtener los formatos relacionados con Norma para cambiarles el estado
+                            var formatos = _unitOfWork.FormatoRepositoryCustom.GetByIdNorma(normaId);
+                            if (formatos != null)
                             {
-                                //Obtener los registros de campos asociados a estos formatos
-                                var campos = _unitOfWork.FormatoRepositoryCustom.GetCamposByFormato(formato.IdFormato);
-                                if (campos != null)
+                                foreach (FORMATO formato in formatos)
                                 {
-                                    foreach (PLANTILLA_CAMPO campo in campos)
+                                    //Obtener los registros de campos asociados a estos formatos
+                                    var campos = _unitOfWork.FormatoRepositoryCustom.GetCamposByFormato(formato.IdFormato);
+                                    if (campos != null)
                                     {
-                                        //Inactivar los campos
-                                        bool inactivateCampo = _plantillaCampoServices.InactivateCampo(campo.IdPlantillaCampo);
-                                        if (!inactivateCampo)
-                                            return false;
+                                        foreach (PLANTILLA_CAMPO campo in campos)
+                                        {
+                                            //Inactivar los campos
+                                            bool inactivateCampo = _plantillaCampoServices.InactivateCampo(campo.IdPlantillaCampo);
+                                            if (!inactivateCampo)
+                                            {
+                                                object[] resultado2 = { "0000", false };
+                                                return resultado2;
+                                            }
+                                        }
                                     }
-                            }
-                                //Inactivar todos los formatos devueltos segun idNorma
-                                bool inactivateFormato = _formatoServices.InactivateFormato(formato.IdFormato);
-                                if (!inactivateFormato)
-                                    return false;
-                            }
-                        }
-                        //Obtiene los sectores segun idNorma
-                        var sectores = _normaSectorServices.GetNormaSectorByIdNorma(normaId);
-                        if (sectores != null)
-                        {
-                            foreach (NormaSectorEntity sector in sectores)
-                            {
-                                //Inactivar los sectores
-                                bool inactivateSector = _normaSectorServices.InactivateNormaSector(sector.IdNormaSector);
-                                if (!inactivateSector)
-                                    return false;
-                            }
-                            success = true;
-                        }
-                        norma.IdEstado = 0;
-                        _unitOfWork.NormaRepository.Update(norma);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
-                    }
-                }
-            }
-            return success;
-        }
-
-        /// <summary>
-        /// Activates a norma
-        /// </summary>
-        /// <param name="normaId"></param>
-        /// <returns></returns>
-        public bool ActivateNormaRelations(int normaId)
-        {
-            var success = false;
-            if (normaId > 0)
-            {
-                using (var scope = new TransactionScope())
-                {
-                    var norma = _unitOfWork.NormaRepository.GetByID(normaId);
-                    if (norma != null)
-                    {
-                        //Obtener los formatos relacionados con Norma para cambiarles el estado
-                        var formatos = _unitOfWork.FormatoRepositoryCustom.GetByIdNorma(normaId);
-                        if (formatos != null)
-                        {
-                            foreach (FORMATO formato in formatos)
-                            {
-                                //Obtener los registros de campos asociados a estos formatos
-                                var campos = _unitOfWork.FormatoRepositoryCustom.GetCamposByFormato(formato.IdFormato);
-                                if (campos != null)
-                                {
-                                    foreach (PLANTILLA_CAMPO campo in campos)
+                                    //Inactivar todos los formatos devueltos segun idNorma
+                                    var flagObject = _formatoServices.InactivateFormato(formato.IdFormato);
+                                    if (flagObject[0].Equals("0000"))
                                     {
-                                        //Activar los campos
-                                        bool activateCampo = _plantillaCampoServices.ActivateCampo(campo.IdPlantillaCampo);
-                                        if (!activateCampo)
-                                            return false;
+                                        bool flag = (bool)flagObject.ElementAt(1);
+                                        if (!flag)
+                                        {
+                                            object[] resultado2 = { "0000", false };
+                                            return resultado2;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return flagObject;
                                     }
                                 }
-                                //Activar todos los formatos devueltos segun idNorma
-                                bool activateFormato = _formatoServices.ActivateFormato(formato.IdFormato);
-                                if (!activateFormato)
-                                    return false;
                             }
-                        }
-                        //Obtiene los sectores segun idNorma
-                        var sectores = _normaSectorServices.GetNormaSectorByIdNorma(normaId);
-                        if (sectores != null)
-                        {
-                            foreach (NormaSectorEntity sector in sectores)
+                            //Obtiene los sectores segun idNorma
+                            var sectores = _normaSectorServices.GetNormaSectorByIdNorma(normaId);
+                            if (sectores != null)
                             {
-                                //Activar los sectores
-                                bool activateSector = _normaSectorServices.ActivateNormaSector(sector.IdNormaSector);
-                                if (!activateSector)
-                                    return false;
+                                foreach (NormaSectorEntity sector in sectores)
+                                {
+                                    //Inactivar los sectores
+                                    bool inactivateSector = _normaSectorServices.InactivateNormaSector(sector.IdNormaSector);
+                                    if (!inactivateSector)
+                                    {
+                                        object[] resultado2 = { "0000", false };
+                                        return resultado2;
+                                    }
+                                }
+                                success = true;
                             }
+                            norma.IdEstado = 0;
+                            _unitOfWork.NormaRepository.Update(norma);
+                            _unitOfWork.Save();
+                            scope.Complete();
                             success = true;
                         }
-                        norma.IdEstado = 1;
-                        _unitOfWork.NormaRepository.Update(norma);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
-        }
-
-        /// <summary>
-        /// Inactivates a norma
-        /// </summary>
-        /// <param name="normaId"></param>
-        /// <returns></returns>
-        public bool InactivateNorma(int normaId)
-        {
-            var success = false;
-            if (normaId > 0)
+            catch (Exception e)
             {
-                using (var scope = new TransactionScope())
-                {
-                    var norma = _unitOfWork.NormaRepository.GetByID(normaId);
-                    if (norma != null)
-                    {
-                        norma.IdEstado = 0;
-                        _unitOfWork.NormaRepository.Update(norma);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
-                    }
-                }
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
             }
-            return success;
+
         }
 
         /// <summary>
@@ -378,132 +379,348 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaId"></param>
         /// <returns></returns>
-        public bool ActivateNorma(int normaId)
+        public object[] ActivateNormaRelations(int normaId)
         {
             var success = false;
-            if (normaId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (normaId > 0)
                 {
-                    var norma = _unitOfWork.NormaRepository.GetByID(normaId);
-                    if (norma != null)
+                    using (var scope = new TransactionScope())
                     {
-                        norma.IdEstado = 1;
-                        _unitOfWork.NormaRepository.Update(norma);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                        var norma = _unitOfWork.NormaRepository.GetByID(normaId);
+                        if (norma != null)
+                        {
+                            //Obtener los formatos relacionados con Norma para cambiarles el estado
+                            var formatos = _unitOfWork.FormatoRepositoryCustom.GetByIdNorma(normaId);
+                            if (formatos != null)
+                            {
+                                foreach (FORMATO formato in formatos)
+                                {
+                                    //Obtener los registros de campos asociados a estos formatos
+                                    var campos = _unitOfWork.FormatoRepositoryCustom.GetCamposByFormato(formato.IdFormato);
+                                    if (campos != null)
+                                    {
+                                        foreach (PLANTILLA_CAMPO campo in campos)
+                                        {
+                                            //Activar los campos
+                                            bool activateCampo = _plantillaCampoServices.ActivateCampo(campo.IdPlantillaCampo);
+                                            if (!activateCampo)
+                                            {
+                                                object[] resultado2 = { "0000", false };
+                                                return resultado2;
+                                            }
+                                        }
+                                    }
+                                    //Activar todos los formatos devueltos segun idNorma
+                                    var flagObject = _formatoServices.ActivateFormato(formato.IdFormato);
+                                    if (flagObject[0].Equals("0000"))
+                                    {
+                                        bool flag = (bool)flagObject.ElementAt(1);
+                                        if (!flag)
+                                        {
+                                            object[] resultado2 = { "0000", false };
+                                            return resultado2;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        return flagObject;
+                                    }                                    
+                                }
+                            }
+                            //Obtiene los sectores segun idNorma
+                            var sectores = _normaSectorServices.GetNormaSectorByIdNorma(normaId);
+                            if (sectores != null)
+                            {
+                                foreach (NormaSectorEntity sector in sectores)
+                                {
+                                    //Activar los sectores
+                                    bool activateSector = _normaSectorServices.ActivateNormaSector(sector.IdNormaSector);
+                                    if (!activateSector)
+                                    {
+                                        object[] resultado2 = { "0000", false };
+                                        return resultado2;
+                                    }
+                                }
+                                success = true;
+                            }
+                            norma.IdEstado = 1;
+                            _unitOfWork.NormaRepository.Update(norma);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+        }
+
+        /// <summary>
+        /// Inactivates a norma
+        /// </summary>
+        /// <param name="normaId"></param>
+        /// <returns></returns>
+        public object[] InactivateNorma(int normaId)
+        {
+            var success = false;
+            try
+            {
+                if (normaId > 0)
+                {
+                    using (var scope = new TransactionScope())
+                    {
+                        var norma = _unitOfWork.NormaRepository.GetByID(normaId);
+                        if (norma != null)
+                        {
+                            norma.IdEstado = 0;
+                            _unitOfWork.NormaRepository.Update(norma);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
+                    }
+                }
+                object[] resultado = { "0000", success };
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+        }
+
+        /// <summary>
+        /// Activates a norma
+        /// </summary>
+        /// <param name="normaId"></param>
+        /// <returns></returns>
+        public object[] ActivateNorma(int normaId)
+        {
+            var success = false;
+            try
+            {
+                if (normaId > 0)
+                {
+                    using (var scope = new TransactionScope())
+                    {
+                        var norma = _unitOfWork.NormaRepository.GetByID(normaId);
+                        if (norma != null)
+                        {
+                            norma.IdEstado = 1;
+                            _unitOfWork.NormaRepository.Update(norma);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
+                    }
+                }
+                object[] resultado = { "0000", success };
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
 
         /// <summary>
         /// Fetches all the normaPadre
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.NormaPadreEntity> GetNormasPadre()
+        public object[] GetNormasPadre()
         {
-            var normas = _unitOfWork.NormaRepository.GetAll().ToList();
-            if (normas.Any())
+            try
             {
-                Mapper.Initialize(cfg =>
+                var normas = _unitOfWork.NormaRepository.GetAll().ToList();
+                if (normas.Any())
                 {
-                    cfg.CreateMap<NORMA, NormaPadreEntity>();
-                });
-                var normaPadreList = Mapper.Map<List<NORMA>, List<NormaPadreEntity>>(normas);
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<NORMA, NormaPadreEntity>();
+                    });
+                    var normaPadreList = Mapper.Map<List<NORMA>, List<NormaPadreEntity>>(normas);
 
-                return normaPadreList;
+                    object[] resultado = { "0000", normaPadreList };
+                    return resultado;
+                }
+                return null;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
 
         /// <summary>
         /// return true if exist sector formato by sectorid
         /// </summary>
         /// <returns></returns>
-        public bool ExistSectorFormato(int sectorId)
+        public object[] ExistSectorFormato(int sectorId)
         {
-            return _unitOfWork.NormaRepositoryCustom.ExistServicio(sectorId);
-
+            try
+            {
+                var exist = _unitOfWork.NormaRepositoryCustom.ExistServicio(sectorId);
+                object[] resultado = { "0000", exist };
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
         /// Validate the normaSector asociated with Norma
         /// </summary>
         /// <returns></returns>
-        public bool ValidateSector(NormaEntity normaEntity, IEnumerable<NormaSectorEntity> normaSectorById)
+        public object[] ValidateSector(NormaEntity normaEntity, IEnumerable<NormaSectorEntity> normaSectorById)
         {
             int match = 0;
-
-            if (normaSectorById != null)
+            try
             {
-                foreach (NormaSectorEntity sectorExistente in normaSectorById)
+                if (normaSectorById != null)
                 {
-                    foreach (DataModel.NORMA_SECTOR sectorNuevo in normaEntity.NORMA_SECTOR)
+                    foreach (NormaSectorEntity sectorExistente in normaSectorById)
                     {
-                        if (sectorNuevo.IdSectorServicio.Equals(sectorExistente.IdSectorServicio))
-                            match++;
+                        foreach (DataModel.NORMA_SECTOR sectorNuevo in normaEntity.NORMA_SECTOR)
+                        {
+                            if (sectorNuevo.IdSector.Equals(sectorExistente.IdSector))
+                                match++;
+                        }
+                        //Si el sector existente no se encuentra en los seleccionados
+                        //valida que dicho sector no tenga relaciones para poderlo borrar
+                        if (match == 0)
+                        {
+                            //Valido relaciones
+                            var flagObject = ExistSectorFormato(sectorExistente.IdSector);
+                            if (flagObject[0].Equals("0000"))
+                            {
+                                bool flag = (bool) flagObject.ElementAt(1);
+                                if (flag)
+                                {
+                                    object[] resultado2 = { "0000", false };
+                                    return resultado2;
+                                }
+                            }else
+                            {
+                                return flagObject;
+                            }
+                            
+                        }
+                        else
+                            match = 0;
                     }
-                    //Si el sector existente no se encuentra en los seleccionados
-                    //valida que dicho sector no tenga relaciones para poderlo borrar
-                    if (match == 0)
-                    {
-                        //Valido relaciones
-                        if (ExistSectorFormato(sectorExistente.IdSectorServicio))
-                            return false;
-                    }
-                    else
-                        match = 0;
                 }
+                object[] resultado = { "0000", true };
+                return resultado;
             }
-            return true;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
 
         /// <summary>
         /// Find when the norma has changed the state
         /// </summary>
         /// <returns></returns>
-        public NormaEntity changeNormaState(NormaEntity normaEntity)
+        public object[] changeNormaState(NormaEntity normaEntity)
         {
-            if (normaEntity.IdNorma > 0)
+            try
             {
-                //Obtiene Norma almacenada
-                var norma = _unitOfWork.NormaRepository.GetByID(normaEntity.IdNorma);
-
-                if (norma != null)
+                if (normaEntity.IdNorma > 0)
                 {
-                    //Encuentra si la Norma cambio de estado con respecto a la norma a actualizar
-                    if (!(norma.IdEstado == normaEntity.IdEstado))
+                    //Obtiene Norma almacenada
+                    var norma = _unitOfWork.NormaRepository.GetByID(normaEntity.IdNorma);
+
+                    if (norma != null)
                     {
-                        //Si la Norma a actualizar tiene estado activo, activa todas sus relaciones
-                        if (normaEntity.IdEstado == 1)
+                        //Encuentra si la Norma cambio de estado con respecto a la norma a actualizar
+                        if (!(norma.IdEstado == normaEntity.IdEstado))
                         {
-                            if (ActivateNormaRelations(normaEntity.IdNorma))
+                            //Si la Norma a actualizar tiene estado activo, activa todas sus relaciones
+                            if (normaEntity.IdEstado == 1)
                             {
-                                //Y activa los sectores nuevos a almacenar
-                                foreach (var item in normaEntity.NORMA_SECTOR)
+                                var flagObject = ActivateNormaRelations(normaEntity.IdNorma);
+                                if (flagObject[0].Equals("0000"))
                                 {
-                                    item.IdEstado = 1;
+                                    bool flag = (bool)flagObject.ElementAt(1);
+                                    if (flag)
+                                    {
+                                        //Y activa los sectores nuevos a almacenar
+                                        foreach (var item in normaEntity.NORMA_SECTOR)
+                                        {
+                                            item.IdEstado = 1;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return flagObject;
                                 }
                             }
-                        }
-                        else
-                        {
-                            if (InactivateNormaRelations(normaEntity.IdNorma))
+                            else
                             {
-                                foreach (var item in normaEntity.NORMA_SECTOR)
+                                var flagObject = InactivateNormaRelations(normaEntity.IdNorma);
+                                if (flagObject[0].Equals("0000"))
                                 {
-                                    item.IdEstado = 0;
+                                    bool flag = (bool)flagObject.ElementAt(1);
+                                    if (flag)
+                                    {
+                                        foreach (var item in normaEntity.NORMA_SECTOR)
+                                        {
+                                            item.IdEstado = 0;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    return flagObject;
                                 }
                             }
                         }
                     }
-                }
 
+                }
+                object[] resultado = { "0000", normaEntity };
+                return resultado;
             }
-            return normaEntity;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
     }
 }

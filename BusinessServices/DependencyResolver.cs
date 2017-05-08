@@ -11,7 +11,7 @@ namespace BusinessServices
             registerComponent.RegisterType<IFormatoServices, FormatoServices>();
             registerComponent.RegisterType<IFormatoPlantillaServices, FormatoPlantillaServices>();
             registerComponent.RegisterType<IFormatoServicioServices, FormatoServicioServices>();
-            registerComponent.RegisterType<ISectorServicioServices, SectorServicioServices>();
+            registerComponent.RegisterType<ISectorServices, SectorServices>();
             registerComponent.RegisterType<INormaServices, NormaServices>();
             registerComponent.RegisterType<INormaSectorServices, NormaSectorServices>();
             registerComponent.RegisterType<IEntidadServices, EntidadServices>();

@@ -51,13 +51,14 @@ namespace GestionParametros.Controllers
         public HttpResponseMessage get()
         {
             var formatos = _formatoServices.GetAllFormatos();
-            if (formatos != null)
+            if (formatos != null && formatos[0].Equals("0000"))
             {
-                var formatoEntities = formatos as List<FormatoEntity> ?? formatos.ToList();
+                List<FormatoEntity> formatosList = (List<FormatoEntity>)formatos.ElementAt(1);
+                var formatoEntities = formatosList as List<FormatoEntity> ?? formatosList.ToList();
                 if (formatoEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, formatoEntities);
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Formatos not found");
+            return Request.CreateResponse(HttpStatusCode.NotFound, formatos);
         }
 
 
@@ -66,15 +67,16 @@ namespace GestionParametros.Controllers
         public HttpResponseMessage getActive()
         {
             var formatos = _formatoServices.GetAllFormatosActive();
-            if (formatos != null)
+            if (formatos != null && formatos[0].Equals("0000"))
             {
-                var formatoEntities = formatos as List<FormatoEntity> ?? formatos.ToList();
+                List<FormatoEntity> formatosList = (List<FormatoEntity>)formatos.ElementAt(1);
+                var formatoEntities = formatosList as List<FormatoEntity> ?? formatosList.ToList();
                 if (formatoEntities.Any())
                 {
                     return Request.CreateResponse(HttpStatusCode.OK, formatoEntities);
                 }
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "formatos not found");
+            return Request.CreateResponse(HttpStatusCode.NotFound, formatos);
         }
 
         // GET api/formato/get/5
@@ -89,29 +91,31 @@ namespace GestionParametros.Controllers
             }
 
             var formato = _formatoServices.GetFormatoById(id);
-            if (formato != null)
+            if (formato != null && formato[0].Equals("0000"))
             {
-                formato = _formatoServices.setDescripcion(formato);
+                FormatoEntity formatoEnt = (FormatoEntity)formato.ElementAt(1);
+                formato = _formatoServices.setDescripcion(formatoEnt);
 
                 return Request.CreateResponse(HttpStatusCode.OK, formato);
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No formato found for this id");
+            return Request.CreateResponse(HttpStatusCode.NotFound, formato);
         }
 
         // POST api/formato/create
         [Route("create")]
-        public int create([FromBody] FormatoEntity formatoEntity)
+        public HttpResponseMessage create([FromBody] FormatoEntity formatoEntity)
         {
-            if (formatoEntity != null)
-            {
-                return _formatoServices.CreateFormato(formatoEntity);
-            }
-            return 0;
+            //if (formatoEntity != null)
+            //{
+                var create = _formatoServices.CreateFormato(formatoEntity);
+                return Request.CreateResponse(HttpStatusCode.OK, create);
+            //}
+            //return 0;
         }
 
         // DELETE api/formato/delete/5
         [Route("delete")]
-        public bool delete([FromBody] IdEntity entity)
+        public HttpResponseMessage delete([FromBody] IdEntity entity)
         {
             int id = 0;
 
@@ -121,16 +125,34 @@ namespace GestionParametros.Controllers
             }
 
             if (id > 0)
-                if (_formatoPlantillaServices.ExistPlantilla(id))
-                    return false;
+            {
+                var flagObject = _formatoPlantillaServices.ExistPlantilla(id);
+                if (flagObject[0].Equals("0000"))
+                {
+                    bool flag = (bool)flagObject.ElementAt(1);
+                    if (flag)
+                    {
+                        object[] resultado2 = { "0000", false };
+                        return Request.CreateResponse(HttpStatusCode.NotModified, resultado2);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, _formatoServices.DeleteFormato(id));
+                    }
+                }
                 else
-                    return _formatoServices.DeleteFormato(id);
-            return false;
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
+                }
+
+            }
+            object[] resultado = { "0000", false };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
         // POST api/formato/inactivate/5
         [Route("inactivate")]
-        public bool inactivate([FromBody] IdEntity entity)
+        public HttpResponseMessage inactivate([FromBody] IdEntity entity)
         {
             int id = 0;
 
@@ -142,18 +164,27 @@ namespace GestionParametros.Controllers
             bool success = false;
             if (id > 0)
             {
-                success = _formatoServices.InactivateFormatoRelations(id);
-                if (success)
+                var flagObject = _formatoServices.InactivateFormatoRelations(id);
+                if (flagObject[0].Equals("0000"))
                 {
-                    success = _formatoServices.InactivateFormato(id);
+                    bool flag = (bool)flagObject.ElementAt(1);
+                    if (flag)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, _formatoServices.InactivateFormato(id));
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
                 }
             }
-            return success;
+            object[] resultado = { "0000", success };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
         // POST api/formato/activate/5
         [Route("activate")]
-        public bool activate([FromBody] IdEntity entity)
+        public HttpResponseMessage activate([FromBody] IdEntity entity)
         {
             int id = 0;
 
@@ -165,13 +196,23 @@ namespace GestionParametros.Controllers
             bool success = false;
             if (id > 0)
             {
-                success = _formatoServices.ActivateFormatoRelations(id);
-                if (success)
+                var flagObject = _formatoServices.ActivateFormatoRelations(id);
+                if (flagObject[0].Equals("0000"))
                 {
-                    success = _formatoServices.ActivateFormato(id);
+                    bool flag = (bool)flagObject.ElementAt(1);
+                    if (flag)
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, _formatoServices.ActivateFormato(id));
+                    }
                 }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
+                }
+
             }
-            return success;
+            object[] resultado = { "0000", success };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
         // GET api/formato/nueva
@@ -247,22 +288,30 @@ namespace GestionParametros.Controllers
 
         // PUT api/formato/update
         [Route("update")]
-        public bool update([FromBody]FormatoEntity formatoEntity)
+        public HttpResponseMessage update([FromBody]FormatoEntity formatoEntity)
         {
             bool success = false;
             if (formatoEntity != null)
             {
                 //Reconoce cuando cambia el estado del formato
                 //y actualiza todas sus relaciones al nuevo estado
-                success = _formatoServices.changeFormatoState(formatoEntity);
-
-                if (success)
+                var flagObject = _formatoServices.changeFormatoState(formatoEntity);
+                if (flagObject[0].Equals("0000"))
                 {
-                    //Actualiza el formato como tal
-                    success = _formatoServices.UpdateFormato(formatoEntity.IdFormato, formatoEntity);
+                    bool flag = (bool)flagObject.ElementAt(1);
+                    if (flag)
+                    {
+                        //Actualiza el formato como tal
+                        return Request.CreateResponse(HttpStatusCode.OK, _formatoServices.UpdateFormato(formatoEntity.IdFormato, formatoEntity));
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
                 }
             }
-            return success;
+            object[] resultado = { "0000", success };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
     }

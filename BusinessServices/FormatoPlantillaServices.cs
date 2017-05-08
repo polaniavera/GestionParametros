@@ -77,14 +77,31 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public bool ExistPlantilla(int formatoId)
+        public object[] ExistPlantilla(int formatoId)
         {
-            var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
+            try
+            {
+                var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
 
-            if (plantillas.Count() > 0)
-                return true;
-            else
-                return false;
+                if (plantillas.Count() > 0)
+                {
+                    object[] resultado = { "0000", true };
+                    return resultado;
+                }
+                else
+                {
+                    object[] resultado = { "0000", false };
+                    return resultado;
+                }
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
     }
 }

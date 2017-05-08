@@ -10,6 +10,6 @@ namespace BusinessServices
     {
         bool InactivatePlantilla(int formatoPlantillaId);
         bool ActivatePlantilla(int formatoPlantillaId);
-        bool ExistPlantilla(int formatoId);
+        object[] ExistPlantilla(int formatoId);
     }
 }

@@ -18,7 +18,7 @@ namespace DataModel
         public WebApiDbEntities()
             : base("name=WebApiDbEntities")
         {
-            base.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -38,17 +38,19 @@ namespace DataModel
         public DbSet<CAMPO_REGLA> CAMPO_REGLA { get; set; }
         public DbSet<DIAFESTIVO> DIAFESTIVO { get; set; }
         public DbSet<ENTIDAD> ENTIDAD { get; set; }
+        public DbSet<ENTIDAD_SECTOR> ENTIDAD_SECTOR { get; set; }
         public DbSet<ENTIDAD_SERVICIO> ENTIDAD_SERVICIO { get; set; }
+        public DbSet<INTEROPERABILIDAD> INTEROPERABILIDAD { get; set; }
         public DbSet<PERIODICIDAD> PERIODICIDAD { get; set; }
         public DbSet<PERIODO> PERIODO { get; set; }
         public DbSet<PLAZO> PLAZO { get; set; }
         public DbSet<REGLA> REGLA { get; set; }
-        public DbSet<SECTOR_SERVICIO> SECTOR_SERVICIO { get; set; }
+        public DbSet<SECTOR> SECTOR { get; set; }
         public DbSet<SERVICIO> SERVICIO { get; set; }
         public DbSet<TABLA> TABLA { get; set; }
         public DbSet<TABLA_CAMPO> TABLA_CAMPO { get; set; }
         public DbSet<TABLA_REGISTRO> TABLA_REGISTRO { get; set; }
         public DbSet<TABLA_VALOR> TABLA_VALOR { get; set; }
-        public DbSet<INTEROPERATIVIDAD> INTEROPERATIVIDAD { get; set; }
+        public DbSet<TEMP> TEMP { get; set; }
     }
 }

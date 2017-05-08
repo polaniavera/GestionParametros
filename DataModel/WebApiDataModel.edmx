@@ -53,9 +53,9 @@
           <Key>
             <PropertyRef Name="IdFormatoAcuerdo" />
           </Key>
-          <Property Name="IdFormatoAcuerdo" Type="int" Nullable="false" />
+          <Property Name="IdFormatoAcuerdo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdAcuerdo" Type="int" Nullable="false" />
-          <Property Name="IdFormatoPlantilla" Type="int" Nullable="false" />
+          <Property Name="IdFormato" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="FORMATO_PLANTILLA">
@@ -101,7 +101,7 @@
           </Key>
           <Property Name="IdNormaSector" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IdNorma" Type="int" Nullable="false" />
-          <Property Name="IdSectorServicio" Type="int" Nullable="false" />
+          <Property Name="IdSector" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PLANTILLA_CAMPO">
@@ -130,7 +130,7 @@
             <PropertyRef Name="IdDiaFestivo" />
           </Key>
           <Property Name="IdDiaFestivo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="100" />
           <Property Name="Fecha" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="ENTIDAD">
@@ -142,20 +142,30 @@
           <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="IdTipoEntidad" Type="int" />
-          <Property Name="NIT" Type="int" />
+          <Property Name="NumeroDocumento" Type="varchar" MaxLength="20" />
+          <Property Name="IdTipoDocumento" Type="int" />
           <Property Name="Sigla" Type="varchar" MaxLength="45" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="NaturalezaJuridica" Type="int" />
           <Property Name="Direccion" Type="varchar" MaxLength="100" />
           <Property Name="Ciudad" Type="int" />
-          <Property Name="Departamento" Type="int" />
           <Property Name="FechaConstitucion" Type="datetime" />
-          <Property Name="Telefono" Type="int" />
+          <Property Name="Telefono" Type="varchar" MaxLength="50" />
           <Property Name="IdEntidadPadre" Type="int" />
           <Property Name="IdTipoRelacionEntidadPadre" Type="int" />
-          <Property Name="IdCodigoHomologado" Type="int" />
+          <Property Name="IdTipoCodigoHomologado" Type="int" />
           <Property Name="CodigoHomologado" Type="varchar" MaxLength="45" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
+          <Property Name="IdTransmite" Type="bit" />
+          <Property Name="NombreContacto" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ENTIDAD_SECTOR">
+          <Key>
+            <PropertyRef Name="IdEntidadSector" />
+          </Key>
+          <Property Name="IdEntidadSector" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdEntidad" Type="int" Nullable="false" />
+          <Property Name="IdSector" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="ENTIDAD_SERVICIO">
           <Key>
@@ -166,23 +176,20 @@
           <Property Name="IdServicio" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <EntityType Name="INTEROPERATIVIDAD">
+        <EntityType Name="INTEROPERABILIDAD">
           <Key>
-            <PropertyRef Name="IdInterOperatividad" />
-            <PropertyRef Name="Ip" />
-            <PropertyRef Name="Puerto" />
-            <PropertyRef Name="URLLink" />
-            <PropertyRef Name="Usuario" />
-            <PropertyRef Name="Clave" />
+            <PropertyRef Name="IdInterOperabilidad" />
           </Key>
-          <Property Name="IdInterOperatividad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdInterOperabilidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Ip" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Puerto" Type="int" Nullable="false" />
           <Property Name="URLLink" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Usuario" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Clave" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="PERIODICIDAD">
           <Key>
@@ -191,6 +198,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdPeriodicidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="IdEstado" Type="int" />
         </EntityType>
         <EntityType Name="PERIODO">
           <Key>
@@ -202,6 +210,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdPeriodicidad" Type="int" Nullable="false" />
           <Property Name="MesInicio" Type="int" Nullable="false" />
           <Property Name="MesFin" Type="int" Nullable="false" />
+          <Property Name="IdEstado" Type="int" />
         </EntityType>
         <EntityType Name="PLAZO">
           <Key>
@@ -232,11 +241,11 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdVigencia" Type="int" Nullable="false" />
           <Property Name="IdEstado" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="SECTOR_SERVICIO">
+        <EntityType Name="SECTOR">
           <Key>
-            <PropertyRef Name="IdSectorServicio" />
+            <PropertyRef Name="IdSector" />
           </Key>
-          <Property Name="IdSectorServicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdSector" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
@@ -247,7 +256,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <PropertyRef Name="IdServicio" />
           </Key>
           <Property Name="IdServicio" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="IdSectorServicio" Type="int" Nullable="false" />
+          <Property Name="IdSector" Type="int" Nullable="false" />
           <Property Name="Codigo" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="Nombre" Type="varchar" MaxLength="60" Nullable="false" />
           <Property Name="Descripcion" Type="varchar" MaxLength="255" Nullable="false" />
@@ -298,6 +307,15 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="ValorDinero" Type="numeric" Precision="18" Scale="2" />
           <Property Name="ValorTasa" Type="numeric" Precision="18" Scale="9" />
         </EntityType>
+        <EntityType Name="TEMP">
+          <Key>
+            <PropertyRef Name="Parametro" />
+          </Key>
+          <Property Name="Parametro" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id" Type="varchar" MaxLength="50" />
+          <Property Name="Cod" Type="varchar" MaxLength="50" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="50" />
+        </EntityType>
         <Association Name="FK_ACUERDO_ARCHIVOS_ACUERDO">
           <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="1" />
           <End Role="ACUERDO_ARCHIVO" Type="Self.ACUERDO_ARCHIVO" Multiplicity="*" />
@@ -307,6 +325,30 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Principal>
             <Dependent Role="ACUERDO_ARCHIVO">
               <PropertyRef Name="IdAcuerdo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACUERDO_ENTIDAD">
+          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
+          <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENTIDAD">
+              <PropertyRef Name="IdEntidad" />
+            </Principal>
+            <Dependent Role="ACUERDO">
+              <PropertyRef Name="IdEntidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACUERDO_ENTIDAD1">
+          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
+          <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENTIDAD">
+              <PropertyRef Name="IdEntidad" />
+            </Principal>
+            <Dependent Role="ACUERDO">
+              <PropertyRef Name="IdEntidadContraparte" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -334,6 +376,30 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ENTIDAD_SECTOR_ENTIDAD">
+          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
+          <End Role="ENTIDAD_SECTOR" Type="Self.ENTIDAD_SECTOR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENTIDAD">
+              <PropertyRef Name="IdEntidad" />
+            </Principal>
+            <Dependent Role="ENTIDAD_SECTOR">
+              <PropertyRef Name="IdEntidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENTIDAD_SECTOR_SECTOR">
+          <End Role="SECTOR" Type="Self.SECTOR" Multiplicity="1" />
+          <End Role="ENTIDAD_SECTOR" Type="Self.ENTIDAD_SECTOR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECTOR">
+              <PropertyRef Name="IdSector" />
+            </Principal>
+            <Dependent Role="ENTIDAD_SECTOR">
+              <PropertyRef Name="IdSector" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ENTIDAD_SERVICIO_ENTIDAD">
           <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
           <End Role="ENTIDAD_SERVICIO" Type="Self.ENTIDAD_SERVICIO" Multiplicity="*" />
@@ -358,15 +424,15 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
-          <End Role="FORMATO_PLANTILLA" Type="Self.FORMATO_PLANTILLA" Multiplicity="1" />
+        <Association Name="FK_FORMATO_ACUERDO_FORMATO">
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="1" />
           <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="FORMATO_PLANTILLA">
-              <PropertyRef Name="IdFormatoPlantilla" />
+            <Principal Role="FORMATO">
+              <PropertyRef Name="IdFormato" />
             </Principal>
             <Dependent Role="FORMATO_ACUERDO">
-              <PropertyRef Name="IdFormatoPlantilla" />
+              <PropertyRef Name="IdFormato" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -455,14 +521,14 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_NORMA_SECTOR_SECTOR_SERVICIO">
-          <End Role="SECTOR_SERVICIO" Type="Self.SECTOR_SERVICIO" Multiplicity="1" />
+          <End Role="SECTOR" Type="Self.SECTOR" Multiplicity="1" />
           <End Role="NORMA_SECTOR" Type="Self.NORMA_SECTOR" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SECTOR_SERVICIO">
-              <PropertyRef Name="IdSectorServicio" />
+            <Principal Role="SECTOR">
+              <PropertyRef Name="IdSector" />
             </Principal>
             <Dependent Role="NORMA_SECTOR">
-              <PropertyRef Name="IdSectorServicio" />
+              <PropertyRef Name="IdSector" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -503,14 +569,14 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SERVICIO_SECTOR_SERVICIO">
-          <End Role="SECTOR_SERVICIO" Type="Self.SECTOR_SERVICIO" Multiplicity="1" />
+          <End Role="SECTOR" Type="Self.SECTOR" Multiplicity="1" />
           <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SECTOR_SERVICIO">
-              <PropertyRef Name="IdSectorServicio" />
+            <Principal Role="SECTOR">
+              <PropertyRef Name="IdSector" />
             </Principal>
             <Dependent Role="SERVICIO">
-              <PropertyRef Name="IdSectorServicio" />
+              <PropertyRef Name="IdSector" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -587,30 +653,31 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <EntitySet Name="CAMPO_REGLA" EntityType="Self.CAMPO_REGLA" Schema="GP" store:Type="Tables" />
           <EntitySet Name="DIAFESTIVO" EntityType="Self.DIAFESTIVO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="ENTIDAD" EntityType="Self.ENTIDAD" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="ENTIDAD_SECTOR" EntityType="Self.ENTIDAD_SECTOR" Schema="GP" store:Type="Tables" />
           <EntitySet Name="ENTIDAD_SERVICIO" EntityType="Self.ENTIDAD_SERVICIO" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="INTEROPERABILIDAD" EntityType="Self.INTEROPERABILIDAD" Schema="GP" store:Type="Tables" />
           <EntitySet Name="PERIODICIDAD" EntityType="Self.PERIODICIDAD" Schema="GP" store:Type="Tables" />
           <EntitySet Name="PERIODO" EntityType="Self.PERIODO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="PLAZO" EntityType="Self.PLAZO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="REGLA" EntityType="Self.REGLA" Schema="GP" store:Type="Tables" />
-          <EntitySet Name="SECTOR_SERVICIO" EntityType="Self.SECTOR_SERVICIO" Schema="GP" store:Type="Tables" />
+          <EntitySet Name="SECTOR" EntityType="Self.SECTOR" Schema="GP" store:Type="Tables" />
           <EntitySet Name="SERVICIO" EntityType="Self.SERVICIO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA" EntityType="Self.TABLA" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_CAMPO" EntityType="Self.TABLA_CAMPO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_REGISTRO" EntityType="Self.TABLA_REGISTRO" Schema="GP" store:Type="Tables" />
           <EntitySet Name="TABLA_VALOR" EntityType="Self.TABLA_VALOR" Schema="GP" store:Type="Tables" />
-          <EntitySet Name="INTEROPERATIVIDAD" EntityType="Self.INTEROPERATIVIDAD" store:Type="Tables" store:Schema="GP">
-            <DefiningQuery>SELECT 
-    [INTEROPERATIVIDAD].[IdInterOperatividad] AS [IdInterOperatividad], 
-    [INTEROPERATIVIDAD].[Ip] AS [Ip], 
-    [INTEROPERATIVIDAD].[Puerto] AS [Puerto], 
-    [INTEROPERATIVIDAD].[URLLink] AS [URLLink], 
-    [INTEROPERATIVIDAD].[Usuario] AS [Usuario], 
-    [INTEROPERATIVIDAD].[Clave] AS [Clave]
-    FROM [GP].[INTEROPERATIVIDAD] AS [INTEROPERATIVIDAD]</DefiningQuery>
-          </EntitySet>
+          <EntitySet Name="TEMP" EntityType="Self.TEMP" Schema="GP" store:Type="Tables" />
           <AssociationSet Name="FK_ACUERDO_ARCHIVOS_ACUERDO" Association="Self.FK_ACUERDO_ARCHIVOS_ACUERDO">
             <End Role="ACUERDO" EntitySet="ACUERDO" />
             <End Role="ACUERDO_ARCHIVO" EntitySet="ACUERDO_ARCHIVO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACUERDO_ENTIDAD" Association="Self.FK_ACUERDO_ENTIDAD">
+            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
+            <End Role="ACUERDO" EntitySet="ACUERDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACUERDO_ENTIDAD1" Association="Self.FK_ACUERDO_ENTIDAD1">
+            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
+            <End Role="ACUERDO" EntitySet="ACUERDO" />
           </AssociationSet>
           <AssociationSet Name="FK_CAMPO_REGLA_PLANTILLA_CAMPO" Association="Self.FK_CAMPO_REGLA_PLANTILLA_CAMPO">
             <End Role="PLANTILLA_CAMPO" EntitySet="PLANTILLA_CAMPO" />
@@ -620,6 +687,14 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="REGLA" EntitySet="REGLA" />
             <End Role="CAMPO_REGLA" EntitySet="CAMPO_REGLA" />
           </AssociationSet>
+          <AssociationSet Name="FK_ENTIDAD_SECTOR_ENTIDAD" Association="Self.FK_ENTIDAD_SECTOR_ENTIDAD">
+            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
+            <End Role="ENTIDAD_SECTOR" EntitySet="ENTIDAD_SECTOR" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENTIDAD_SECTOR_SECTOR" Association="Self.FK_ENTIDAD_SECTOR_SECTOR">
+            <End Role="SECTOR" EntitySet="SECTOR" />
+            <End Role="ENTIDAD_SECTOR" EntitySet="ENTIDAD_SECTOR" />
+          </AssociationSet>
           <AssociationSet Name="FK_ENTIDAD_SERVICIO_ENTIDAD" Association="Self.FK_ENTIDAD_SERVICIO_ENTIDAD">
             <End Role="ENTIDAD" EntitySet="ENTIDAD" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
@@ -628,8 +703,8 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="SERVICIO" EntitySet="SERVICIO" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
           </AssociationSet>
-          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
-            <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
+          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO" Association="Self.FK_FORMATO_ACUERDO_FORMATO">
+            <End Role="FORMATO" EntitySet="FORMATO" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMATO_NORMA" Association="Self.FK_FORMATO_NORMA">
@@ -661,7 +736,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="NORMA_SECTOR" EntitySet="NORMA_SECTOR" />
           </AssociationSet>
           <AssociationSet Name="FK_NORMA_SECTOR_SECTOR_SERVICIO" Association="Self.FK_NORMA_SECTOR_SECTOR_SERVICIO">
-            <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
+            <End Role="SECTOR" EntitySet="SECTOR" />
             <End Role="NORMA_SECTOR" EntitySet="NORMA_SECTOR" />
           </AssociationSet>
           <AssociationSet Name="FK_PERIODO_PERIODICIDAD" Association="Self.FK_PERIODO_PERIODICIDAD">
@@ -677,7 +752,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="PLANTILLA_CAMPO" EntitySet="PLANTILLA_CAMPO" />
           </AssociationSet>
           <AssociationSet Name="FK_SERVICIO_SECTOR_SERVICIO" Association="Self.FK_SERVICIO_SECTOR_SERVICIO">
-            <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
+            <End Role="SECTOR" EntitySet="SECTOR" />
             <End Role="SERVICIO" EntitySet="SERVICIO" />
           </AssociationSet>
           <AssociationSet Name="FK_SERVICIO_SERVICIO" Association="Self.FK_SERVICIO_SERVICIO">
@@ -724,6 +799,8 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdDuracionConcepto" Type="Int32" />
           <Property Name="Observacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="ACUERDO_ARCHIVO" Relationship="Self.FK_ACUERDO_ARCHIVOS_ACUERDO" FromRole="ACUERDO" ToRole="ACUERDO_ARCHIVO" />
+          <NavigationProperty Name="ENTIDAD" Relationship="Self.FK_ACUERDO_ENTIDAD" FromRole="ACUERDO" ToRole="ENTIDAD" />
+          <NavigationProperty Name="ENTIDAD1" Relationship="Self.FK_ACUERDO_ENTIDAD1" FromRole="ACUERDO" ToRole="ENTIDAD" />
           <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_PLANTILLA_ACUERDO_ACUERDO" FromRole="ACUERDO" ToRole="FORMATO_ACUERDO" />
         </EntityType>
         <EntityType Name="ACUERDO_ARCHIVO">
@@ -752,6 +829,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="DiasPlazo" Type="Int32" />
           <Property Name="IdSeccion" Type="Int32" />
           <Property Name="InlcuyeFecha" Type="Boolean" />
+          <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO" FromRole="FORMATO" ToRole="FORMATO_ACUERDO" />
           <NavigationProperty Name="NORMA" Relationship="Self.FK_FORMATO_NORMA" FromRole="FORMATO" ToRole="NORMA" />
           <NavigationProperty Name="PERIODICIDAD" Relationship="Self.FK_FORMATO_PERIODICIDAD" FromRole="FORMATO" ToRole="PERIODICIDAD" />
           <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_PLANTILLA_FORMATO" FromRole="FORMATO" ToRole="FORMATO_PLANTILLA" />
@@ -761,12 +839,12 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Key>
             <PropertyRef Name="IdFormatoAcuerdo" />
           </Key>
-          <Property Name="IdFormatoAcuerdo" Type="Int32" Nullable="false" />
+          <Property Name="IdFormatoAcuerdo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdAcuerdo" Type="Int32" Nullable="false" />
-          <Property Name="IdFormatoPlantilla" Type="Int32" Nullable="false" />
+          <Property Name="IdFormato" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ACUERDO" Relationship="Self.FK_PLANTILLA_ACUERDO_ACUERDO" FromRole="FORMATO_ACUERDO" ToRole="ACUERDO" />
-          <NavigationProperty Name="FORMATO_PLANTILLA" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" FromRole="FORMATO_ACUERDO" ToRole="FORMATO_PLANTILLA" />
+          <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO" FromRole="FORMATO_ACUERDO" ToRole="FORMATO" />
         </EntityType>
         <EntityType Name="FORMATO_PLANTILLA">
           <Key>
@@ -778,7 +856,6 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdEstado" Type="Int32" />
           <Property Name="FechaRegistro" Type="DateTime" Precision="3" />
           <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_PLANTILLA_FORMATO" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO" />
-          <NavigationProperty Name="FORMATO_ACUERDO" Relationship="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_ACUERDO" />
           <NavigationProperty Name="FORMATO_SERVICIO" Relationship="Self.FK_FORMATO_SERVICIO_FORMATO_PLANTILLA" FromRole="FORMATO_PLANTILLA" ToRole="FORMATO_SERVICIO" />
           <NavigationProperty Name="PLANTILLA_CAMPO" Relationship="Self.FK_PLANTILLA_CAMPO_FORMATO_PLANTILLA" FromRole="FORMATO_PLANTILLA" ToRole="PLANTILLA_CAMPO" />
         </EntityType>
@@ -819,10 +896,10 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           </Key>
           <Property Name="IdNormaSector" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="IdNorma" Type="Int32" Nullable="false" />
-          <Property Name="IdSectorServicio" Type="Int32" Nullable="false" />
+          <Property Name="IdSector" Type="Int32" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="NORMA" Relationship="Self.FK_NORMA_SECTOR_NORMA" FromRole="NORMA_SECTOR" ToRole="NORMA" />
-          <NavigationProperty Name="SECTOR_SERVICIO" Relationship="Self.FK_NORMA_SECTOR_SECTOR_SERVICIO" FromRole="NORMA_SECTOR" ToRole="SECTOR_SERVICIO" />
+          <NavigationProperty Name="SECTOR" Relationship="Self.FK_NORMA_SECTOR_SECTOR_SERVICIO" FromRole="NORMA_SECTOR" ToRole="SECTOR" />
         </EntityType>
         <EntityType Name="PLANTILLA_CAMPO">
           <Key>
@@ -854,7 +931,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <PropertyRef Name="IdDiaFestivo" />
           </Key>
           <Property Name="IdDiaFestivo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Fecha" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>
         <EntityType Name="ENTIDAD">
@@ -866,21 +943,36 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdTipoEntidad" Type="Int32" />
-          <Property Name="NIT" Type="Int32" />
+          <Property Name="NumeroDocumento" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IdTipoDocumento" Type="Int32" />
           <Property Name="Sigla" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="NaturalezaJuridica" Type="Int32" />
           <Property Name="Direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Ciudad" Type="Int32" />
-          <Property Name="Departamento" Type="Int32" />
           <Property Name="FechaConstitucion" Type="DateTime" Precision="3" />
-          <Property Name="Telefono" Type="Int32" />
+          <Property Name="Telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IdEntidadPadre" Type="Int32" />
           <Property Name="IdTipoRelacionEntidadPadre" Type="Int32" />
-          <Property Name="IdCodigoHomologado" Type="Int32" />
+          <Property Name="IdTipoCodigoHomologado" Type="Int32" />
           <Property Name="CodigoHomologado" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
+          <Property Name="IdTransmite" Type="Boolean" />
+          <Property Name="NombreContacto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ACUERDO" Relationship="Self.FK_ACUERDO_ENTIDAD" FromRole="ENTIDAD" ToRole="ACUERDO" />
+          <NavigationProperty Name="ACUERDO1" Relationship="Self.FK_ACUERDO_ENTIDAD1" FromRole="ENTIDAD" ToRole="ACUERDO" />
+          <NavigationProperty Name="ENTIDAD_SECTOR" Relationship="Self.FK_ENTIDAD_SECTOR_ENTIDAD" FromRole="ENTIDAD" ToRole="ENTIDAD_SECTOR" />
           <NavigationProperty Name="ENTIDAD_SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_ENTIDAD" FromRole="ENTIDAD" ToRole="ENTIDAD_SERVICIO" />
+        </EntityType>
+        <EntityType Name="ENTIDAD_SECTOR">
+          <Key>
+            <PropertyRef Name="IdEntidadSector" />
+          </Key>
+          <Property Name="IdEntidadSector" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdEntidad" Type="Int32" Nullable="false" />
+          <Property Name="IdSector" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ENTIDAD" Relationship="Self.FK_ENTIDAD_SECTOR_ENTIDAD" FromRole="ENTIDAD_SECTOR" ToRole="ENTIDAD" />
+          <NavigationProperty Name="SECTOR" Relationship="Self.FK_ENTIDAD_SECTOR_SECTOR" FromRole="ENTIDAD_SECTOR" ToRole="SECTOR" />
         </EntityType>
         <EntityType Name="ENTIDAD_SERVICIO">
           <Key>
@@ -893,6 +985,21 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <NavigationProperty Name="ENTIDAD" Relationship="Self.FK_ENTIDAD_SERVICIO_ENTIDAD" FromRole="ENTIDAD_SERVICIO" ToRole="ENTIDAD" />
           <NavigationProperty Name="SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_SERVICIO" FromRole="ENTIDAD_SERVICIO" ToRole="SERVICIO" />
         </EntityType>
+        <EntityType Name="INTEROPERABILIDAD">
+          <Key>
+            <PropertyRef Name="IdInterOperabilidad" />
+          </Key>
+          <Property Name="IdInterOperabilidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Ip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Puerto" Type="Int32" Nullable="false" />
+          <Property Name="URLLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Clave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdEstado" Type="Int32" Nullable="false" />
+        </EntityType>
         <EntityType Name="PERIODICIDAD">
           <Key>
             <PropertyRef Name="IdPeriodicidad" />
@@ -900,6 +1007,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IdEstado" Type="Int32" />
           <NavigationProperty Name="FORMATO" Relationship="Self.FK_FORMATO_PERIODICIDAD" FromRole="PERIODICIDAD" ToRole="FORMATO" />
           <NavigationProperty Name="PERIODO" Relationship="Self.FK_PERIODO_PERIODICIDAD" FromRole="PERIODICIDAD" ToRole="PERIODO" />
         </EntityType>
@@ -913,6 +1021,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdPeriodicidad" Type="Int32" Nullable="false" />
           <Property Name="MesInicio" Type="Int32" Nullable="false" />
           <Property Name="MesFin" Type="Int32" Nullable="false" />
+          <Property Name="IdEstado" Type="Int32" />
           <NavigationProperty Name="PERIODICIDAD" Relationship="Self.FK_PERIODO_PERIODICIDAD" FromRole="PERIODO" ToRole="PERIODICIDAD" />
         </EntityType>
         <EntityType Name="PLAZO">
@@ -946,24 +1055,25 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
           <NavigationProperty Name="CAMPO_REGLA" Relationship="Self.FK_CAMPO_REGLA_REGLA" FromRole="REGLA" ToRole="CAMPO_REGLA" />
         </EntityType>
-        <EntityType Name="SECTOR_SERVICIO">
+        <EntityType Name="SECTOR">
           <Key>
-            <PropertyRef Name="IdSectorServicio" />
+            <PropertyRef Name="IdSector" />
           </Key>
-          <Property Name="IdSectorServicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdSector" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IdEstado" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="NORMA_SECTOR" Relationship="Self.FK_NORMA_SECTOR_SECTOR_SERVICIO" FromRole="SECTOR_SERVICIO" ToRole="NORMA_SECTOR" />
-          <NavigationProperty Name="SERVICIO" Relationship="Self.FK_SERVICIO_SECTOR_SERVICIO" FromRole="SECTOR_SERVICIO" ToRole="SERVICIO" />
+          <NavigationProperty Name="NORMA_SECTOR" Relationship="Self.FK_NORMA_SECTOR_SECTOR_SERVICIO" FromRole="SECTOR" ToRole="NORMA_SECTOR" />
+          <NavigationProperty Name="ENTIDAD_SECTOR" Relationship="Self.FK_ENTIDAD_SECTOR_SECTOR" FromRole="SECTOR" ToRole="ENTIDAD_SECTOR" />
+          <NavigationProperty Name="SERVICIO" Relationship="Self.FK_SERVICIO_SECTOR_SERVICIO" FromRole="SECTOR" ToRole="SERVICIO" />
         </EntityType>
         <EntityType Name="SERVICIO">
           <Key>
             <PropertyRef Name="IdServicio" />
           </Key>
           <Property Name="IdServicio" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IdSectorServicio" Type="Int32" Nullable="false" />
+          <Property Name="IdSector" Type="Int32" Nullable="false" />
           <Property Name="Codigo" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Descripcion" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
@@ -971,7 +1081,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <Property Name="IdServicioPadre" Type="Int32" />
           <NavigationProperty Name="FORMATO_SERVICIO" Relationship="Self.FK_FORMATO_SERVICIO_SERVICIO" FromRole="SERVICIO" ToRole="FORMATO_SERVICIO" />
           <NavigationProperty Name="ENTIDAD_SERVICIO" Relationship="Self.FK_ENTIDAD_SERVICIO_SERVICIO" FromRole="SERVICIO" ToRole="ENTIDAD_SERVICIO" />
-          <NavigationProperty Name="SECTOR_SERVICIO" Relationship="Self.FK_SERVICIO_SECTOR_SERVICIO" FromRole="SERVICIO" ToRole="SECTOR_SERVICIO" />
+          <NavigationProperty Name="SECTOR" Relationship="Self.FK_SERVICIO_SECTOR_SERVICIO" FromRole="SERVICIO" ToRole="SECTOR" />
           <NavigationProperty Name="SERVICIO1" Relationship="Self.FK_SERVICIO_SERVICIO" FromRole="SERVICIO" ToRole="SERVICIO1" />
           <NavigationProperty Name="SERVICIO2" Relationship="Self.FK_SERVICIO_SERVICIO" FromRole="SERVICIO1" ToRole="SERVICIO" />
         </EntityType>
@@ -1027,21 +1137,14 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <NavigationProperty Name="TABLA_CAMPO" Relationship="Self.FK_TABLA_VALOR_TABLA_CAMPO" FromRole="TABLA_VALOR" ToRole="TABLA_CAMPO" />
           <NavigationProperty Name="TABLA_REGISTRO" Relationship="Self.FK_TABLA_VALOR_TABLA_REGISTRO" FromRole="TABLA_VALOR" ToRole="TABLA_REGISTRO" />
         </EntityType>
-        <EntityType Name="INTEROPERATIVIDAD">
+        <EntityType Name="TEMP">
           <Key>
-            <PropertyRef Name="IdInterOperatividad" />
-            <PropertyRef Name="Ip" />
-            <PropertyRef Name="Puerto" />
-            <PropertyRef Name="URLLink" />
-            <PropertyRef Name="Usuario" />
-            <PropertyRef Name="Clave" />
+            <PropertyRef Name="Parametro" />
           </Key>
-          <Property Name="IdInterOperatividad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ip" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Puerto" Type="Int32" Nullable="false" />
-          <Property Name="URLLink" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Usuario" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Clave" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Parametro" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Cod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_ACUERDO_ARCHIVOS_ACUERDO">
           <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="1" />
@@ -1055,6 +1158,30 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ACUERDO_ENTIDAD">
+          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
+          <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENTIDAD">
+              <PropertyRef Name="IdEntidad" />
+            </Principal>
+            <Dependent Role="ACUERDO">
+              <PropertyRef Name="IdEntidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ACUERDO_ENTIDAD1">
+          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
+          <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENTIDAD">
+              <PropertyRef Name="IdEntidad" />
+            </Principal>
+            <Dependent Role="ACUERDO">
+              <PropertyRef Name="IdEntidadContraparte" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_PLANTILLA_ACUERDO_ACUERDO">
           <End Role="ACUERDO" Type="Self.ACUERDO" Multiplicity="1" />
           <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
@@ -1064,6 +1191,18 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Principal>
             <Dependent Role="FORMATO_ACUERDO">
               <PropertyRef Name="IdAcuerdo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FORMATO_ACUERDO_FORMATO">
+          <End Role="FORMATO" Type="Self.FORMATO" Multiplicity="1" />
+          <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FORMATO">
+              <PropertyRef Name="IdFormato" />
+            </Principal>
+            <Dependent Role="FORMATO_ACUERDO">
+              <PropertyRef Name="IdFormato" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1112,18 +1251,6 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Principal>
             <Dependent Role="FORMATO">
               <PropertyRef Name="IdPlazo" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
-          <End Role="FORMATO_PLANTILLA" Type="Self.FORMATO_PLANTILLA" Multiplicity="1" />
-          <End Role="FORMATO_ACUERDO" Type="Self.FORMATO_ACUERDO" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="FORMATO_PLANTILLA">
-              <PropertyRef Name="IdFormatoPlantilla" />
-            </Principal>
-            <Dependent Role="FORMATO_ACUERDO">
-              <PropertyRef Name="IdFormatoPlantilla" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1176,14 +1303,14 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_NORMA_SECTOR_SECTOR_SERVICIO">
-          <End Role="SECTOR_SERVICIO" Type="Self.SECTOR_SERVICIO" Multiplicity="1" />
+          <End Role="SECTOR" Type="Self.SECTOR" Multiplicity="1" />
           <End Role="NORMA_SECTOR" Type="Self.NORMA_SECTOR" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SECTOR_SERVICIO">
-              <PropertyRef Name="IdSectorServicio" />
+            <Principal Role="SECTOR">
+              <PropertyRef Name="IdSector" />
             </Principal>
             <Dependent Role="NORMA_SECTOR">
-              <PropertyRef Name="IdSectorServicio" />
+              <PropertyRef Name="IdSector" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1211,6 +1338,18 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ENTIDAD_SECTOR_ENTIDAD">
+          <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
+          <End Role="ENTIDAD_SECTOR" Type="Self.ENTIDAD_SECTOR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ENTIDAD">
+              <PropertyRef Name="IdEntidad" />
+            </Principal>
+            <Dependent Role="ENTIDAD_SECTOR">
+              <PropertyRef Name="IdEntidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ENTIDAD_SERVICIO_ENTIDAD">
           <End Role="ENTIDAD" Type="Self.ENTIDAD" Multiplicity="1" />
           <End Role="ENTIDAD_SERVICIO" Type="Self.ENTIDAD_SERVICIO" Multiplicity="*" />
@@ -1220,6 +1359,18 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             </Principal>
             <Dependent Role="ENTIDAD_SERVICIO">
               <PropertyRef Name="IdEntidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ENTIDAD_SECTOR_SECTOR">
+          <End Role="SECTOR" Type="Self.SECTOR" Multiplicity="1" />
+          <End Role="ENTIDAD_SECTOR" Type="Self.ENTIDAD_SECTOR" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SECTOR">
+              <PropertyRef Name="IdSector" />
+            </Principal>
+            <Dependent Role="ENTIDAD_SECTOR">
+              <PropertyRef Name="IdSector" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1248,14 +1399,14 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_SERVICIO_SECTOR_SERVICIO">
-          <End Role="SECTOR_SERVICIO" Type="Self.SECTOR_SERVICIO" Multiplicity="1" />
+          <End Role="SECTOR" Type="Self.SECTOR" Multiplicity="1" />
           <End Role="SERVICIO" Type="Self.SERVICIO" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="SECTOR_SERVICIO">
-              <PropertyRef Name="IdSectorServicio" />
+            <Principal Role="SECTOR">
+              <PropertyRef Name="IdSector" />
             </Principal>
             <Dependent Role="SERVICIO">
-              <PropertyRef Name="IdSectorServicio" />
+              <PropertyRef Name="IdSector" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1332,24 +1483,38 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
           <EntitySet Name="CAMPO_REGLA" EntityType="Self.CAMPO_REGLA" />
           <EntitySet Name="DIAFESTIVO" EntityType="Self.DIAFESTIVO" />
           <EntitySet Name="ENTIDAD" EntityType="Self.ENTIDAD" />
+          <EntitySet Name="ENTIDAD_SECTOR" EntityType="Self.ENTIDAD_SECTOR" />
           <EntitySet Name="ENTIDAD_SERVICIO" EntityType="Self.ENTIDAD_SERVICIO" />
+          <EntitySet Name="INTEROPERABILIDAD" EntityType="Self.INTEROPERABILIDAD" />
           <EntitySet Name="PERIODICIDAD" EntityType="Self.PERIODICIDAD" />
           <EntitySet Name="PERIODO" EntityType="Self.PERIODO" />
           <EntitySet Name="PLAZO" EntityType="Self.PLAZO" />
           <EntitySet Name="REGLA" EntityType="Self.REGLA" />
-          <EntitySet Name="SECTOR_SERVICIO" EntityType="Self.SECTOR_SERVICIO" />
+          <EntitySet Name="SECTOR" EntityType="Self.SECTOR" />
           <EntitySet Name="SERVICIO" EntityType="Self.SERVICIO" />
           <EntitySet Name="TABLA" EntityType="Self.TABLA" />
           <EntitySet Name="TABLA_CAMPO" EntityType="Self.TABLA_CAMPO" />
           <EntitySet Name="TABLA_REGISTRO" EntityType="Self.TABLA_REGISTRO" />
           <EntitySet Name="TABLA_VALOR" EntityType="Self.TABLA_VALOR" />
-          <EntitySet Name="INTEROPERATIVIDAD" EntityType="Self.INTEROPERATIVIDAD" />
+          <EntitySet Name="TEMP" EntityType="Self.TEMP" />
           <AssociationSet Name="FK_ACUERDO_ARCHIVOS_ACUERDO" Association="Self.FK_ACUERDO_ARCHIVOS_ACUERDO">
             <End Role="ACUERDO" EntitySet="ACUERDO" />
             <End Role="ACUERDO_ARCHIVO" EntitySet="ACUERDO_ARCHIVO" />
           </AssociationSet>
+          <AssociationSet Name="FK_ACUERDO_ENTIDAD" Association="Self.FK_ACUERDO_ENTIDAD">
+            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
+            <End Role="ACUERDO" EntitySet="ACUERDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACUERDO_ENTIDAD1" Association="Self.FK_ACUERDO_ENTIDAD1">
+            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
+            <End Role="ACUERDO" EntitySet="ACUERDO" />
+          </AssociationSet>
           <AssociationSet Name="FK_PLANTILLA_ACUERDO_ACUERDO" Association="Self.FK_PLANTILLA_ACUERDO_ACUERDO">
             <End Role="ACUERDO" EntitySet="ACUERDO" />
+            <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO" Association="Self.FK_FORMATO_ACUERDO_FORMATO">
+            <End Role="FORMATO" EntitySet="FORMATO" />
             <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
           </AssociationSet>
           <AssociationSet Name="FK_FORMATO_NORMA" Association="Self.FK_FORMATO_NORMA">
@@ -1368,10 +1533,6 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="PLAZO" EntitySet="PLAZO" />
             <End Role="FORMATO" EntitySet="FORMATO" />
           </AssociationSet>
-          <AssociationSet Name="FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1" Association="Self.FK_FORMATO_ACUERDO_FORMATO_PLANTILLA1">
-            <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
-            <End Role="FORMATO_ACUERDO" EntitySet="FORMATO_ACUERDO" />
-          </AssociationSet>
           <AssociationSet Name="FK_FORMATO_SERVICIO_FORMATO_PLANTILLA" Association="Self.FK_FORMATO_SERVICIO_FORMATO_PLANTILLA">
             <End Role="FORMATO_PLANTILLA" EntitySet="FORMATO_PLANTILLA" />
             <End Role="FORMATO_SERVICIO" EntitySet="FORMATO_SERVICIO" />
@@ -1389,7 +1550,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="NORMA_SECTOR" EntitySet="NORMA_SECTOR" />
           </AssociationSet>
           <AssociationSet Name="FK_NORMA_SECTOR_SECTOR_SERVICIO" Association="Self.FK_NORMA_SECTOR_SECTOR_SERVICIO">
-            <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
+            <End Role="SECTOR" EntitySet="SECTOR" />
             <End Role="NORMA_SECTOR" EntitySet="NORMA_SECTOR" />
           </AssociationSet>
           <AssociationSet Name="FK_CAMPO_REGLA_PLANTILLA_CAMPO" Association="Self.FK_CAMPO_REGLA_PLANTILLA_CAMPO">
@@ -1400,9 +1561,17 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="REGLA" EntitySet="REGLA" />
             <End Role="CAMPO_REGLA" EntitySet="CAMPO_REGLA" />
           </AssociationSet>
+          <AssociationSet Name="FK_ENTIDAD_SECTOR_ENTIDAD" Association="Self.FK_ENTIDAD_SECTOR_ENTIDAD">
+            <End Role="ENTIDAD" EntitySet="ENTIDAD" />
+            <End Role="ENTIDAD_SECTOR" EntitySet="ENTIDAD_SECTOR" />
+          </AssociationSet>
           <AssociationSet Name="FK_ENTIDAD_SERVICIO_ENTIDAD" Association="Self.FK_ENTIDAD_SERVICIO_ENTIDAD">
             <End Role="ENTIDAD" EntitySet="ENTIDAD" />
             <End Role="ENTIDAD_SERVICIO" EntitySet="ENTIDAD_SERVICIO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ENTIDAD_SECTOR_SECTOR" Association="Self.FK_ENTIDAD_SECTOR_SECTOR">
+            <End Role="SECTOR" EntitySet="SECTOR" />
+            <End Role="ENTIDAD_SECTOR" EntitySet="ENTIDAD_SECTOR" />
           </AssociationSet>
           <AssociationSet Name="FK_ENTIDAD_SERVICIO_SERVICIO" Association="Self.FK_ENTIDAD_SERVICIO_SERVICIO">
             <End Role="SERVICIO" EntitySet="SERVICIO" />
@@ -1413,7 +1582,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <End Role="PERIODO" EntitySet="PERIODO" />
           </AssociationSet>
           <AssociationSet Name="FK_SERVICIO_SECTOR_SERVICIO" Association="Self.FK_SERVICIO_SECTOR_SERVICIO">
-            <End Role="SECTOR_SERVICIO" EntitySet="SECTOR_SERVICIO" />
+            <End Role="SECTOR" EntitySet="SECTOR" />
             <End Role="SERVICIO" EntitySet="SERVICIO" />
           </AssociationSet>
           <AssociationSet Name="FK_SERVICIO_SERVICIO" Association="Self.FK_SERVICIO_SERVICIO">
@@ -1495,7 +1664,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
               <MappingFragment StoreEntitySet="FORMATO_ACUERDO">
                 <ScalarProperty Name="IdFormatoAcuerdo" ColumnName="IdFormatoAcuerdo" />
                 <ScalarProperty Name="IdAcuerdo" ColumnName="IdAcuerdo" />
-                <ScalarProperty Name="IdFormatoPlantilla" ColumnName="IdFormatoPlantilla" />
+                <ScalarProperty Name="IdFormato" ColumnName="IdFormato" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1545,7 +1714,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
               <MappingFragment StoreEntitySet="NORMA_SECTOR">
                 <ScalarProperty Name="IdNormaSector" ColumnName="IdNormaSector" />
                 <ScalarProperty Name="IdNorma" ColumnName="IdNorma" />
-                <ScalarProperty Name="IdSectorServicio" ColumnName="IdSectorServicio" />
+                <ScalarProperty Name="IdSector" ColumnName="IdSector" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1590,20 +1759,31 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
                 <ScalarProperty Name="IdTipoEntidad" ColumnName="IdTipoEntidad" />
-                <ScalarProperty Name="NIT" ColumnName="NIT" />
+                <ScalarProperty Name="NumeroDocumento" ColumnName="NumeroDocumento" />
+                <ScalarProperty Name="IdTipoDocumento" ColumnName="IdTipoDocumento" />
                 <ScalarProperty Name="Sigla" ColumnName="Sigla" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="NaturalezaJuridica" ColumnName="NaturalezaJuridica" />
                 <ScalarProperty Name="Direccion" ColumnName="Direccion" />
                 <ScalarProperty Name="Ciudad" ColumnName="Ciudad" />
-                <ScalarProperty Name="Departamento" ColumnName="Departamento" />
                 <ScalarProperty Name="FechaConstitucion" ColumnName="FechaConstitucion" />
                 <ScalarProperty Name="Telefono" ColumnName="Telefono" />
                 <ScalarProperty Name="IdEntidadPadre" ColumnName="IdEntidadPadre" />
                 <ScalarProperty Name="IdTipoRelacionEntidadPadre" ColumnName="IdTipoRelacionEntidadPadre" />
-                <ScalarProperty Name="IdCodigoHomologado" ColumnName="IdCodigoHomologado" />
+                <ScalarProperty Name="IdTipoCodigoHomologado" ColumnName="IdTipoCodigoHomologado" />
                 <ScalarProperty Name="CodigoHomologado" ColumnName="CodigoHomologado" />
                 <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+                <ScalarProperty Name="IdTransmite" ColumnName="IdTransmite" />
+                <ScalarProperty Name="NombreContacto" ColumnName="NombreContacto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ENTIDAD_SECTOR">
+            <EntityTypeMapping TypeName="WebApiDbModel.ENTIDAD_SECTOR">
+              <MappingFragment StoreEntitySet="ENTIDAD_SECTOR">
+                <ScalarProperty Name="IdEntidadSector" ColumnName="IdEntidadSector" />
+                <ScalarProperty Name="IdEntidad" ColumnName="IdEntidad" />
+                <ScalarProperty Name="IdSector" ColumnName="IdSector" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1617,12 +1797,29 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="INTEROPERABILIDAD">
+            <EntityTypeMapping TypeName="WebApiDbModel.INTEROPERABILIDAD">
+              <MappingFragment StoreEntitySet="INTEROPERABILIDAD">
+                <ScalarProperty Name="IdInterOperabilidad" ColumnName="IdInterOperabilidad" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Puerto" ColumnName="Puerto" />
+                <ScalarProperty Name="URLLink" ColumnName="URLLink" />
+                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="PERIODICIDAD">
             <EntityTypeMapping TypeName="WebApiDbModel.PERIODICIDAD">
               <MappingFragment StoreEntitySet="PERIODICIDAD">
                 <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1635,6 +1832,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
                 <ScalarProperty Name="IdPeriodicidad" ColumnName="IdPeriodicidad" />
                 <ScalarProperty Name="MesInicio" ColumnName="MesInicio" />
                 <ScalarProperty Name="MesFin" ColumnName="MesFin" />
+                <ScalarProperty Name="IdEstado" ColumnName="IdEstado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1669,10 +1867,10 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SECTOR_SERVICIO">
-            <EntityTypeMapping TypeName="WebApiDbModel.SECTOR_SERVICIO">
-              <MappingFragment StoreEntitySet="SECTOR_SERVICIO">
-                <ScalarProperty Name="IdSectorServicio" ColumnName="IdSectorServicio" />
+          <EntitySetMapping Name="SECTOR">
+            <EntityTypeMapping TypeName="WebApiDbModel.SECTOR">
+              <MappingFragment StoreEntitySet="SECTOR">
+                <ScalarProperty Name="IdSector" ColumnName="IdSector" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -1684,7 +1882,7 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
             <EntityTypeMapping TypeName="WebApiDbModel.SERVICIO">
               <MappingFragment StoreEntitySet="SERVICIO">
                 <ScalarProperty Name="IdServicio" ColumnName="IdServicio" />
-                <ScalarProperty Name="IdSectorServicio" ColumnName="IdSectorServicio" />
+                <ScalarProperty Name="IdSector" ColumnName="IdSector" />
                 <ScalarProperty Name="Codigo" ColumnName="Codigo" />
                 <ScalarProperty Name="Nombre" ColumnName="Nombre" />
                 <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
@@ -1741,15 +1939,13 @@ advertencia 6002: La tabla o vista 'SIUST.GP.INTEROPERATIVIDAD' no tiene definid
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="INTEROPERATIVIDAD">
-            <EntityTypeMapping TypeName="WebApiDbModel.INTEROPERATIVIDAD">
-              <MappingFragment StoreEntitySet="INTEROPERATIVIDAD">
-                <ScalarProperty Name="IdInterOperatividad" ColumnName="IdInterOperatividad" />
-                <ScalarProperty Name="Ip" ColumnName="Ip" />
-                <ScalarProperty Name="Puerto" ColumnName="Puerto" />
-                <ScalarProperty Name="URLLink" ColumnName="URLLink" />
-                <ScalarProperty Name="Usuario" ColumnName="Usuario" />
-                <ScalarProperty Name="Clave" ColumnName="Clave" />
+          <EntitySetMapping Name="TEMP">
+            <EntityTypeMapping TypeName="WebApiDbModel.TEMP">
+              <MappingFragment StoreEntitySet="TEMP">
+                <ScalarProperty Name="Parametro" ColumnName="Parametro" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Cod" ColumnName="Cod" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

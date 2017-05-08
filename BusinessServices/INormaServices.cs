@@ -8,19 +8,19 @@ namespace BusinessServices
     /// </summary>
     public interface INormaServices
     {
-        NormaEntity GetNormaById(int normaId);
+        object[] GetNormaById(int normaId);
         object[] GetAllNormas();
-        IEnumerable<BusinessEntities.NormaEntity> GetAllNormasActive();
-        int CreateNorma(NormaEntity normaEntity);
-        bool UpdateNorma(int normaId, NormaEntity normaEntity);
-        bool DeleteNorma(int normaId);
-        bool InactivateNormaRelations(int normaId);
-        bool ActivateNormaRelations(int normaId);
-        bool InactivateNorma(int normaId);
-        bool ActivateNorma(int normaId);
-        IEnumerable<NormaPadreEntity> GetNormasPadre();
+        object[] GetAllNormasActive();
+        object[] CreateNorma(NormaEntity normaEntity);
+        object[] UpdateNorma(int normaId, NormaEntity normaEntity);
+        object[] DeleteNorma(int normaId);
+        object[] InactivateNormaRelations(int normaId);
+        object[] ActivateNormaRelations(int normaId);
+        object[] InactivateNorma(int normaId);
+        object[] ActivateNorma(int normaId);
+        object[] GetNormasPadre();
         //bool ExistSectorFormato(int normaId);
-        bool ValidateSector(NormaEntity normaEntity, IEnumerable<NormaSectorEntity> normaSectorById);
-        NormaEntity changeNormaState(NormaEntity normaEntity);
+        object[] ValidateSector(NormaEntity normaEntity, IEnumerable<NormaSectorEntity> normaSectorById);
+        object[] changeNormaState(NormaEntity normaEntity);
     }
 }

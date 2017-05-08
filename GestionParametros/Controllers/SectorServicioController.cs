@@ -11,7 +11,7 @@ namespace GestionParametros.Controllers
     [RoutePrefix("api/sectorservicio")]
     public class SectorServicioController : ApiController
     {
-        private readonly ISectorServicioServices _sectorServicioServices;
+        private readonly ISectorServices _sectorServicioServices;
 
         #region Public Constructor
 
@@ -19,7 +19,7 @@ namespace GestionParametros.Controllers
         /// Public constructor to initialize SectorServicio service instance
         /// with Unity Constructor Inject Dependency
         /// </summary>
-        public SectorServicioController(ISectorServicioServices sectorServicioServices)
+        public SectorServicioController(ISectorServices sectorServicioServices)
         {
             _sectorServicioServices = sectorServicioServices;
         }
@@ -33,7 +33,7 @@ namespace GestionParametros.Controllers
             var sectorServicios = _sectorServicioServices.GetAllSectorServicios();
             if (sectorServicios != null)
             {
-                var sectorServicioEntities = sectorServicios as List<SectorServicioEntity> ?? sectorServicios.ToList();
+                var sectorServicioEntities = sectorServicios as List<SectorEntity> ?? sectorServicios.ToList();
                 if (sectorServicioEntities.Any())
                 {
                     if (tipo)
@@ -70,14 +70,14 @@ namespace GestionParametros.Controllers
 
         // POST api/sectorservicio/create
         [Route("create")]
-        public int Post([FromBody] SectorServicioEntity sectorServicioEntity)
+        public int Post([FromBody] SectorEntity sectorServicioEntity)
         {
             return _sectorServicioServices.CreateSectorServicio(sectorServicioEntity);
         }
 
         // PUT api/sectorservicio/update/5
         [Route("update/{id:int}")]
-        public bool Put(int id, [FromBody]SectorServicioEntity sectorServicioEntity)
+        public bool Put(int id, [FromBody]SectorEntity sectorServicioEntity)
         {
             if (id > 0)
             {

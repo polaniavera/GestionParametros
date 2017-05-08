@@ -44,8 +44,8 @@ namespace DataModel.GenericRepository
         {
             var sectoresByNorma =
                (from ns in Context.NORMA_SECTOR
-                join ss in Context.SECTOR_SERVICIO on ns.IdSectorServicio equals ss.IdSectorServicio
-                join s in Context.SERVICIO on ss.IdSectorServicio equals s.IdSectorServicio
+                join ss in Context.SECTOR on ns.IdSector equals ss.IdSector
+                join s in Context.SERVICIO on ss.IdSector equals s.IdSector
                 join fs in Context.FORMATO_SERVICIO on s.IdServicio equals fs.IdServicio
                 where ns.IdNormaSector == sectorId
                 select new

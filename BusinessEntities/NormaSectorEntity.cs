@@ -6,10 +6,10 @@ namespace BusinessEntities
     {
         public int IdNormaSector { get; set; }
         public int IdNorma { get; set; }
-        public int IdSectorServicio { get; set; }
+        public int IdSector { get; set; }
         public int IdEstado { get; set; }
 
-        public NORMA NORMA { get; set; }
-        public SECTOR_SERVICIO SECTOR_SERVICIO { get; set; }
+        public virtual NORMA NORMA { get; set; }
+        public virtual SECTOR SECTOR { get; set; }
     }
 }

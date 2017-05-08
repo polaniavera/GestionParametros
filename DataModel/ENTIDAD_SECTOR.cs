@@ -12,10 +12,13 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class DIAFESTIVO
+    public partial class ENTIDAD_SECTOR
     {
-        public int IdDiaFestivo { get; set; }
-        public string Descripcion { get; set; }
-        public System.DateTime Fecha { get; set; }
+        public int IdEntidadSector { get; set; }
+        public int IdEntidad { get; set; }
+        public int IdSector { get; set; }
+    
+        public virtual ENTIDAD ENTIDAD { get; set; }
+        public virtual SECTOR SECTOR { get; set; }
     }
 }

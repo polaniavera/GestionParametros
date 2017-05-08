@@ -23,7 +23,8 @@ namespace DataModel.UnitOfWork
         private GenericRepository<TABLA_VALOR> _tablaValorRepository;
         private GenericRepository<ENTIDAD> _entidadRepository;
         private GenericRepository<FORMATO> _formatoRepository;
-        private GenericRepository<SECTOR_SERVICIO> _sectorServicioRepository;
+        private GenericRepository<SERVICIO> _servicioRepository;
+        private GenericRepository<SECTOR> _sectorRepository;
         private GenericRepository<NORMA> _normaRepository;
         private GenericRepository<NORMA_SECTOR> _normaSectorRepository;
         private GenericRepository<PERIODICIDAD> _periodicidadRepository;
@@ -124,15 +125,28 @@ namespace DataModel.UnitOfWork
         }
 
         /// <summary>
-        /// Get/Set Property for sectorServicio repository.
+        /// Get/Set Property for sector repository.
         /// </summary>
-        public GenericRepository<SECTOR_SERVICIO> SectorServicioRepository
+        public GenericRepository<SECTOR> SectorServicioRepository
         {
             get
             {
-                if (this._sectorServicioRepository == null)
-                    this._sectorServicioRepository = new GenericRepository<SECTOR_SERVICIO>(_context);
-                return _sectorServicioRepository;
+                if (this._sectorRepository == null)
+                    this._sectorRepository = new GenericRepository<SECTOR>(_context);
+                return _sectorRepository;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for Servicio repository.
+        /// </summary>
+        public GenericRepository<SERVICIO> ServicioRepository
+        {
+            get
+            {
+                if (this._servicioRepository == null)
+                    this._servicioRepository = new GenericRepository<SERVICIO>(_context);
+                return _servicioRepository;
             }
         }
 

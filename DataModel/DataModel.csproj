@@ -70,35 +70,38 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ACUERDO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ACUERDO_ARCHIVO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CAMPO_REGLA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DependencyResolver.cs" />
     <Compile Include="DIAFESTIVO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ENTIDAD.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ENTIDAD_SECTOR.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ENTIDAD_SERVICIO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FORMATO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FORMATO_ACUERDO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FORMATO_PLANTILLA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FORMATO_SERVICIO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="GenericRepository\FormatoRepositoryCustom.cs" />
     <Compile Include="GenericRepository\FormatoServicioRepositoryCustom.cs" />
@@ -106,8 +109,8 @@
     <Compile Include="GenericRepository\NormaSectorRepositoryCustom.cs" />
     <Compile Include="GenericRepository\TablaRepositoryCustom.cs" />
     <Compile Include="GenericRepository\NormaRepositoryCustom.cs" />
-    <Compile Include="INTEROPERATIVIDAD.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+    <Compile Include="INTEROPERABILIDAD.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model.Context.cs">
       <AutoGen>True</AutoGen>
@@ -120,44 +123,47 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="NORMA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="NORMA_SECTOR.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PERIODICIDAD.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PERIODO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PLANTILLA_CAMPO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="PLAZO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="REGLA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="SECTOR_SERVICIO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+    <Compile Include="SECTOR.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="SERVICIO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TABLA.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TABLA_CAMPO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TABLA_REGISTRO.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TABLA_VALOR.cs">
-      <DependentUpon>Model.tt</DependentUpon>
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TEMP.cs">
+      <DependentUpon>WebApiDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="UnitOfWork\IUnitOfWork.cs" />
     <Compile Include="UnitOfWork\UnitOfWork.cs" />

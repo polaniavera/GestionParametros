@@ -32,19 +32,31 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaSectorId"></param>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.NormaSectorEntity> GetNormaSectorById(int normaSectorId)
+        public object[] GetNormaSectorById(int normaSectorId)
         {
-            var normaSector = _unitOfWork.NormaSectorRepositoryCustom.GetManyByIdNorma(normaSectorId).ToList();
-            if (normaSector != null)
+            try
             {
-                Mapper.Initialize(cfg =>
+                var normaSector = _unitOfWork.NormaSectorRepositoryCustom.GetManyByIdNorma(normaSectorId).ToList();
+                if (normaSector != null)
                 {
-                    cfg.CreateMap<NORMA_SECTOR, NormaSectorEntity>();
-                });
-                var normaSectorModel = Mapper.Map<List<NORMA_SECTOR>, List<NormaSectorEntity>>(normaSector);
-                return normaSectorModel;
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<NORMA_SECTOR, NormaSectorEntity>();
+                    });
+                    var normaSectorModel = Mapper.Map<List<NORMA_SECTOR>, List<NormaSectorEntity>>(normaSector);
+                    object[] resultado = { "0000", normaSectorModel };
+                    return resultado;
+                }
+                return null;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+            
         }
 
         /// <summary>
@@ -71,25 +83,37 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaSectorEntity"></param>
         /// <returns></returns>
-        public bool CreateNormaSector(int idSectorServicio, int idNorma)
+        public object[] CreateNormaSector(int idSectorServicio, int idNorma)
         {
             var success = false;
 
-            using (var scope = new TransactionScope())
+            try
             {
-                var normaSector = new NORMA_SECTOR
+                using (var scope = new TransactionScope())
                 {
-                    IdEstado = 1,
-                    IdNorma = idNorma,
-                    IdSectorServicio = idSectorServicio
-                };
-                _unitOfWork.NormaSectorRepository.Insert(normaSector);
-                _unitOfWork.Save();
-                scope.Complete();
-                success = true;
-                //return normaSector.IdNormaSector;
+                    var normaSector = new NORMA_SECTOR
+                    {
+                        IdEstado = 1,
+                        IdNorma = idNorma,
+                        IdSector = idSectorServicio
+                    };
+                    _unitOfWork.NormaSectorRepository.Insert(normaSector);
+                    _unitOfWork.Save();
+                    scope.Complete();
+                    success = true;
+                    //return normaSector.IdNormaSector;
+                }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
         
         /// <summary>
@@ -108,12 +132,12 @@ namespace BusinessServices
                     var normaSector = _unitOfWork.NormaSectorRepository.GetByID(normaSectorId);
                     if (normaSector != null)
                     {
+                        normaSector.IdSector = normaSectorEntity.IdSector;
                         normaSector.IdEstado = normaSectorEntity.IdEstado;
                         normaSector.IdNorma = normaSectorEntity.IdNorma;
                         normaSector.IdNormaSector = normaSectorEntity.IdNormaSector;
-                        normaSector.IdSectorServicio = normaSectorEntity.IdSectorServicio;
                         normaSector.NORMA = normaSectorEntity.NORMA;
-                        normaSector.SECTOR_SERVICIO = normaSectorEntity.SECTOR_SERVICIO;
+                        normaSector.SECTOR = normaSectorEntity.SECTOR;
 
                         _unitOfWork.NormaSectorRepository.Update(normaSector);
                         _unitOfWork.Save();
@@ -130,25 +154,35 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaSectorId"></param>
         /// <returns></returns>
-        public bool DeleteNormaSector(int normaSectorId)
+        public object[] DeleteNormaSector(int normaSectorId)
         {
             var success = false;
-            if (normaSectorId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (normaSectorId > 0)
                 {
-                    var normaSector = _unitOfWork.NormaSectorRepository.GetByID(normaSectorId);
-                    if (normaSector != null)
+                    using (var scope = new TransactionScope())
                     {
-                        _unitOfWork.NormaSectorRepository.Delete(normaSector);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                        var normaSector = _unitOfWork.NormaSectorRepository.GetByID(normaSectorId);
+                        if (normaSector != null)
+                        {
+                            _unitOfWork.NormaSectorRepository.Delete(normaSector);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
-
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -239,14 +273,14 @@ namespace BusinessServices
                 {
                     foreach (NormaSectorEntity sectorExistente in normaSectorById)
                     {
-                        if (sectorNuevo.IdSectorServicio.Equals(sectorExistente.IdSectorServicio))
+                        if (sectorNuevo.IdSector.Equals(sectorExistente.IdSector))
                             ActivateNormaSector(sectorExistente.IdNormaSector);
                         match++;
                     }
 
                     if (match == 0)
                         //ATLA***********************cuando existe en 1 o 0 no se crea, se actualiza
-                        CreateNormaSector(sectorNuevo.IdSectorServicio, normaEntity.IdNorma);
+                        CreateNormaSector(sectorNuevo.IdSector, normaEntity.IdNorma);
                     else
                         match = 0;
                 }
@@ -255,7 +289,7 @@ namespace BusinessServices
                 {
                     foreach (DataModel.NORMA_SECTOR sectorNuevo in normaEntity.NORMA_SECTOR)
                     {
-                        if (sectorNuevo.IdSectorServicio.Equals(sectorExistente.IdSectorServicio))
+                        if (sectorNuevo.IdSector.Equals(sectorExistente.IdSector))
                             match++;
                     }
                     if (match == 0)

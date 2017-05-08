@@ -143,31 +143,42 @@ namespace BusinessServices
             return success;
         }
 
-        public NormaEntity setDescripcion(NormaEntity norma, List<NormaSectorEntity> normaSector)
+        public object[] setDescripcion(NormaEntity norma, List<NormaSectorEntity> normaSector)
         {
-            var valor = GetTablaValorById(norma.IdTipoNorma);
-            if (valor != null)
-                norma.DescripcionTipoNorma = valor.ValorAlfanumerico;
-
-            var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
-            if (entidad != null)
-                norma.DescripcionEntidadEmite = entidad.Nombre;
-
-            if (normaSector != null)
+            try
             {
-                Mapper.Initialize(cfg =>
-                {
-                    cfg.CreateMap<NormaSectorEntity, NORMA_SECTOR>();
-                });
-                var sectorModel = Mapper.Map<List<NormaSectorEntity>, List<NORMA_SECTOR>>(normaSector);
+                var valor = GetTablaValorById(norma.IdTipoNorma);
+                if (valor != null)
+                    norma.DescripcionTipoNorma = valor.ValorAlfanumerico;
 
-                foreach (NORMA_SECTOR sector in sectorModel)
+                var entidad = _entidadServices.GetEntidadById(norma.IdEntidadEmite);
+                if (entidad != null)
+                    norma.DescripcionEntidadEmite = entidad.Nombre;
+
+                if (normaSector != null)
                 {
-                    norma.NORMA_SECTOR.Add(sector);
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<NormaSectorEntity, NORMA_SECTOR>();
+                    });
+                    var sectorModel = Mapper.Map<List<NormaSectorEntity>, List<NORMA_SECTOR>>(normaSector);
+
+                    foreach (NORMA_SECTOR sector in sectorModel)
+                    {
+                        norma.NORMA_SECTOR.Add(sector);
+                    }
                 }
+                object[] resultado = { "0000", norma };
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
             }
 
-            return norma;
         }
 
         public object[] setDescripcionList(List<NormaEntity> normas)

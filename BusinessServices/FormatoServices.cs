@@ -5,6 +5,7 @@ using AutoMapper;
 using BusinessEntities;
 using DataModel;
 using DataModel.UnitOfWork;
+using System;
 
 namespace BusinessServices
 {
@@ -46,38 +47,66 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public BusinessEntities.FormatoEntity GetFormatoById(int formatoId)
+        public object[] GetFormatoById(int formatoId)
         {
-            var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
-            if (formato != null)
+            try
             {
-                Mapper.Initialize(cfg =>
+                var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
+                if (formato != null)
                 {
-                    cfg.CreateMap<FORMATO, FormatoEntity>();
-                });
-                var formatoModel = Mapper.Map<FORMATO, FormatoEntity>(formato);
-                return formatoModel;
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<FORMATO, FormatoEntity>();
+                    });
+                    var formatoModel = Mapper.Map<FORMATO, FormatoEntity>(formato);
+                    object[] resultado = { "0000", formatoModel };
+                    return resultado;
+                }
+                var cod = new CodigoError();
+                var codigoError = cod.Error("null");
+                object[] resultado2 = { codigoError };
+                return resultado2;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
         /// Fetches all the formatos
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.FormatoEntity> GetAllFormatos()
+        public object[] GetAllFormatos()
         {
-            var formatos = _unitOfWork.FormatoRepository.GetAll().ToList();
-            if (formatos.Any())
+            try
             {
-                Mapper.Initialize(cfg =>
+                var formatos = _unitOfWork.FormatoRepository.GetAll().ToList();
+                if (formatos.Any())
                 {
-                    cfg.CreateMap<FORMATO, FormatoEntity>();
-                });
-                var formatosModel = Mapper.Map<List<FORMATO>, List<FormatoEntity>>(formatos);
-                return formatosModel;
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<FORMATO, FormatoEntity>();
+                    });
+                    var formatosModel = Mapper.Map<List<FORMATO>, List<FormatoEntity>>(formatos);
+                    object[] resultado = { "0000", formatosModel };
+                    return resultado;
+                }
+                var cod = new CodigoError();
+                var codigoError = cod.Error("null");
+                object[] resultado2 = { codigoError };
+                return resultado2;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -85,28 +114,39 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoEntity"></param>
         /// <returns></returns>
-        public int CreateFormato(BusinessEntities.FormatoEntity formatoEntity)
+        public object[] CreateFormato(BusinessEntities.FormatoEntity formatoEntity)
         {
-            using (var scope = new TransactionScope())
+            try
             {
-                var formato = new FORMATO
+                using (var scope = new TransactionScope())
                 {
-                    IdFormato = formatoEntity.IdFormato,
-                    IdNorma = formatoEntity.IdNorma,
-                    Codigo = formatoEntity.Codigo,
-                    Nombre = formatoEntity.Nombre,
-                    IdTipoFormato = formatoEntity.IdTipoFormato,
-                    IdPlazo = formatoEntity.IdPlazo,
-                    IdPeriodicidad = formatoEntity.IdPeriodicidad,
-                    IdEstado = formatoEntity.IdEstado,
-                    DiasPlazo = formatoEntity.DiasPlazo,
-                    IdSeccion = formatoEntity.IdSeccion,
-                    InlcuyeFecha = formatoEntity.InlcuyeFecha
-                };
-                _unitOfWork.FormatoRepository.Insert(formato);
-                _unitOfWork.Save();
-                scope.Complete();
-                return formato.IdFormato;
+                    var formato = new FORMATO
+                    {
+                        IdFormato = formatoEntity.IdFormato,
+                        IdNorma = formatoEntity.IdNorma,
+                        Codigo = formatoEntity.Codigo,
+                        Nombre = formatoEntity.Nombre,
+                        IdTipoFormato = formatoEntity.IdTipoFormato,
+                        IdPlazo = formatoEntity.IdPlazo,
+                        IdPeriodicidad = formatoEntity.IdPeriodicidad,
+                        IdEstado = formatoEntity.IdEstado,
+                        DiasPlazo = formatoEntity.DiasPlazo,
+                        IdSeccion = formatoEntity.IdSeccion,
+                        InlcuyeFecha = formatoEntity.InlcuyeFecha
+                    };
+                    _unitOfWork.FormatoRepository.Insert(formato);
+                    _unitOfWork.Save();
+                    scope.Complete();
+                    object[] resultado = { "0000", formato.IdFormato };
+                    return resultado;
+                }
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
             }
         }
 
@@ -116,36 +156,48 @@ namespace BusinessServices
         /// <param name="formatoId"></param>
         /// <param name="formatoEntity"></param>
         /// <returns></returns>
-        public bool UpdateFormato(int formatoId, BusinessEntities.FormatoEntity formatoEntity)
+        public object[] UpdateFormato(int formatoId, BusinessEntities.FormatoEntity formatoEntity)
         {
             var success = false;
-            if (formatoEntity != null)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (formatoEntity != null)
                 {
-                    var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
-                    if (formato != null)
+                    using (var scope = new TransactionScope())
                     {
-                        formato.IdFormato = formatoEntity.IdFormato;
-                        formato.IdNorma = formatoEntity.IdNorma;
-                        formato.Codigo = formatoEntity.Codigo;
-                        formato.Nombre = formatoEntity.Nombre;
-                        formato.IdTipoFormato = formatoEntity.IdTipoFormato;
-                        formato.IdPlazo = formatoEntity.IdPlazo;
-                        formato.IdPeriodicidad = formatoEntity.IdPeriodicidad;
-                        formato.IdEstado = formatoEntity.IdEstado;
-                        formato.DiasPlazo = formatoEntity.DiasPlazo;
-                        formato.IdSeccion = formatoEntity.IdSeccion;
-                        formato.InlcuyeFecha = formatoEntity.InlcuyeFecha;
+                        var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
+                        if (formato != null)
+                        {
+                            formato.IdFormato = formatoEntity.IdFormato;
+                            formato.IdNorma = formatoEntity.IdNorma;
+                            formato.Codigo = formatoEntity.Codigo;
+                            formato.Nombre = formatoEntity.Nombre;
+                            formato.IdTipoFormato = formatoEntity.IdTipoFormato;
+                            formato.IdPlazo = formatoEntity.IdPlazo;
+                            formato.IdPeriodicidad = formatoEntity.IdPeriodicidad;
+                            formato.IdEstado = formatoEntity.IdEstado;
+                            formato.DiasPlazo = formatoEntity.DiasPlazo;
+                            formato.IdSeccion = formatoEntity.IdSeccion;
+                            formato.InlcuyeFecha = formatoEntity.InlcuyeFecha;
 
-                        _unitOfWork.FormatoRepository.Update(formato);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                            _unitOfWork.FormatoRepository.Update(formato);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
 
         /// <summary>
@@ -153,44 +205,68 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public bool DeleteFormato(int formatoId)
+        public object[] DeleteFormato(int formatoId)
         {
             var success = false;
-            if (formatoId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (formatoId > 0)
                 {
-                    var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
-                    if (formato != null)
+                    using (var scope = new TransactionScope())
                     {
-                        _unitOfWork.FormatoRepository.Delete(formato);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                        var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
+                        if (formato != null)
+                        {
+                            _unitOfWork.FormatoRepository.Delete(formato);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
-
 
         /// <summary>
         /// Fetches all the actives formatos
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.FormatoEntity> GetAllFormatosActive()
+        public object[] GetAllFormatosActive()
         {
-            var formatoServicios = _unitOfWork.FormatoRepositoryCustom.GetMany().ToList();
-            if (formatoServicios.Any())
+            try
             {
-                Mapper.Initialize(cfg =>
+                var formatoServicios = _unitOfWork.FormatoRepositoryCustom.GetMany().ToList();
+                if (formatoServicios.Any())
                 {
-                    cfg.CreateMap<FORMATO, FormatoEntity>();
-                });
-                var formatos = Mapper.Map<List<FORMATO>, List<FormatoEntity>>(formatoServicios);
-                return formatos;
+                    Mapper.Initialize(cfg =>
+                    {
+                        cfg.CreateMap<FORMATO, FormatoEntity>();
+                    });
+                    var formatos = Mapper.Map<List<FORMATO>, List<FormatoEntity>>(formatoServicios);
+                    object[] resultado = { "0000", formatos };
+                    return resultado;
+                }
+                var cod = new CodigoError();
+                var codigoError = cod.Error("null");
+                object[] resultado2 = { codigoError };
+                return resultado2;
             }
-            return null;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
 
@@ -199,25 +275,36 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public bool InactivateFormato(int formatoId)
+        public object[] InactivateFormato(int formatoId)
         {
             var success = false;
-            if (formatoId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (formatoId > 0)
                 {
-                    var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
-                    if (formato != null)
+                    using (var scope = new TransactionScope())
                     {
-                        formato.IdEstado = 0;
-                        _unitOfWork.FormatoRepository.Update(formato);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                        var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
+                        if (formato != null)
+                        {
+                            formato.IdEstado = 0;
+                            _unitOfWork.FormatoRepository.Update(formato);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -225,25 +312,36 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public bool ActivateFormato(int formatoId)
+        public object[] ActivateFormato(int formatoId)
         {
             var success = false;
-            if (formatoId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (formatoId > 0)
                 {
-                    var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
-                    if (formato != null)
+                    using (var scope = new TransactionScope())
                     {
-                        formato.IdEstado = 1;
-                        _unitOfWork.FormatoRepository.Update(formato);
-                        _unitOfWork.Save();
-                        scope.Complete();
-                        success = true;
+                        var formato = _unitOfWork.FormatoRepository.GetByID(formatoId);
+                        if (formato != null)
+                        {
+                            formato.IdEstado = 1;
+                            _unitOfWork.FormatoRepository.Update(formato);
+                            _unitOfWork.Save();
+                            scope.Complete();
+                            success = true;
+                        }
                     }
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -251,15 +349,24 @@ namespace BusinessServices
         /// </summary>
         /// <param name="normaId"></param>
         /// <returns></returns>
-        public bool ExistNormaFormato(int normaId)
+        public object[] ExistNormaFormato(int normaId)
         {
-            bool exist = false;
-            exist = _unitOfWork.FormatoRepositoryCustom.ExistNorma(normaId);
+            try
+            {
+                bool exist = false;
+                exist = _unitOfWork.FormatoRepositoryCustom.ExistNorma(normaId);
 
-            if(exist)
-                return true;
-            else
-                return false;
+                object[] resultado = { "0000", exist };
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
 
         /// <summary>
@@ -267,72 +374,108 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoEntity"></param>
         /// <returns></returns>
-        public FormatoEntity setDescripcion(FormatoEntity formato)
+        public object[] setDescripcion(FormatoEntity formato)
         {
-            var norma = _unitOfWork.NormaRepository.GetByID(formato.IdNorma);
-            if (norma != null)
-                formato.nombreNorma = norma.NombreNorma;
-
-            var valor = _tablaValorServices.GetTablaValorById(formato.IdTipoFormato);
-            if (valor != null)
-                formato.nombreTipoFormato = valor.ValorAlfanumerico;
-
-            var tipoPeriodicidad = _periodicidadServices.GetPeriodicidadById(formato.IdPeriodicidad);
-            if (tipoPeriodicidad != null)
-                formato.nombrePeriodicidad = tipoPeriodicidad.Descripcion;
-
-            var tipoPlazo = _plazoServices.GetPlazoById(formato.IdPlazo);
-            if (tipoPlazo != null)
-                formato.nombrePlazo = tipoPlazo.Descripcion;
-
-            var seccion = _tablaValorServices.GetTablaValorById(formato.IdSeccion);
-            if (seccion != null)
-                formato.nombreSeccion = valor.ValorAlfanumerico;
-
-            if (formato.IdEstado == 1)
+            try
             {
-                formato.nombreEstado = "Activo";
-            }
-            else
-            {
-                formato.nombreEstado = "Inactivo";
-            }
+                var norma = _unitOfWork.NormaRepository.GetByID(formato.IdNorma);
+                if (norma != null)
+                    formato.nombreNorma = norma.NombreNorma;
 
-            return formato;
+                var valor = _tablaValorServices.GetTablaValorById(formato.IdTipoFormato);
+                if (valor != null)
+                    formato.nombreTipoFormato = valor.ValorAlfanumerico;
+
+                var tipoPeriodicidad = _periodicidadServices.GetPeriodicidadById(formato.IdPeriodicidad);
+                if (tipoPeriodicidad != null)
+                    formato.nombrePeriodicidad = tipoPeriodicidad.Descripcion;
+
+                var tipoPlazo = _plazoServices.GetPlazoById(formato.IdPlazo);
+                if (tipoPlazo != null)
+                    formato.nombrePlazo = tipoPlazo.Descripcion;
+
+                var seccion = _tablaValorServices.GetTablaValorById(formato.IdSeccion);
+                if (seccion != null)
+                    formato.nombreSeccion = valor.ValorAlfanumerico;
+
+                if (formato.IdEstado == 1)
+                {
+                    formato.nombreEstado = "Activo";
+                }
+                else
+                {
+                    formato.nombreEstado = "Inactivo";
+                }
+                object[] resultado = { "0000", formato };
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
         /// Find when the formato has changed the state
         /// </summary>
         /// <returns></returns>
-        public bool changeFormatoState(FormatoEntity formatoEntity)
+        public object[] changeFormatoState(FormatoEntity formatoEntity)
         {
             bool success = false;
-            if (formatoEntity.IdFormato > 0)
+            try
             {
-                //Obtiene Formato almacenado
-                var formato = _unitOfWork.FormatoRepository.GetByID(formatoEntity.IdFormato);
-
-                if (formato != null)
+                if (formatoEntity.IdFormato > 0)
                 {
-                    success = true;
-                    //Encuentra si el formato cambio de estado con respecto al formato a actualizar
-                    if (!(formato.IdEstado == formatoEntity.IdEstado))
+                    //Obtiene Formato almacenado
+                    var formato = _unitOfWork.FormatoRepository.GetByID(formatoEntity.IdFormato);
+
+                    if (formato != null)
                     {
-                        //Si el formato a actualizar tiene estado activo, activa todas sus relaciones
-                        if (formatoEntity.IdEstado == 1)
+                        success = true;
+                        //Encuentra si el formato cambio de estado con respecto al formato a actualizar
+                        if (!(formato.IdEstado == formatoEntity.IdEstado))
                         {
-                            success = ActivateFormatoRelations(formatoEntity.IdFormato);   
-                        }
-                        else
-                        {
-                            success = InactivateFormatoRelations(formatoEntity.IdFormato);
+                            //Si el formato a actualizar tiene estado activo, activa todas sus relaciones
+                            if (formatoEntity.IdEstado == 1)
+                            {
+                                var flagObject = ActivateFormatoRelations(formatoEntity.IdFormato);
+                                if (flagObject[0].Equals("0000"))
+                                {
+                                    success = (bool)flagObject.ElementAt(1);
+                                }
+                                else
+                                {
+                                    return flagObject;
+                                }
+                            }
+                            else
+                            {
+                                var flagObject = InactivateFormatoRelations(formatoEntity.IdFormato);
+                                if (flagObject[0].Equals("0000"))
+                                {
+                                    success = (bool)flagObject.ElementAt(1);
+                                }
+                                else
+                                {
+                                    return flagObject;
+                                }
+                            }
                         }
                     }
                 }
-
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -340,56 +483,76 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public bool ActivateFormatoRelations(int formatoId)
+        public object[] ActivateFormatoRelations(int formatoId)
         {
             var success = false;
-            if (formatoId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (formatoId > 0)
                 {
-                    var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
-                    if (plantillas != null)
+                    using (var scope = new TransactionScope())
                     {
-                        foreach (FORMATO_PLANTILLA plantilla in plantillas)
+                        var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
+                        if (plantillas != null)
                         {
-                            //Activar las plantillas
-                            bool activatePlantilla = _formatoPlantillaServices.ActivatePlantilla(plantilla.IdFormatoPlantilla);
-                            if (!activatePlantilla)
-                                return false;
-
-                            //Obtener los registros de servicios asociados a estas plantillas
-                            var servicios = _unitOfWork.FormatoServicioRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
-                            //Obtener los registros de campos asociados a estas plantillas
-                            var campos = _unitOfWork.PlantillaCampoRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
-
-                            if (servicios != null)
+                            foreach (FORMATO_PLANTILLA plantilla in plantillas)
                             {
-                                foreach (FORMATO_SERVICIO servicio in servicios)
+                                //Activar las plantillas
+                                bool activatePlantilla = _formatoPlantillaServices.ActivatePlantilla(plantilla.IdFormatoPlantilla);
+                                if (!activatePlantilla)
                                 {
-                                    //Activar los servicios asociados a la plantilla
-                                    bool activateServicio = _formatoServicioServices.ActivateServicio(servicio.IdFormatoServicio);
-                                    if (!activateServicio)
-                                        return false;
+                                    object[] resultado2 = { "0000", false };
+                                    return resultado2;
                                 }
-                            }
 
-                            if (campos != null)
-                            {
-                                foreach (PLANTILLA_CAMPO campo in campos)
+                                //Obtener los registros de servicios asociados a estas plantillas
+                                var servicios = _unitOfWork.FormatoServicioRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
+                                //Obtener los registros de campos asociados a estas plantillas
+                                var campos = _unitOfWork.PlantillaCampoRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
+
+                                if (servicios != null)
                                 {
-                                    //Activar los campos asociados a la plantilla
-                                    bool activateCampo = _plantillaCampoServices.ActivateCampo(campo.IdPlantillaCampo);
-                                    if (!activateCampo)
-                                        return false;
+                                    foreach (FORMATO_SERVICIO servicio in servicios)
+                                    {
+                                        //Activar los servicios asociados a la plantilla
+                                        bool activateServicio = _formatoServicioServices.ActivateServicio(servicio.IdFormatoServicio);
+                                        if (!activateServicio)
+                                        {
+                                            object[] resultado2 = { "0000", false };
+                                            return resultado2;
+                                        }
+                                    }
+                                }
+
+                                if (campos != null)
+                                {
+                                    foreach (PLANTILLA_CAMPO campo in campos)
+                                    {
+                                        //Activar los campos asociados a la plantilla
+                                        bool activateCampo = _plantillaCampoServices.ActivateCampo(campo.IdPlantillaCampo);
+                                        if (!activateCampo)
+                                        {
+                                            object[] resultado2 = { "0000", false };
+                                            return resultado2;
+                                        }
+                                    }
                                 }
                             }
                         }
+                        scope.Complete();
+                        success = true;
                     }
-                    scope.Complete();
-                    success = true;
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
         }
 
         /// <summary>
@@ -397,56 +560,76 @@ namespace BusinessServices
         /// </summary>
         /// <param name="formatoId"></param>
         /// <returns></returns>
-        public bool InactivateFormatoRelations(int formatoId)
+        public object[] InactivateFormatoRelations(int formatoId)
         {
             var success = false;
-            if (formatoId > 0)
+            try
             {
-                using (var scope = new TransactionScope())
+                if (formatoId > 0)
                 {
-                    var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
-                    if (plantillas != null)
+                    using (var scope = new TransactionScope())
                     {
-                        foreach (FORMATO_PLANTILLA plantilla in plantillas)
+                        var plantillas = _unitOfWork.FormatoPlantillaRepository.GetMany(c => c.IdFormato == formatoId);
+                        if (plantillas != null)
                         {
-                            //Activar las plantillas
-                            bool inactivatePlantilla = _formatoPlantillaServices.InactivatePlantilla(plantilla.IdFormatoPlantilla);
-                            if (!inactivatePlantilla)
-                                return false;
-
-                            //Obtener los registros de servicios asociados a estas plantillas
-                            var servicios = _unitOfWork.FormatoServicioRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
-                            //Obtener los registros de campos asociados a estas plantillas
-                            var campos = _unitOfWork.PlantillaCampoRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
-
-                            if (servicios != null)
+                            foreach (FORMATO_PLANTILLA plantilla in plantillas)
                             {
-                                foreach (FORMATO_SERVICIO servicio in servicios)
+                                //Activar las plantillas
+                                bool inactivatePlantilla = _formatoPlantillaServices.InactivatePlantilla(plantilla.IdFormatoPlantilla);
+                                if (!inactivatePlantilla)
                                 {
-                                    //Activar los servicios asociados a la plantilla
-                                    bool inactivateServicio = _formatoServicioServices.InactivateServicio(servicio.IdFormatoServicio);
-                                    if (!inactivateServicio)
-                                        return false;
+                                    object[] resultado2 = { "0000", false };
+                                    return resultado2;
                                 }
-                            }
+                                //Obtener los registros de servicios asociados a estas plantillas
+                                var servicios = _unitOfWork.FormatoServicioRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
+                                //Obtener los registros de campos asociados a estas plantillas
+                                var campos = _unitOfWork.PlantillaCampoRepository.GetMany(c => c.IdFormatoPlantilla == plantilla.IdFormatoPlantilla);
 
-                            if (campos != null)
-                            {
-                                foreach (PLANTILLA_CAMPO campo in campos)
+                                if (servicios != null)
                                 {
-                                    //Activar los campos asociados a la plantilla
-                                    bool inactivateCampo = _plantillaCampoServices.InactivateCampo(campo.IdPlantillaCampo);
-                                    if (!inactivateCampo)
-                                        return false;
+                                    foreach (FORMATO_SERVICIO servicio in servicios)
+                                    {
+                                        //Activar los servicios asociados a la plantilla
+                                        bool inactivateServicio = _formatoServicioServices.InactivateServicio(servicio.IdFormatoServicio);
+                                        if (!inactivateServicio)
+                                        {
+                                            object[] resultado2 = { "0000", false };
+                                            return resultado2;
+                                        }
+                                    }
+                                }
+
+                                if (campos != null)
+                                {
+                                    foreach (PLANTILLA_CAMPO campo in campos)
+                                    {
+                                        //Activar los campos asociados a la plantilla
+                                        bool inactivateCampo = _plantillaCampoServices.InactivateCampo(campo.IdPlantillaCampo);
+                                        if (!inactivateCampo)
+                                        {
+                                            object[] resultado2 = { "0000", false };
+                                            return resultado2;
+                                        }
+                                    }
                                 }
                             }
                         }
+                        scope.Complete();
+                        success = true;
                     }
-                    scope.Complete();
-                    success = true;
                 }
+                object[] resultado = { "0000", success };
+                return resultado;
             }
-            return success;
+            catch (Exception e)
+            {
+                var cod = new CodigoError();
+                var codigoError = cod.Error(e.ToString());
+                object[] resultado = { codigoError, e.ToString() };
+                return resultado;
+            }
+
         }
 
     }

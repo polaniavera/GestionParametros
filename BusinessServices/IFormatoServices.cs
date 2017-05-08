@@ -8,18 +8,18 @@ namespace BusinessServices
     /// </summary>
     public interface IFormatoServices
     {
-        FormatoEntity GetFormatoById(int formatoId);
-        IEnumerable<FormatoEntity> GetAllFormatos();
-        int CreateFormato(FormatoEntity formatoEntity);
-        bool UpdateFormato(int formatoId, FormatoEntity formatoEntity);
-        bool DeleteFormato(int formatoId);
-        IEnumerable<FormatoEntity> GetAllFormatosActive();
-        bool InactivateFormato(int formatoId);
-        bool ActivateFormato(int formatoId);
-        bool ExistNormaFormato(int normaId);
-        FormatoEntity setDescripcion(FormatoEntity formato);
-        bool changeFormatoState(FormatoEntity formatoEntity);
-        bool InactivateFormatoRelations(int formatoId);
-        bool ActivateFormatoRelations(int formatoId);
+        object[] GetFormatoById(int formatoId);
+        object[] GetAllFormatos();
+        object[] CreateFormato(FormatoEntity formatoEntity);
+        object[] UpdateFormato(int formatoId, FormatoEntity formatoEntity);
+        object[] DeleteFormato(int formatoId);
+        object[] GetAllFormatosActive();
+        object[] InactivateFormato(int formatoId);
+        object[] ActivateFormato(int formatoId);
+        object[] ExistNormaFormato(int normaId);
+        object[] setDescripcion(FormatoEntity formato);
+        object[] changeFormatoState(FormatoEntity formatoEntity);
+        object[] InactivateFormatoRelations(int formatoId);
+        object[] ActivateFormatoRelations(int formatoId);
     }
 }

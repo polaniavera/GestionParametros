@@ -12,10 +12,11 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class DIAFESTIVO
+    public partial class TEMP
     {
-        public int IdDiaFestivo { get; set; }
+        public int Parametro { get; set; }
+        public string id { get; set; }
+        public string Cod { get; set; }
         public string Descripcion { get; set; }
-        public System.DateTime Fecha { get; set; }
     }
 }

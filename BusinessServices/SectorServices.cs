@@ -11,7 +11,7 @@ namespace BusinessServices
     /// <summary>
     /// Offers services for sectorServicio specific CRUD operations
     /// </summary>
-    public class SectorServicioServices: ISectorServicioServices
+    public class SectorServices: ISectorServices
     {
         private readonly UnitOfWork _unitOfWork;
         
@@ -19,7 +19,7 @@ namespace BusinessServices
         /// Public constructor to initialize UnitOfWork instance
         /// with Unity Constructor Inject Dependency
         /// </summary>
-        public SectorServicioServices(UnitOfWork unitOfWork)
+        public SectorServices(UnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -29,16 +29,16 @@ namespace BusinessServices
         /// </summary>
         /// <param name="sectorServicioId"></param>
         /// <returns></returns>
-        public BusinessEntities.SectorServicioEntity GetSectorServicioById(int sectorServicioId)
+        public BusinessEntities.SectorEntity GetSectorServicioById(int sectorServicioId)
         {
             var sectorServicio = _unitOfWork.SectorServicioRepository.GetByID(sectorServicioId);
             if (sectorServicio != null)
             {
                 Mapper.Initialize(cfg =>
                 {
-                    cfg.CreateMap<SECTOR_SERVICIO, SectorServicioEntity>();
+                    cfg.CreateMap<SECTOR, SectorEntity>();
                 });
-                var sectorServicioModel = Mapper.Map<SECTOR_SERVICIO, SectorServicioEntity>(sectorServicio);
+                var sectorServicioModel = Mapper.Map<SECTOR, SectorEntity>(sectorServicio);
                 return sectorServicioModel;
             }
             return null;
@@ -48,16 +48,16 @@ namespace BusinessServices
         /// Fetches all the sectorServicios
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<BusinessEntities.SectorServicioEntity> GetAllSectorServicios()
+        public IEnumerable<BusinessEntities.SectorEntity> GetAllSectorServicios()
         {
             var sectorServicios = _unitOfWork.SectorServicioRepository.GetAll().ToList();
             if (sectorServicios.Any())
             {
                 Mapper.Initialize(cfg =>
                 {
-                    cfg.CreateMap<SECTOR_SERVICIO, SectorServicioEntity>();
+                    cfg.CreateMap<SECTOR, SectorEntity>();
                 });
-                var sectorServiciosModel = Mapper.Map<List<SECTOR_SERVICIO>, List<SectorServicioEntity>>(sectorServicios);
+                var sectorServiciosModel = Mapper.Map<List<SECTOR>, List<SectorEntity>>(sectorServicios);
                 return sectorServiciosModel;
             }
             return null;
@@ -68,16 +68,16 @@ namespace BusinessServices
         /// </summary>
         /// <param name="sectorServicioEntity"></param>
         /// <returns></returns>
-        public int CreateSectorServicio(BusinessEntities.SectorServicioEntity sectorServicioEntity)
+        public int CreateSectorServicio(SectorEntity sectorServicioEntity)
         {
             using (var scope = new TransactionScope())
             {
-                var sectorServicio = new SECTOR_SERVICIO
+                var sectorServicio = new SECTOR
                 {
                     Codigo = sectorServicioEntity.Codigo,
                     Descripcion = sectorServicioEntity.Descripcion,
                     IdEstado = sectorServicioEntity.IdEstado,
-                    IdSectorServicio = sectorServicioEntity.IdSectorServicio,
+                    IdSector = sectorServicioEntity.IdSector,
                     Nombre = sectorServicioEntity.Nombre,
                     NORMA_SECTOR = sectorServicioEntity.NORMA_SECTOR,
                     SERVICIO = sectorServicioEntity.SERVICIO
@@ -85,7 +85,7 @@ namespace BusinessServices
                 _unitOfWork.SectorServicioRepository.Insert(sectorServicio);
                 _unitOfWork.Save();
                 scope.Complete();
-                return sectorServicio.IdSectorServicio;
+                return sectorServicio.IdSector;
             }
         }
 
@@ -95,7 +95,7 @@ namespace BusinessServices
         /// <param name="sectorServicioId"></param>
         /// <param name="sectorServicioEntity"></param>
         /// <returns></returns>
-        public bool UpdateSectorServicio(int sectorServicioId, BusinessEntities.SectorServicioEntity sectorServicioEntity)
+        public bool UpdateSectorServicio(int sectorServicioId, SectorEntity sectorServicioEntity)
         {
             var success = false;
             if (sectorServicioEntity != null)
@@ -108,7 +108,7 @@ namespace BusinessServices
                         sectorServicio.Codigo = sectorServicioEntity.Codigo;
                         sectorServicio.Descripcion = sectorServicioEntity.Descripcion;
                         sectorServicio.IdEstado = sectorServicioEntity.IdEstado;
-                        sectorServicio.IdSectorServicio = sectorServicioEntity.IdSectorServicio;
+                        sectorServicio.IdSector = sectorServicioEntity.IdSector;
                         sectorServicio.Nombre = sectorServicioEntity.Nombre;
                         sectorServicio.NORMA_SECTOR = sectorServicioEntity.NORMA_SECTOR;
                         sectorServicio.SERVICIO = sectorServicioEntity.SERVICIO;

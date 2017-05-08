@@ -20,7 +20,7 @@ namespace BusinessServices
             //Norma no encontrada
             else if (msj.Contains("null"))
             {
-                return "0300 Norma no encontrada";
+                return "0300 Objeto no encontrado";
             }
             return "0900";
         }

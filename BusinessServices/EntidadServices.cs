@@ -76,23 +76,24 @@ namespace BusinessServices
                     Ciudad = entidadEntity.Ciudad,
                     Codigo = entidadEntity.Codigo,
                     CodigoHomologado = entidadEntity.CodigoHomologado,
-                    Departamento = entidadEntity.Departamento,
                     Descripcion = entidadEntity.Descripcion,
                     Direccion = entidadEntity.Direccion,
                     Email = entidadEntity.Email,
-                    ENTIDAD_SERVICIO = entidadEntity.ENTIDAD_SERVICIO,
                     FechaConstitucion = entidadEntity.FechaConstitucion,
-                    IdCodigoHomologado = entidadEntity.IdCodigoHomologado,
                     IdEntidad = entidadEntity.IdEntidad,
                     IdEntidadPadre = entidadEntity.IdEntidadPadre,
                     IdEstado = entidadEntity.IdEstado,
                     IdTipoEntidad = entidadEntity.IdTipoEntidad,
                     IdTipoRelacionEntidadPadre = entidadEntity.IdTipoRelacionEntidadPadre,
                     NaturalezaJuridica = entidadEntity.NaturalezaJuridica,
-                    NIT = entidadEntity.NIT,
                     Nombre = entidadEntity.Nombre,
                     Sigla = entidadEntity.Sigla,
-                    Telefono = entidadEntity.Telefono
+                    NumeroDocumento = entidadEntity.NumeroDocumento,
+                    IdTipoDocumento = entidadEntity.IdTipoDocumento,
+                    Telefono = entidadEntity.Telefono,
+                    IdTipoCodigoHomologado = entidadEntity.IdTipoCodigoHomologado,
+                    IdTransmite = entidadEntity.IdTransmite,
+                    NombreContacto = entidadEntity.NombreContacto
                 };
 
                 _unitOfWork.EntidadRepository.Insert(entidad);
@@ -121,23 +122,24 @@ namespace BusinessServices
                         entidad.Ciudad = entidadEntity.Ciudad;
                         entidad.Codigo = entidadEntity.Codigo;
                         entidad.CodigoHomologado = entidadEntity.CodigoHomologado;
-                        entidad.Departamento = entidadEntity.Departamento;
                         entidad.Descripcion = entidadEntity.Descripcion;
                         entidad.Direccion = entidadEntity.Direccion;
                         entidad.Email = entidadEntity.Email;
-                        entidad.ENTIDAD_SERVICIO = entidadEntity.ENTIDAD_SERVICIO;
                         entidad.FechaConstitucion = entidadEntity.FechaConstitucion;
-                        entidad.IdCodigoHomologado = entidadEntity.IdCodigoHomologado;
                         entidad.IdEntidad = entidadEntity.IdEntidad;
                         entidad.IdEntidadPadre = entidadEntity.IdEntidadPadre;
                         entidad.IdEstado = entidadEntity.IdEstado;
                         entidad.IdTipoEntidad = entidadEntity.IdTipoEntidad;
                         entidad.IdTipoRelacionEntidadPadre = entidadEntity.IdTipoRelacionEntidadPadre;
                         entidad.NaturalezaJuridica = entidadEntity.NaturalezaJuridica;
-                        entidad.NIT = entidadEntity.NIT;
                         entidad.Nombre = entidadEntity.Nombre;
                         entidad.Sigla = entidadEntity.Sigla;
+                        entidad.NumeroDocumento = entidadEntity.NumeroDocumento;
+                        entidad.IdTipoDocumento = entidadEntity.IdTipoDocumento;
                         entidad.Telefono = entidadEntity.Telefono;
+                        entidad.IdTipoCodigoHomologado = entidadEntity.IdTipoCodigoHomologado;
+                        entidad.IdTransmite = entidadEntity.IdTransmite;
+                        entidad.NombreContacto = entidadEntity.NombreContacto;
 
                         _unitOfWork.EntidadRepository.Update(entidad);
                         _unitOfWork.Save();

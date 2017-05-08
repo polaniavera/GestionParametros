@@ -15,7 +15,7 @@ namespace GestionParametros.Controllers
     {
         private readonly INormaServices _normaServices;
         private readonly INormaSectorServices _normaSectorServices;
-        private readonly ISectorServicioServices _sectorServicioServices;
+        private readonly ISectorServices _sectorServicioServices;
         private readonly IEntidadServices _entidadServices;
         private readonly ITablaServices _tablaServices;
         private readonly ITablaValorServices _tablaValorServices;
@@ -33,7 +33,7 @@ namespace GestionParametros.Controllers
         /// </summary>
         public NormaController(INormaServices normaServices, 
             INormaSectorServices normaSectorServices, 
-            ISectorServicioServices sectorServicioServices,
+            ISectorServices sectorServicioServices,
             IEntidadServices entidadServices,
             ITablaServices tablaServices,
             ITablaValorServices tablaValorServices,
@@ -76,15 +76,16 @@ namespace GestionParametros.Controllers
         public HttpResponseMessage getActive()
         {
             var normas =_normaServices.GetAllNormasActive();
-            if (normas != null)
-            {
-                var normaEntities = normas as List<NormaEntity> ?? normas.ToList();
-                if (normaEntities.Any())
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, normaEntities);
-                }
-            }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "normas not found");
+            //if (normas != null)
+            //{
+            //    var normaEntities = normas as List<NormaEntity> ?? normas.ToList();
+            //    if (normaEntities.Any())
+            //    {
+            //        return Request.CreateResponse(HttpStatusCode.OK, normaEntities);
+            //    }
+            //}
+            //return Request.CreateErrorResponse(HttpStatusCode.NotFound, "normas not found");
+            return Request.CreateResponse(HttpStatusCode.OK, normas);
         }
 
         // GET api/norma/byId
@@ -100,33 +101,40 @@ namespace GestionParametros.Controllers
 
             var norma = _normaServices.GetNormaById(id);
 
-            if (norma != null)
+            if (norma != null && norma[0].Equals("0000"))
             {
+                NormaEntity normaEnt = (NormaEntity)norma.ElementAt(1);
+                var normaSector = _normaSectorServices.GetNormaSectorById(normaEnt.IdNorma).ToList();
 
-                var normaSector = _normaSectorServices.GetNormaSectorById(norma.IdNorma).ToList();
-                norma = _tablaValorServices.setDescripcion(norma, normaSector);
+                if (normaSector != null && normaSector[0].Equals("0000"))
+                {
+                    List<NormaSectorEntity> normasSectorEnt = (List<NormaSectorEntity>)normaSector.ElementAt(1);
+                    var normaFinal = _tablaValorServices.setDescripcion(normaEnt, normasSectorEnt);
 
-                //object[] jsonArray = { norma, normaSector };
+                    //object[] jsonArray = { norma, normaSector };
 
-                return Request.CreateResponse(HttpStatusCode.OK, norma);
+                    return Request.CreateResponse(HttpStatusCode.OK, normaFinal);
+                }
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, normaSector);
             }
-            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No norma found for this id");
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, norma);
         }
 
         // POST api/norma/create
         [Route("create")]
-        public int create([FromBody] NormaEntity normaEntity)
+        public HttpResponseMessage create([FromBody] NormaEntity normaEntity)
         {
-            if (normaEntity != null)
-            {
-                return _normaServices.CreateNorma(normaEntity);
-            }
-            return 0;
+        //    if (normaEntity != null)
+        //    {
+                var create = _normaServices.CreateNorma(normaEntity);
+                return Request.CreateResponse(HttpStatusCode.OK, create);
+            //}
+            //return 0;
         }
 
         // DELETE api/norma/delete
         [Route("delete")]
-        public bool delete([FromBody] IdEntity entity)
+        public HttpResponseMessage delete([FromBody] IdEntity entity)
         {
             int id = 0;
 
@@ -136,19 +144,36 @@ namespace GestionParametros.Controllers
             }
 
             if (id > 0)
-            { 
+            {
                 //si existe relacion de la Norma en la tabla formato no la borra
-                if (_formatoServices.ExistNormaFormato(id))
-                    return false;
+                var flagObject = _formatoServices.ExistNormaFormato(id);
+                if (flagObject[0].Equals("0000"))
+                {
+                    bool flag = (bool)flagObject.ElementAt(1);
+
+                    if (flag)
+                    {
+                        object[] resultado2 = { "0000", false };
+                        return Request.CreateResponse(HttpStatusCode.NotModified, resultado2);
+                    }
+                    else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.OK, _normaServices.DeleteNorma(id));
+                    }
+                        
+                }
                 else
-                    return _normaServices.DeleteNorma(id);
-            }              
-            return false;
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
+                }
+            }
+            object[] resultado = { "0000", false };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
         // POST api/norma/inactivate
         [Route("inactivate")]
-        public bool inactivate([FromBody] IdEntity entity)
+        public HttpResponseMessage inactivate([FromBody] IdEntity entity)
         {
             int id = 0;
 
@@ -159,14 +184,15 @@ namespace GestionParametros.Controllers
 
             if (id > 0)
             {
-                return _normaServices.InactivateNormaRelations(id);
+                return Request.CreateResponse(HttpStatusCode.OK, _normaServices.InactivateNormaRelations(id));
             }
-            return false;
+            object[] resultado = { "0000", false };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
         // POST api/norma/activate
         [Route("activate")]
-        public bool activate([FromBody] IdEntity entity)
+        public HttpResponseMessage activate([FromBody] IdEntity entity)
         {
             int id = 0;
 
@@ -177,25 +203,43 @@ namespace GestionParametros.Controllers
 
             if (id > 0)
             {
-                return _normaServices.ActivateNormaRelations(id);
+                return Request.CreateResponse(HttpStatusCode.OK, _normaServices.ActivateNormaRelations(id));
             }
-            return false;
+            object[] resultado = { "0000", false };
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
         }
 
         // POST api/norma/createnorma
         [Route("createnorma")]
-        public bool createNorma([FromBody] NormaEntity normaEntity, [FromUri] int[] normaSectorArray)
+        public HttpResponseMessage createNorma([FromBody] NormaEntity normaEntity, [FromUri] int[] normaSectorArray)
         {
-            var idNorma = _normaServices.CreateNorma(normaEntity);
+            var idNormaObject = _normaServices.CreateNorma(normaEntity);
             bool sector = false;
 
-            foreach (int idSectorServicio in normaSectorArray)
+            if (idNormaObject != null && idNormaObject[0].Equals("0000"))
             {
-                sector=_normaSectorServices.CreateNormaSector(idSectorServicio, idNorma);
-                if (!sector)
-                    return false;
+                var idNorma = (int)idNormaObject.ElementAt(1);
+
+                foreach (int idSectorServicio in normaSectorArray)
+                {
+                    var flagObject = _normaSectorServices.CreateNormaSector(idSectorServicio, idNorma);
+                    if (flagObject[0].Equals("0000"))
+                    {
+                        bool flag = (bool)flagObject.ElementAt(1);
+
+                        if (!flag)
+                        {
+                            return Request.CreateResponse(HttpStatusCode.InternalServerError, false);
+                        }
+                    }else
+                    {
+                        return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
+                    }
+                            
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, true);
             }
-            return true;
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, idNormaObject);
         }
 
         // GET api/norma/nueva
@@ -268,35 +312,75 @@ namespace GestionParametros.Controllers
 
         // POST  api/norma/update
         [Route("update")]
-        public bool updateNorma([FromBody] NormaEntity normaEntity)
+        public HttpResponseMessage updateNorma([FromBody] NormaEntity normaEntity)
         {
             if (normaEntity == null)
             {
-                return false;
+                object[] resultado = { "0000", false };
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, resultado);
             }
 
             bool deleteSector = false;
 
             //Busca las normas sectores relacionadas con la norma
-            var normaSectorById = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
+            var normaSectorByIdObject = _normaSectorServices.GetNormaSectorById(normaEntity.IdNorma);
 
-            //si existe relacion del sector en la tabla formato_servicio no la borra
-            if (_normaServices.ValidateSector(normaEntity, normaSectorById))
+            if (normaSectorByIdObject != null && normaSectorByIdObject[0].Equals("0000"))
             {
-                foreach (NormaSectorEntity sector in normaSectorById)
+                var normaSectorById = (List<NormaSectorEntity>) normaSectorByIdObject.ElementAt(1);
+
+                var flagObject = _normaServices.ValidateSector(normaEntity, normaSectorById);
+                if (flagObject[0].Equals("0000"))
                 {
-                    //Si no existe relacion borra los sectores directamente de la tabla NormaSector
-                    deleteSector = _normaSectorServices.DeleteNormaSector(sector.IdNormaSector);
-                    if (!deleteSector)
-                        return false;
+                    bool flag = (bool)flagObject.ElementAt(1);
+                    //si existe relacion del sector en la tabla formato_servicio no la borra
+                    if (flag)
+                    {
+                        foreach (NormaSectorEntity sector in normaSectorById)
+                        {
+                            //Si no existe relacion borra los sectores directamente de la tabla NormaSector
+                            var deleteSectorObject = _normaSectorServices.DeleteNormaSector(sector.IdNormaSector);
+                            if (deleteSectorObject[0].Equals("0000"))
+                            {
+                                bool flagDelete = (bool)deleteSectorObject.ElementAt(1);
+                                if (!flagDelete)
+                                {
+                                    return Request.CreateResponse(HttpStatusCode.InternalServerError, false);
+                                }
+                            }
+                            else
+                            {
+                                return Request.CreateResponse(HttpStatusCode.InternalServerError, deleteSectorObject);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, flagObject);
+                }
+
+                //Reconoce cuando cambia el estado de la norma
+                //y actualiza todas sus relaciones al nuevo estado
+                var normaEntityObject = _normaServices.changeNormaState(normaEntity);
+
+                if (normaEntityObject != null && normaEntityObject[0].Equals("0000"))
+                {
+                    normaEntity = (NormaEntity)normaEntityObject.ElementAt(1);
+                    var updateObject = _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, updateObject);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.InternalServerError, normaEntityObject);
                 }
             }
-
-            //Reconoce cuando cambia el estado de la norma
-            //y actualiza todas sus relaciones al nuevo estado
-            normaEntity = _normaServices.changeNormaState(normaEntity);
-
-            return _normaServices.UpdateNorma(normaEntity.IdNorma, normaEntity);
+            else
+            {
+                object[] resultado = { "0000", false };
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, normaSectorByIdObject);
+            }
         }
 
     }

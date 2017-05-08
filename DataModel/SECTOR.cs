@@ -12,33 +12,27 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class FORMATO
+    public partial class SECTOR
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FORMATO()
+        public SECTOR()
         {
-            this.FORMATO_ACUERDO = new HashSet<FORMATO_ACUERDO>();
-            this.FORMATO_PLANTILLA = new HashSet<FORMATO_PLANTILLA>();
+            this.NORMA_SECTOR = new HashSet<NORMA_SECTOR>();
+            this.ENTIDAD_SECTOR = new HashSet<ENTIDAD_SECTOR>();
+            this.SERVICIO = new HashSet<SERVICIO>();
         }
     
-        public int IdFormato { get; set; }
-        public Nullable<int> IdNorma { get; set; }
+        public int IdSector { get; set; }
         public string Codigo { get; set; }
         public string Nombre { get; set; }
-        public int IdTipoFormato { get; set; }
-        public int IdPlazo { get; set; }
-        public int IdPeriodicidad { get; set; }
+        public string Descripcion { get; set; }
         public int IdEstado { get; set; }
-        public Nullable<int> DiasPlazo { get; set; }
-        public Nullable<int> IdSeccion { get; set; }
-        public Nullable<bool> InlcuyeFecha { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FORMATO_ACUERDO> FORMATO_ACUERDO { get; set; }
-        public virtual NORMA NORMA { get; set; }
-        public virtual PERIODICIDAD PERIODICIDAD { get; set; }
+        public virtual ICollection<NORMA_SECTOR> NORMA_SECTOR { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<FORMATO_PLANTILLA> FORMATO_PLANTILLA { get; set; }
-        public virtual PLAZO PLAZO { get; set; }
+        public virtual ICollection<ENTIDAD_SECTOR> ENTIDAD_SECTOR { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SERVICIO> SERVICIO { get; set; }
     }
 }

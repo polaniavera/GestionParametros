@@ -12,10 +12,17 @@ namespace DataModel
     using System;
     using System.Collections.Generic;
     
-    public partial class DIAFESTIVO
+    public partial class INTEROPERABILIDAD
     {
-        public int IdDiaFestivo { get; set; }
+        public int IdInterOperabilidad { get; set; }
+        public string Ip { get; set; }
+        public string Codigo { get; set; }
+        public int Puerto { get; set; }
+        public string URLLink { get; set; }
+        public string Usuario { get; set; }
+        public string Clave { get; set; }
+        public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public System.DateTime Fecha { get; set; }
+        public int IdEstado { get; set; }
     }
 }

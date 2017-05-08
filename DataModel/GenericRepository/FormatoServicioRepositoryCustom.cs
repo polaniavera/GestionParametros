@@ -39,7 +39,7 @@ namespace DataModel.GenericRepository
 
             var categorizedProducts =
                 from ns in Context.NORMA_SECTOR
-                join s in Context.SERVICIO on ns.IdSectorServicio equals s.IdSectorServicio
+                join s in Context.SERVICIO on ns.IdSector equals s.IdSector
                 join fs in Context.FORMATO_SERVICIO on s.IdServicio equals fs.IdServicio into servicioFormato
                 select new
                 {
